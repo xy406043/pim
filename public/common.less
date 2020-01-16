@@ -1,0 +1,126 @@
+//文字层
+.font-12 {
+  font-size: 12px;
+}
+.font-16{
+    font-size: 16px;
+}
+.font-14{
+    font-size: 14px;
+}
+.font-20{
+    font-size: 20px;
+}
+.font-24{
+    font-size: 24px;
+}
+//颜色{
+.black{
+    color:#000000
+}
+//距离层
+
+.mr-10 {
+  margin-right: 10px;
+}
+.mr-16 {
+  margin-right: 16px;
+}
+.mr-20 {
+  margin-right: 20px;
+}
+.ml-10 {
+  margin-left: 10px;
+}
+.ml-16 {
+  margin-left: 16px;
+}
+.ml-20 {
+  margin-left: 20px;
+}
+
+//flex层
+.flex-row {
+  display: flex;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.column-center {
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+}
+.flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+//hover样式
+.option {
+  cursor: pointer;
+  font-weight: 10px;
+}
+
+// 页面设置
+body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.long_router {
+  position: absolute;
+  height: 100%;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  background: #ffffff;
+  padding:20px;
+}
+
+.short_router {
+  position: absolute;
+  box-shadow: 4px 4px 6px #eeeee4;
+  border-radius: 20px;
+  right: 100px;
+  left: 100px;
+  top: 100px;
+  bottom: 100px;
+  z-index: 0;
+  background: #ffffff;
+  padding: 20px;
+}
+
+// 黑白色主题
+@tabColor: #ffffff;
+.tab-icon {
+  .ivu-icon-md-add-circle {
+    font-size: 32px !important;
+  }
+  .ivu-icon {
+    color: @tabColor;
+    font-size: 18px;
+  }
+}
+.font-s {
+  font-size: 12px;
+  color: @tabColor;
+  text-shadow: 12px 1px 10px #ff12af;
+}
+.font-m {
+  font-size: 16px;
+  color: @tabColor;
+  text-shadow: 12px 1px 10px #ff12af;
+}
+.font-l {
+  font-size: 24px;
+  color: @tabColor;
+  text-shadow: 12px 1px 10px #ff12af;
+}
