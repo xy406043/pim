@@ -1,8 +1,6 @@
 <template>
-    <div   >
-         <div class="theme_font">
-       tsas
-   </div>
+    <div  >
+大理寺 记录 主页
     </div>
 </template>
 
@@ -17,6 +15,6 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="" scoped>
     
 </style>

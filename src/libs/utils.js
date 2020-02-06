@@ -157,7 +157,6 @@ export const getNewTagList = (list, newRoute) => {
  */
 const hasAccess = (access, route) => {
   if (route.meta && route.meta.access) {
-
     return hasOneOf(access, route.meta.access)
   }
   else return true
@@ -171,12 +170,14 @@ const hasAccess = (access, route) => {
  * @description 用户是否可跳转到该页
  */
 export const canTurnTo = (name, access, routes) => {
+  // console.log("access",access)
   const routePermissionJudge = (list) => {
     return list.some(item => {
 
       if (item.children && item.children.length) {
         return routePermissionJudge(item.children)
       } else if (item.name === name) {
+        console.log("ressa",hasAccess(access,item))
         return hasAccess(access, item)
       }
     })

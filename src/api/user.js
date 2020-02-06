@@ -4,7 +4,7 @@ export default {
   login: (data) => {
     return axios
       .request({
-        url: "pim/user/login",
+        url: "user/login",
         data,
         method: "POST"
       })
@@ -15,7 +15,7 @@ export default {
   getUserInfo: (token) => {
     return axios
       .request({
-        url: "pim/user/getUserInfo",
+        url: "user/getUserInfo",
         params: {
           token
         },
@@ -24,5 +24,25 @@ export default {
       .then(resp => {
         return resp.data;
       });
+  },
+  getDetailInfo: (id) =>{
+    return axios.request({
+      url:"",
+      params:{
+        id
+      },
+      method:"GET"
+    }).then(resp => {
+      return resp.data
+    })
+  },
+  editUserInfo: (data) => {
+    return axios.request({
+      url:"",
+      data,
+      method:"POST"
+  }).then(resp => {
+      return resp.data
+  })
   }
 };

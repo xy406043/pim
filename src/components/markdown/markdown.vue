@@ -1,14 +1,10 @@
 <template>
-    <div   >
-         <div class="theme_font">
-       tsas
-   </div>
-    </div>
+    
 </template>
 
 <script>
     export default {
-        name: '',
+        name: 'project-view',
         data() {
             return {
                 

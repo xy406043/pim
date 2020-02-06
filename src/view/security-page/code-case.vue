@@ -1,6 +1,8 @@
 
 <template>
-    
+    <div  >
+保险箱
+    </div>
 </template>
 
 <script>

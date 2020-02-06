@@ -1,6 +1,6 @@
 <template>
-    <div class="short_router">
-        
+    <div  >
+         个人设置页面
     </div>
 </template>
 
@@ -10,7 +10,6 @@ import {changeTheme} from "@/libs/theme"
         name: '',
         data() {
             return {
-                
             }
         },
         methods:{

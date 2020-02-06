@@ -48,6 +48,8 @@ module.exports = {
    * 但是某些不可以修改，比如publicPath
    */
   configureWebpack:{
-
+    plugins:[
+      
+    ]
   }
 }

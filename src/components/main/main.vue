@@ -2,12 +2,12 @@
   <div class="outer" :style="{backgroundImage: 'url('+url+')'}">
     <!-- header -->
     <div class="header flex-between">
-      <span>
+      <div>
         <Unknown></Unknown>
-      </span>
-      <span style="margin-left:360px">
+      </div>
+      <div >
         <MiddleNav></MiddleNav>
-      </span>
+      </div>
       <!-- 这里设置flex为一是为了使搜索框变长是不挤压左边的区域
       此处应该还有更好的解决办法-->
       <span class="flex-end" style="flex: 1">
@@ -16,7 +16,9 @@
         <Setting :Avatar="avatar"></Setting>
       </span>
     </div>
-    <router-view />
+    <div class="short_router" >
+      <router-view />
+    </div>
   </div>
 </template>
  
@@ -53,16 +55,13 @@ export default {
     let color = localRead("colorTheme") || "#0066ff";
     this.url = localRead("backgroundUrl");
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
 
 
 <style lang="less" scoped>
 .header {
-  z-index: 99999;
+  z-index: 10;
 }
-
 </style>

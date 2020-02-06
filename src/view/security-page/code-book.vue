@@ -1,5 +1,7 @@
 <template>
-    
+    <div  >
+        密码本
+    </div>
 </template>
 
 <script>

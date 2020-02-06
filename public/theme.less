@@ -1,7 +1,9 @@
-
+/**
+*本文件为全局主题
+* 所有与主题相关的样式都写在这里
+*/
 
 .theme(@cTheme: #e67710){
-    // 所有与主题相关的样式都写在这里
     .theme_font{
         color:@cTheme
     }
@@ -10,5 +12,30 @@
     }
     .them_show_white{
         color: #ffffff !important;
+    }
+    .option:hover{
+        color: @cTheme;
+    }
+    //自定义 button
+    .xy-button{
+        .ivu-btn{
+            padding: 2px 10px;
+        }
+        .ivu-btn-primary{
+            color: #ffffff;
+            background-color: @cTheme;
+            border:#000000;
+        }
+        .ivu-btn-primary:hover{
+            border: 1px solid #eff0f1;
+        }
+        .ivu-btn-default{
+
+        }
+        .ivu-btn-default:hover{
+            color: #000000;
+            border: 1px solid @cTheme;
+        }
+
     }
 }

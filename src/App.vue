@@ -1,5 +1,7 @@
 <template>
+
   <div id="app">
+    <!-- <link href="../public/cursor/default.ico" rel="icon" type="image/x-icon" /> -->
     <router-view />
   </div>
 </template>

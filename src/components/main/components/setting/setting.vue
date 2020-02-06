@@ -6,7 +6,7 @@
     <font class="mr-16 tab-icon option" @click="showNotice">
       <Icon size="24" type="md-notifications-outline" />
     </font>
-    <Dropdown style="position:relative;z-index:20" trigger="click">
+    <Dropdown  trigger="click">
       <font class="mr-16 option">
         <Avatar :src="Avatar"></Avatar>
         <Icon size="18" type="md-arrow-dropdown"></Icon>
@@ -17,6 +17,7 @@
           <span class="font-12">{{email}}</span>
         </div>
          <Divider></Divider>
+         <!-- 这里由于要添加样式，改变其颜色 -->
         <DropdownItem @click.native="setting">
             <div :class="['item', (showIt&&index===1)?'theme_hover':'' ]" @mouseover="addm(1)" @mouseleave="removem(1)">
                 <b :class="['font-16', (showIt&&index===1)?'theme_show_white':'theme_font' ]">个人设置</b>
@@ -76,20 +77,18 @@ export default {
     },
     setting() {
       this.$router.push({
-        name: "personpage"
+        name: "person-setting"
       });
     },
     showNotice(){
 
     },
     logout() {
-      console.log("22");
       this.handleLogOut().then(() => {
         this.$router.push({ name: "login" });
       });
     },
     addm(item){
-        console.log(item)
          this.showIt= true
          this.index =item
     },
@@ -103,18 +102,22 @@ export default {
 
 <style  scoped lang="less">
 .personHeader {
-  padding: 0 10px 10px 10px;
+    background: #dadadf;
+    border-radius: 10px 10px 0 0;
+  padding: 15px 10px 15px 10px;
 }
 .logout{
 }
 </style>
 
 <style lang="less">
+
 .showL {
   .ivu-select-dropdown {
     border-radius: 10px;
     margin-right: 10px;
-    background: rgb(245, 241, 241);
+    padding: 0;
+    background: rgb(255, 255, 255);
     // height: 500px;
   }
   .ivu-divider-horizontal{

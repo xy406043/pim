@@ -9,7 +9,11 @@ import 'view-design/dist/styles/iview.css';
 import config from "@/config"
 import "../public/common.less"
 import "../public/callTheme.less"
+import "../public/xy.less"
 Vue.use(ViewUI);
+import VueSimplemde from 'vue-simplemde'
+import 'simplemde/dist/simplemde.min.css'
+Vue.component('vue-simplemde', VueSimplemde)
 Vue.config.productionTip = false
 
 Vue.prototype.$config = config

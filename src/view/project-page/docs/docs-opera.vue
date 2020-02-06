@@ -1,9 +1,9 @@
 <template>
-    <div   >
-         <div class="theme_font">
-       tsas
-   </div>
+    <div>
+        个人设置
     </div>
+
+
 </template>
 
 <script>

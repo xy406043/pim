@@ -1,12 +1,13 @@
 <template>
-    <div   >
-         <div class="theme_font">
-       tsas
-   </div>
+    <div  >
+        事件操作动态
     </div>
 </template>
 
 <script>
+/**
+ * 时间操作记录
+ */
     export default {
         name: '',
         data() {

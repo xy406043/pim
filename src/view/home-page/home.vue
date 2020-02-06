@@ -1,5 +1,5 @@
 <template>
-<div class="short_router">
+<div  >
    <div class="theme_font">
        tsas
    </div>

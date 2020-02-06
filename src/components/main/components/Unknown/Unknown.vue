@@ -1,6 +1,6 @@
 <template>
 <div>
-   <font class="option font-m ml-20">此位置待定</font>
+   <font class="option font-m ml-20">欣赏背景图片</font>
 </div>
     
 </template>

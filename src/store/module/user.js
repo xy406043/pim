@@ -92,6 +92,8 @@ export default {
                 localSave("email",result.email)
                 changeTheme(result.colorTheme)
                 
+              }else{
+              this.$Message.error(res.errorMsg)
               }
               resolve(res);
             })

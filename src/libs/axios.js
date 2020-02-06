@@ -1,8 +1,8 @@
 import axios from "axios";
-import store from "@/store";
+// import store from "@/store";
 import config from '@/config'
-
-const baseUrl =process.env.VUE_APP_BASE_URL ? process.env.VUE_APP_BASE_URL : config.baseUrl.dev
+import {setToken,getToken} from "@/libs/utils"
+const baseUrl =process.env.VUE_APP_BASE_URL ? process.env.VUE_APP_BASE_URL : config.publicPath.dev
 
 class newAxios {
   constructor(){
@@ -14,11 +14,16 @@ class newAxios {
   setInterceptors = (instance, url) => {
     //拦截请求
     instance.interceptors.request.use(config => {
+      // console.log("拦截了")
       //loading
       //token
-      config.headers["Authorization"] = window.localStorage.getItem("PimToken")
-        ? window.localStorage.getItem("PimToken")
-        : "";
+      /**
+       * 这里才想起来我的token是存在Session里的....
+       */
+      if(getToken()){
+        config.headers['Authorization'] ="Bearer "+getToken()
+      }
+        // console.log("config",config)
         return config
     },err => Promise.reject(err));
 
@@ -29,6 +34,11 @@ class newAxios {
       if(err.response){
         switch(err.response.status){
           case '403':
+            this.$Message.error("登录过期，请重新登录")
+            setTimeout(()=>{
+              setToken("")
+              window.location.href = '/'
+            },2000)
             break;
           default:
             break;

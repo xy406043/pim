@@ -1,3 +1,22 @@
+/**
+* 本文件为全局通用样式
+*/
+
+//全局cursor
+// * {
+//   cursor: url(https://files.cnblogs.com/files/yjlblog/cursor.ico),auto;
+// }
+
+/**
+*自定义鼠标图标
+*
+*/
+
+// @cursor_ball:url("./cursor/cursor_default_gaitubao_32x32.png");
+// @cursor_pointer:url("./cursor/click_gaitubao_32x32.png");
+// * {
+//   cursor: @cursor_ball,auto;
+// }
 //文字层
 .font-12 {
   font-size: 12px;
@@ -8,18 +27,29 @@
 .font-14{
     font-size: 14px;
 }
+.font-18{
+  font-size: 18px;
+}
 .font-20{
     font-size: 20px;
 }
 .font-24{
     font-size: 24px;
 }
+.font-32{
+  font-size: 32px;
+}
+.font-48{
+  font-size: 48px;
+}
 //颜色{
 .black{
     color:#000000
 }
 //距离层
-
+.mr-5{
+  margin-right: 5px;
+}
 .mr-10 {
   margin-right: 10px;
 }
@@ -28,6 +58,9 @@
 }
 .mr-20 {
   margin-right: 20px;
+}
+.ml-5{
+  margin-left: 5px;
 }
 .ml-10 {
   margin-left: 10px;
@@ -38,7 +71,15 @@
 .ml-20 {
   margin-left: 20px;
 }
-
+.mt-10{
+  margin-top:10px;
+}
+//相对位置
+.relative_zs{
+  display:relative;
+  top: 10px;
+  left:20px
+}
 //flex层
 .flex-row {
   display: flex;
@@ -52,6 +93,13 @@
   justify-content: space-between;
   align-items: center;
 }
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}.flex-space-round{
+  display: flex;
+  justify-content: space-around;
+}
 .column-center {
   display: flex;
   align-items: center;
@@ -62,9 +110,16 @@
   align-items: center;
   justify-content: flex-end;
 }
+.flex-all-center{
+  height:100%;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 //hover样式
 .option {
-  cursor: pointer;
+  cursor: pointer !important;
   font-weight: 10px;
 }
 
@@ -109,6 +164,12 @@ body {
     font-size: 18px;
   }
 }
+.content-icon{
+  .ivu-icon {
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
 .font-s {
   font-size: 12px;
   color: @tabColor;
@@ -123,4 +184,12 @@ body {
   font-size: 24px;
   color: @tabColor;
   text-shadow: 12px 1px 10px #ff12af;
+}
+
+// 组件层
+.button-common{
+  padding:5px 10px;
+  border-radius: 16px;
+
+
 }
