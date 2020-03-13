@@ -1,7 +1,7 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rules"  @keydown.enter.native="handleSubmit">
     <FormItem prop="userName">
-      <Input v-model="form.userName" @on-keyup="handleBlank"   placeholder="账号" @on-focus="loading=false">
+      <Input v-model="form.userName" @on-keyup="handleBlank"   placeholder="用户名" @on-focus="loading=false">
         <span slot="prepend">
           <Icon :size="24" type="md-phone-portrait" />
         </span>
@@ -14,8 +14,13 @@
         </span>
       </Input>
     </FormItem>
-    <div class="reset-btn" @click="toReset">
-      忘记密码
+    <div class="flex-space-between mb-20 column-center">
+     <span class="get-btn">
+      <Checkbox v-model="isPass">记住密码</Checkbox> 
+    </span>
+    <span class="reset-btn" @click="toReset">
+      忘记密码?
+    </span>
     </div>
     <FormItem>
       <Button @click="handleSubmit" size="large" style="font-weight:700;" type="primary" :loading="loading" long>
@@ -37,9 +42,12 @@ export default {
       type: Array,
       default: () => {
         return [
-          { required: true, message: '手机号不能为空', trigger: 'blur' }
+          { required: true, message: '账号不能为空', trigger: 'blur' }
         ]
       }
+    },
+    showState:{
+      type: Number
     },
     passwordRules: {
       type: Array,
@@ -60,6 +68,7 @@ export default {
         userName: '',
         password: ''
       },
+      isPass:false,
       loading: this.invalid
     }
   },
@@ -89,11 +98,8 @@ export default {
        this.form['userName'] = this.form['userName'].replace(/\s+/g,'')
     },
     toReset () {
-      const route = {
-        path: '/reset'
-      }
-      this.$router.push(route)
-    }
+    this.$emit("update:showState",3)
+  }
   }
 }
 </script>
@@ -102,10 +108,21 @@ export default {
 .reset-btn {
   font-size: 14px;
   color: #2d8cf0;
-  text-align: right;
-  margin: 20px 0;
-  font-weight: 700;
   cursor: pointer;
+}
+.get-btn{
+  font-size:14px;
+  cursor: pointer;
+  color:white;
+  font-weight: bolder;
+   text-shadow: 0 0 10px #ffffff,0 2px 1px #ff0c0c;
+
+}
+.tonew{
+  text-align: center;
+  font-weight: 1000;
+  color:#ffffff;
+  text-shadow: 0 0 10px #2d8cf0,0 2px 1px #641818;
 }
 </style>
 

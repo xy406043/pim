@@ -1,6 +1,6 @@
 import userApi from "./user"
 import knowApi from "./know"
-import otherApi from "./other"
+import commonApi from "./common"
 import projectApi from "./project"
 import securityApi from "./security"
 import timeApi from "./time"
@@ -9,7 +9,7 @@ import timeApi from "./time"
 export{
     userApi,
     knowApi,
-    otherApi,
+    commonApi,
     projectApi,
     securityApi,
     timeApi

@@ -11,17 +11,33 @@ export default {
     phone: "",
     token: getToken(),
     access: "",
+    phone:0,
+    email:"",
+    sCode:false,
+    backgroundUrl:'',
     hasGetInfo: false
   },
   mutations: {
     setAvatar: (state, avatar) => {
       state.avatar = avatar;
     },
+    setEmail: (state,email) =>{
+       state.email=email
+    },
+    setPhone:(state,phone) =>{
+        state.phone=phone
+    },  
+    setBackgroundUrl: (state,backgroundUrl) =>{
+         state.backgroundUrl=backgroundUrl
+    },
     setNickName:(state,name) => {
      state.nickName = name;
     },
     setUserName: (state, userName) => {
       state.userName = userName;
+    },
+    sCode:(state,sCode) =>{
+      state.sCode = sCode;
     },
     setUserId: (state, id) => {
       state.userId = id;
@@ -35,9 +51,6 @@ export default {
     },
     setTel(state, tel) {
       state.tel = tel;
-    },
-    setPhone(state, email) {
-      state.email = email;
     },
     setHasGetInfo(state, status) {
       state.hasGetInfo = status;
@@ -82,22 +95,25 @@ export default {
         try {
           userApi.getUserInfo(state.token)
             .then(res => {
+            console.log("获取user信息",res)
               let result = res.result;
-              if (res.code === 0) {
                 commit("setNickName", result.nickName);
                 commit("setAvatar", result.avatar);
                 commit("setHasGetInfo", true);
+                commit("setPhone",result.phone)
+                commit("setEmail",result.email)
+                commit("setBackgroundUrl",result.backgroundUrl)
                 localSave("colorTheme",result.colorTheme)
                 localSave("backgroundUrl",result.backgroundUrl)
                 localSave("email",result.email)
-                changeTheme(result.colorTheme)
-                
-              }else{
-              this.$Message.error(res.errorMsg)
-              }
+                localSave("avatar",result.avatar)
+                let theme = localStorage.getItem("colorTheme")
+                console.log("sas",result.colorTheme)
+                changeTheme(result.colorTheme || theme)
               resolve(res);
             })
             .catch(err => {
+              console.log("getError",err)
               reject(err);
             });
         } catch (error) {

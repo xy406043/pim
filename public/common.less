@@ -59,6 +59,9 @@
 .mr-20 {
   margin-right: 20px;
 }
+.ml-2{
+  margin-left:2px;
+}
 .ml-5{
   margin-left: 5px;
 }
@@ -71,8 +74,61 @@
 .ml-20 {
   margin-left: 20px;
 }
+.ml-40{
+  margin-left:40px;
+}
+.ml-100{
+  margin-left:100px;
+}
+.ml-120{
+  margin-left:120px;
+}
+.mb-5{
+  margin-bottom: 5px;
+}
+.mb-10{
+  margin-bottom: 10px;
+}
+.mb-20{
+  margin-bottom:20px
+}
+.mt-5{
+  margin-top:5px;
+}
 .mt-10{
   margin-top:10px;
+}
+.mt-20{
+  margin-top:20px;
+}
+.mt-30{
+  margin-top:30px;
+}
+.display-inline-block{
+  display: inline-block;
+}
+.text-left{
+  text-align:left;
+}
+// 宽度
+.min-width{
+  min-width:85px;
+  text-align:left;
+}
+.min-height{
+  min-height:80px;
+}
+.min-main-height{
+  min-height:400px;
+}
+
+.middle-width{
+  min-width:120px;
+  text-align: left;
+}
+.form-width{
+  min-width: 200px;
+
 }
 //相对位置
 .relative_zs{
@@ -93,10 +149,12 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .flex-space-between {
   display: flex;
   justify-content: space-between;
-}.flex-space-round{
+}
+.flex-space-round{
   display: flex;
   justify-content: space-around;
 }
@@ -105,14 +163,22 @@
   align-items: center;
   // justify-content: center;
 }
+.flex-start{
+  display: flex;
+  justify-content: flex-start;
+}
+.row-center{
+  display: flex;
+  justify-content: center;
+}
 .flex-end {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 .flex-all-center{
-  height:100%;
-  width:100%;
+  // height:100%;
+  // width:100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,17 +188,27 @@
   cursor: pointer !important;
   font-weight: 10px;
 }
+.option-delete{
+  cursor: pointer !important;
+  font-weight: 10px;
+  color:red;
+}
+.option-disabled{
+  cursor: not-allowed;
+  color:rgb(211, 211, 211);
+}
 
 // 页面设置
 body {
-  height: 100%;
-  width: 100%;
+  // height: 100%;
+  // width: 100%;
   position: relative;
 }
 
+
 .long_router {
   position: absolute;
-  height: 100%;
+  // height: 100%;
   right: 0;
   left: 0;
   z-index: 0;
@@ -141,16 +217,10 @@ body {
 }
 
 .short_router {
-  position: absolute;
-  box-shadow: 4px 4px 6px #eeeee4;
-  border-radius: 20px;
-  right: 100px;
-  left: 100px;
-  top: 100px;
-  bottom: 100px;
-  z-index: 0;
+
+  border-radius: 5px;
+  min-height: 600px;
   background: #ffffff;
-  padding: 20px;
 }
 
 // 黑白色主题
@@ -192,4 +262,8 @@ body {
   border-radius: 16px;
 
 
+}
+
+.horizontal{
+  padding:0
 }

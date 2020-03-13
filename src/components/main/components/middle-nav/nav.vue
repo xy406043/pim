@@ -1,9 +1,17 @@
 <template>
   <div class="flex-row">
     <!-- 总体 -->
-    <div class="mr-20 flex-row text-font" >
-      <font class="ml-10 option font-m" @click="toProject">项目</font>
-      <font class="ml-10 option font-m " @click="toKnow">大理寺</font>
+    <div class="mr-20 flex-row this_text" >
+      <font class="ml-10 option font-m" @click="toProject">任务集</font>
+      <!-- <Dropdown trigger="click" placement="bottom">
+      <font href="javascript:void(0)" class="ml-10 option font-m ">记事库</font>
+      <DropdownMenu slot="list">
+        <DropdownItem>日记</DropdownItem>
+        <DropdownItem>通讯录</DropdownItem>
+        <DropdownItem>网址收藏</DropdownItem>
+      </DropdownMenu>
+      </Dropdown> -->
+      <font href="javascript:void(0)" class="ml-10 option font-m " @click="toKnow">记事库</font>
       <font class="ml-10 option font-m" @click="toDynamic">动态</font>
     </div>
     <div>
@@ -21,7 +29,7 @@
     <!-- 个人 -->
     <div class="mr-20">
        <font class="ml-10 option font-m" @click="toCase">保险箱</font>
-      <font class="ml-10 option font-m" @click="toMySelf">我自己</font>
+      <!-- <font class="ml-10 option font-m" @click="toMySelf">我自己</font> -->
     </div>
   </div>
 </template>
@@ -75,7 +83,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.text-font{
+.this_text{
     white-space:nowrap
 }
 </style>

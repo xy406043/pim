@@ -3,18 +3,24 @@
 * 所有与主题相关的样式都写在这里
 */
 
-.theme(@cTheme: #e67710){
+.theme(@cTheme: #5eff00){
     .theme_font{
         color:@cTheme
     }
     .theme_hover{
         background: @cTheme;
     }
-    .them_show_white{
+    .theme_show_white{
         color: #ffffff !important;
     }
     .option:hover{
-        color: @cTheme;
+        color: @cTheme !important;
+    }
+    .theme_border_0{
+        border: 1px solid gray;
+    }
+    .theme_border_1{
+        border:1px solid @cTheme !important;
     }
     //自定义 button
     .xy-button{
@@ -37,5 +43,10 @@
             border: 1px solid @cTheme;
         }
 
+        .dropdown:hover{
+            border: 1px solid @cTheme !important;
+        }
+
     }
+   
 }

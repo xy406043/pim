@@ -1,16 +1,13 @@
 <template>
-<div>
-   <font class="option font-m ml-20">欣赏背景图片</font>
-</div>
     
 </template>
 
 <script>
 /**
- * 左上角角色位置待定
+ * 记事账单
  */
     export default {
-        name: 'game',
+        name: '',
         data() {
             return {
                 
@@ -19,6 +16,6 @@
     }
 </script>
 
-<style  scoped>
+<style lang="less" scoped>
     
 </style>

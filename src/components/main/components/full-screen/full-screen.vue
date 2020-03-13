@@ -1,7 +1,8 @@
 <template>
-    <div class="tab-icon mr-20 option">
+<!-- 全屏，暂时用不着，不做 -->
+    <!-- <div class="tab-icon ml-20 mr-20 option">
         <Icon type="md-expand" size="24"  />
-    </div>
+    </div> -->
 </template>
 
 <script>

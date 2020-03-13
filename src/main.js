@@ -10,9 +10,15 @@ import config from "@/config"
 import "../public/common.less"
 import "../public/callTheme.less"
 import "../public/xy.less"
-Vue.use(ViewUI);
 import VueSimplemde from 'vue-simplemde'
 import 'simplemde/dist/simplemde.min.css'
+import VueClipboard from 'vue-clipboard2'  //复制
+import VCharts from "v-charts"
+
+
+Vue.use(ViewUI);
+Vue.use(VCharts)
+Vue.use(VueClipboard)
 Vue.component('vue-simplemde', VueSimplemde)
 Vue.config.productionTip = false
 

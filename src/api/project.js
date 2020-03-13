@@ -34,7 +34,7 @@ export default {
     },
     editProject:(data) => {
         return axios.request({
-            url:"",
+            url:"/project/editProject",
             data,
             method:"POSt"
         }).then(resp => {
@@ -57,11 +57,44 @@ export default {
         }).then(resp => {
             return resp.data
         })
-    },   
-    getTodo: (params) => {
+    }, 
+    changeState: (data) =>{
         return axios.request({
-            url:"",
-            params,
+            url:'project/changeState',
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    changeFinishState: (data) =>{
+        return axios.request({
+            url:'project/changeFinishState',
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    /**
+     * @项目设置
+     *  */ 
+    addTag: (data) => {
+        return axios.request({
+            url:"/project/addTag",
+            method:"POSt",
+            data
+        }).then(resp => {
+            return resp.data
+        })
+    }
+    , 
+    /**
+     * @任务
+     */
+    getTodoDetail: (id) => {
+        return axios.request({
+            url:"project/getTodoDetail?id="+id,
             method:"GET"
         }).then(resp => {
             return resp.data
@@ -69,7 +102,7 @@ export default {
     },
     addTodo: (data) => {
         return axios.request({
-            url:"",
+            url:"project/addTodo",
             data,
             method:"POST"
         }).then(resp => {
@@ -78,11 +111,140 @@ export default {
     },
     editTodo: (data) => {
         return axios.request({
-            url:"",
+            url:"project/editTodo",
             data,
             method:"POST"
         }).then(resp => {
             return resp.data
         })
+    },deleteTodo: (id) =>{
+        return axios.request({
+            url:"project/deleteTodo?id="+id,
+            method:"GET"
+        }).then(resp => {
+          return  resp.data
+        })
+    },
+    /**
+     * @任务清单
+     * 
+     */
+    addList: (data) => {
+        return axios.request({
+            url:"project/addList",
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+
+    },
+    getListList: (id) =>{
+        return axios.request({
+            url:"project/getListList?id="+id,
+            method:"GET"
+        }).then(resp => {
+            return resp.data
+        })
+
+    },
+    getListDetail: (id) =>{
+       return axios.request({
+           url:"project/getListDetail?id="+id,
+           method:"GET"
+       }).then(resp => {
+           return resp.data
+       })
+    },
+    editList: (data) =>{
+        return axios.request({
+            url:"project/editList",
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    deleteList: (id) => {
+        return axios.request({
+            url:"project/deleteList?id="+id,
+            method:"GET"
+        }).then(resp => {
+          return  resp.data
+        })
+    },
+    removeOutList: (id) =>{
+        return axios.request({
+            url:"project/removeOutList?id="+id,
+            method:"GET"
+        }).then(resp => {
+          return  resp.data
+        })
+
+    },
+    archiveList: (id) => {  //归档
+        return axios.request({
+            url:"project/archiveList?id="+id,
+            method:"GET"
+        }).then(resp => {
+          return  resp.data
+        })
+    },
+    /**
+     * @日程
+     */
+    getMonthScheduleList: (data) =>{
+        return axios.request({
+            url:"project/getMonthScheduleList",
+            method:"POST",
+            data
+        }).then(resp => {
+            return resp.data
+        })
+
+    },
+    getScheduleList: (data) => {
+        return axios.request({
+            url:"project/getScheduleList",
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    getScheduleDetail: id =>{
+        return axios.request({
+            url:"project/getScheduleDetail?id="+id,
+            method:"GET"
+        }).then(resp => {
+          return  resp.data
+        })
+    },
+    addSchedule: (data) =>{
+        return axios.request({
+            url:"project/addSchedule",
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    editSchedule: (data) =>{
+        return axios.request({
+            url:"project/editSchedule",
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    deleteSchedule: (id) => {
+        return axios.request({
+            url:"project/deleteSchdeule?id="+id,
+            method:"GET"
+        }).then(resp => {
+            return resp.data
+        })
     }
+
 }

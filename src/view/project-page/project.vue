@@ -1,24 +1,36 @@
 <template>
-  <div>
-    <div class="le">
+  <div class="project" >
+    <!-- <div class="column-center flex-space-between"> -->
+    <!-- <div class="le">
       <span :class="['content-icon',(tabValue===0)?'content-icon':'']">
-        <Icon type="ios-radio-button-on" />
+        <Icon type="md-star" />
       </span>
-      <span class="ml-10 option">全部项目</span>
+      <span class="ml-10 option">全部任务集</span>
     </div>
     <div class="ge">
-      <span class="theme_font mr-10 option" @click="showAdd">新建项目</span>
+      <span class="theme_font mr-10 option" @click="showAdd">新建任务集</span>
       <span class="content-icon">
         <Icon type="ios-apps" />
         <Icon type="md-list" />
       </span>
+    </div> -->
+    <!-- </div> -->
+    <div class="column-center flex-space-between thisTitle flex-row">
+      <div>
+        <!-- <router-link to="know" class="title-back option mr-10">我的记事库</router-link>/ -->
+        <span class="theme_font ml-10 font-24">我的任务集</span>
+      </div>
+      <div>
+        <span class="option" @click="showAdd">新增任务集</span>
+      </div>
     </div>
+    <Divider />
     <div class="view">
-      <!-- 收藏项目 -->
+      <!-- 收藏任务集 -->
       <div v-show="tabValue===0">啊啊</div>
-      <!-- 全部项目---网格类型 -->
+      <!-- 全部任务集---网格类型 -->
       <div v-show="tabValue===1"></div>
-      <!-- 全部项目---列表类型 -->
+      <!-- 全部任务集---列表类型 -->
       <div v-show="tabValue===2">
         <div v-for="(item,index) in projectList" :key="index">
           <div
@@ -32,15 +44,18 @@
                 class="font-18 black option ml-10"
                 @click="toProjectDetail(item._id)"
               >{{item.projectName}}</strong>
-              <Icon class="option" v-show="showIndex===index" size="22" type="md-star" />
+              <span @click.stop="editCollected(item)">
+              <Icon class="option" v-show="showIndex===index && item.collected===false" size="22" type="md-star" />
+              </span>
+              <span @click.stop="editCollected(item)" calss="theme_font"><Icon class="option" v-show="item.collected===true"  size="22" type="md-star" /></span>
             </div>
             <div>
               <Icon
                 size="22"
                 v-show="showIndex===index"
                 @click.stop="handleDelete(item._id)"
-                class="option"
-                type="ios-trash"
+                class="option mr-20"
+                type="md-trash"
               />
             </div>
           </div>
@@ -60,7 +75,7 @@
       </div>
       <!-- 内容 -->
       <div class="flex-all-center">
-        <Input v-model="projectName" placeholder="请输入新的项目名字"></Input>
+        <Input v-model="projectName" placeholder="请输入新的任务集名字"></Input>
         <Button class="button-common" type="default" @click="hideAdd">取消</Button>
         <Button class="button-common" type="primary" @click="addProject">确认</Button>
       </div>
@@ -70,7 +85,7 @@
 </template>
 <script>
 /**
- * 项目首页，替代原有的home主页
+ * 任务集首页，替代原有的home主页
  */
 import { projectApi } from "@/api";
 const moment = require("moment");
@@ -135,14 +150,27 @@ export default {
         }
       });
     },
+    editCollected(item){
+      let p ={
+        id :item._id,
+        collected:!item.collected
+      }
+      projectApi.editProject(p).then(res=>{
+        if(res.code===0){
+          this.$Message.success(res.result.collected?"收藏成功":"解除收藏成功")
+          this.getProjectList()
+        }
+      })
+
+    },
     /**
-     * 删除项目，相关的所有任务，日程安排都会被删除
+     * 删除任务集，相关的所有任务，日程安排都会被删除
      */
     handleDelete(id) {
       let vm = this;
       let lock = true;
       vm.$Modal.confirm({
-        title: `即将删除本项目的所有内容，确定要删除么？`,
+        title: `即将删除本任务集的所有内容，确定要删除么？`,
         onOk: () => {
           if (lock) {
             lock = false;
@@ -162,25 +190,43 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.project {
+  height: 100%;
+
+  .ivu-divider-horizontal {
+    margin: 0;
+  }
+}
+.min-child{
+  position:relative
+}
 .le {
-  position: absolute;
-  top: 30px;
+  top: 70px;
   left: 20px;
 }
 .view {
-  margin-top: 40px;
+  // margin-top: 20px;
+  padding:24px;
 }
 .ge {
-  position: absolute;
-  top: 30px;
+  top:70px;
   right: 20px;
 }
 .project-item {
   height: 52px;
-  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
 }
 .project-item:hover {
   background: #eff7fa;
   cursor: pointer;
+}
+.title-back {
+  color: black;
+}
+.thisTitle {
+  height: 50px;
+  padding: 10px;
+  width: 962px;
+  background: rgba(168, 204, 204, 0.13);
 }
 </style>

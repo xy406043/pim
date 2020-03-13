@@ -18,24 +18,56 @@
       </font>
     </Input>
 
-    <!-- </div> -->
-    <div class="option ml-16 mr-16 this_add">
+ <!-- FIXME:此处由于 wangeditor 存在 不同页面打开 会创建新的编辑器 
+ 而一部分必须使用v-show才能显示内容  一部部分需要v-if进行刷新，这里的功能就不做了 -->
+    <!-- <div class="option ml-16 mr-16 this_add" @click="getData">
       <Icon size="24" type="md-add-circle" />
-    </div>
+    </div> -->
+
+    <Modal
+      v-model="outerAdd"
+      width="700"
+      footer-hide
+      @on-visible-change="initModal"
+    >
+      <TodoAdd ref="todoadd" @cancelAdd="cancel" :projectList="projectList" :todoAdd="outerAdd" :isOuter="true"></TodoAdd>
+    </Modal>
   </div>
 </template>
 
 <script>
 import "../../../../../public/theme.less";
+import TodoAdd from "_c/todo/todo-add";
+import { projectApi } from "@/api";
 export default {
   name: "",
+  components: {
+    TodoAdd
+  },
   data() {
     return {
       status: 0,
-      value: ""
+      value: "",
+      outerAdd: false,
+      projectList: []
     };
   },
   methods: {
+    getData() {
+      this.outerAdd = true;
+      this.getProjectList();
+    },
+    getProjectList() {
+      projectApi.getProjectList().then(res => {
+        this.projectList = res.result;
+        this.$refs.todoadd.selectedProject = this.projectList[0]._id;
+      });
+    },
+    cancel(status){
+      console.log("sas")
+      this.outerAdd=false
+
+    },
     changeL() {
       let data2 = this.$refs["input"].style;
       data2.width = 250 + "px";
@@ -54,13 +86,16 @@ export default {
       } else {
       }
     },
+    initModal() {
+      this.$refs["todoadd"].initTodo();
+    },
     select() {
       /**
        * 如何手动触发失去焦点？？？？？
        * 暂时不需要，刷新就完事了
        */
       let value = this.value;
-      console.log("当前值",value)
+      console.log("当前值", value);
     }
   }
 };

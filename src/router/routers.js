@@ -1,5 +1,7 @@
 import Main from "@/components/main/main.vue";
-
+/**
+ * @description children 只有一个，会忽略掉父路由
+ */
 export default [
   {
     path: "/login",
@@ -9,8 +11,40 @@ export default [
     },
     component: () => import("@/view/login-page/login.vue")
   },
+  // {
+  //   path: "/register",
+  //   name: "register",
+  //   meta: {
+  //     title: "注册"
+  //   },
+  //   component: () => import("@/view/login-page/register.vue")
+  // },
+  // {
+  //   path: "/reset",
+  //   name: "reset",
+  //   meta: {
+  //     title: "重置密码"
+  //   },
+  //   component: () => import("@/view/login-page/reset.vue")
+  // },
+  {
+    path:"/",
+    name:"_home",
+    component:Main,
+    redirect:"home",
+    children:[
+      {
+        path:"home",
+        name:"home",
+        meta:{
+          title:"主页"
+        },
+        component: () =>import("@/view/home-page/home.vue")
+      }
+    ]
+  },
   /**
-   * 首页 ===> 现在使用project作为首页
+   * 
    * Main是作为主页单页面应用必备的整体组件，所有页面都在其router-view中显示
    * 但是要想正常显示，需要使路由如/project,/personpage的页面作为main的子路由，不然会跳转到新页面
    * 项目页面做以下配置
@@ -25,7 +59,6 @@ export default [
   {
     path: "/projectB",
     name: "_project",
-    redirect: "project",
     component: Main,
     children: [
       {
@@ -52,6 +85,11 @@ export default [
         name: "todo-detail",
         component: () => import("@/view/project-page/todo/todo-detail.vue")
       },{
+        path:"list-detail",
+        name:"list-detail",
+        component: () => import("@/view/project-page/todo/list-detail")
+      },
+      {
         path: "schedule",
         name: "schedule",
         meta:{
@@ -83,12 +121,28 @@ export default [
         path: "code-case",
         name: "code-case",
         component: () => import("@/view/security-page/code-case.vue")
+      },
+      {
+        path: "code-book",
+        name: "code-book",
+        component: () => import("@/view/security-page/code-book.vue")
+      },
+      {
+        path: "folder",
+        name: "folder",
+        component: () => import("@/view/security-page/folder.vue")
+      },
+      {
+        path: "photo",
+        name: "photo",
+        component: () => import("@/view/security-page/photo.vue")
       }
     ]
   },
   /**
    * 知识页面
-   * 包含日记，知识库，文件等
+   * @description 包含日记，知识库，文件等
+   * 目前划分为具体的不做为细分
    */
   {
     path: "/knowledge-page",
@@ -99,6 +153,41 @@ export default [
         path: "know",
         name: "know",
         component: () => import("@/view/knowledge-page/know.vue")
+      },
+      {
+        path: "note",
+        name: "note",
+        component: () => import("@/view/knowledge-page/note.vue")
+      },
+      {
+        path: "note-add",
+        name: "note-add",
+        component: () => import("@/view/knowledge-page/note-add.vue")
+      },
+      {
+        path: "note-view",
+        name: "note-view",
+        component: () => import("@/view/knowledge-page/note-view.vue")
+      },
+      {
+        path:"label",
+        name:"label",
+        component:() => import ("@/view/knowledge-page/label")
+      },
+      {
+        path:"bookmarking",
+        name:"bookmarking",
+        component:() => import ("@/view/knowledge-page/bookmarking")
+      },
+      {
+        path:"bill",
+        name:"bill",
+        component:() => import ("@/view/knowledge-page/bill")
+      },
+      {
+        path:"address-book",
+        name:"address-book",
+        component:() => import ("@/view/knowledge-page/address-book")
       }
     ]
   },
@@ -181,6 +270,11 @@ export default [
           title:"任务概览"
         },
         component: () => import("@/view/single-page/all-progress.vue")
+      },
+      {
+        path: "add-second",
+        name: "add-second",
+        component: () => import("@/view/security-page/add-second.vue")
       }
     ]
   },

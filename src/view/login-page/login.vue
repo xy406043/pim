@@ -1,29 +1,43 @@
 <template>
   <div class="login">
-    <div class="star">
+    <!-- <div class="star">
       <StarFlow />
-    </div>
+    </div> -->
     <div class="login-con">
       <h1>PIM个人信息管理系统</h1>
-      <LoginForm :invalid.sync="invalid" @on-success-valid="handleSubmit"></LoginForm>
+      <LoginForm v-show="showState===1" :showState.sync="showState" :invalid.sync="invalid" @on-success-valid="handleSubmit"></LoginForm>
+      <RegisterForm v-show="showState===2" :showState.sync="showState" :invalid.sync="invalid"  @signup="handleSignUp" ></RegisterForm>
+      <ResetForm v-show="showState===3" ></ResetForm>
+      <div v-show="showState===1" class="tonew">新用户?<a @click="showState=2">去注册</a></div>
+      <div v-show="showState===2" class="tonew">已有账户?<a @click="showState=1">去登录</a></div>
+      <div v-show="showState===3" class="tonew"><a @click="showState=1">返回登录</a></div>
     </div>
   </div>
 </template>
 
 <script>
+/**
+ * @description  账号一体@用户名手机号邮箱 为同一个人的身份信息
+ */
 import LoginForm from "_c/login/login-form.vue";
-import StarFlow from "_c/login/star.vue";
-import { mapActions } from "vuex";
+import  RegisterForm from "_c/login/register-form.vue"
+import  ResetForm from "_c/login/reset-form.vue"
 
+// import StarFlow from "_c/login/star.vue";
+import { mapActions } from "vuex";
+import {userApi} from "@/api"
 export default {
   name: "login",
   components: {
     LoginForm,
-    StarFlow
+    RegisterForm,
+    ResetForm
+    // StarFlow
   },
   data() {
     return {
-      invalid: false
+      invalid: false,
+      showState: 1, // 1登录 2注册 3 忘记密码 
     };
   },
   methods: {
@@ -47,6 +61,22 @@ export default {
           this.invalid = false
         }
       });
+    },
+    handleSignUp(val){
+      userApi.register(val).then(res => {
+        if(res.code===0){
+          this.$Message.success("注册成功")
+        }else{
+          this.$Message.error(res.errorMsg)
+        }
+      })
+
+    },
+    toRegister(){
+      this.invalid=false
+      this.$router.push({
+        name:"register"
+      })
     }
   }
 };
@@ -101,5 +131,11 @@ export default {
 }
 .star {
   position: absolute;
+}
+.tonew{
+  text-align: center;
+  font-weight: 1000;
+  color:#ffffff;
+  text-shadow: 0 0 10px #2d8cf0,0 2px 1px #641818;
 }
 </style>

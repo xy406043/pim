@@ -177,7 +177,7 @@ export const canTurnTo = (name, access, routes) => {
       if (item.children && item.children.length) {
         return routePermissionJudge(item.children)
       } else if (item.name === name) {
-        console.log("ressa",hasAccess(access,item))
+        // console.log("ressa",hasAccess(access,item))
         return hasAccess(access, item)
       }
     })
