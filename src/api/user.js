@@ -1,7 +1,7 @@
 import axios from "@/libs/axios";
 
 export default {
-  login: data => {
+  login: (data) => {
     return axios
       .request({
         url: "user/login",
@@ -12,7 +12,7 @@ export default {
         return resp.data;
       });
   },
-  getUserInfo: token => {
+  getUserInfo: (token) => {
     return axios
       .request({
         url: "user/getUserInfo",
@@ -25,7 +25,7 @@ export default {
         return resp.data;
       });
   },
-  sendCode: data =>{
+  sendCode: (data) =>{
     return axios
       .request({
         url: "user/sendCode",
@@ -37,7 +37,18 @@ export default {
       });
 
   },
-  register: data =>{
+    sendReCode: (data) =>{
+    return axios
+      .request({
+        url: "user/sendReCode",
+        data,
+        method: "POST"
+      })
+      .then(resp => {
+        return resp.data;
+      });
+  },
+  register: (data) =>{
     return axios
       .request({
         url: "user/register",
@@ -48,7 +59,7 @@ export default {
         return resp.data;
       });
   },
-  getDetailInfo: id => {
+  getDetailInfo: (id) => {
     return axios
       .request({
         url: "",
@@ -61,10 +72,68 @@ export default {
         return resp.data;
       });
   },
-  editUserInfo: data => {
+  editUserInfo: (data) => {
     return axios
       .request({
         url: "user/editUserInfo",
+        data,
+        method: "POST"
+      })
+      .then(resp => {
+        return resp.data;
+      });
+  },
+  /**
+   * @验证用户登录密码
+   */
+  verifyPass:(data) =>{
+    return axios
+      .request({
+        url: "user/verifyPass",
+        data,
+        method: "POST"
+      })
+      .then(resp => {
+        return resp.data;
+      });
+  },
+  editEmail:(data) =>{
+    return axios
+      .request({
+        url: "user/updateEmail",
+        data,
+        method: "POST"
+      })
+      .then(resp => {
+        return resp.data;
+      });
+  },
+  editPass:(data) =>{
+    return axios
+      .request({
+        url: "user/updatePass",
+        data,
+        method: "POST"
+      })
+      .then(resp => {
+        return resp.data;
+      });
+  },
+  verifyCode:(data) =>{
+    return axios
+      .request({
+        url: "user/verifyCode",
+        data,
+        method: "POST"
+      })
+      .then(resp => {
+        return resp.data;
+      }); 
+  },
+  resetPass: (data) => {
+    return axios
+      .request({
+        url: "user/resetPass",
         data,
         method: "POST"
       })

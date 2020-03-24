@@ -62,13 +62,13 @@
                <span v-else>编辑账号条</span>
           </div>
         <div class="column-center mb-10">
-          <div class="mr-20">账号从属:</div>
+          <div class="mr-20 font-bolder">账号从属:</div>
           <div class="form-width">
           <Input v-model="affiliation"  placeholder="请输入账号所属"></Input>
         </div>
         </div>
         <div class="mb-10">
-           <b >账号</b>
+           <b class="font-bolder">账号</b>
           <div class="flex-column">
             <div class="ml-20 column-center mb-10" v-for="(item,index) in accountList" :key="index">
               <div class="mr-10">账号:</div>
@@ -93,13 +93,16 @@
           </div>
         </div>
         <div class="column-center">
-            <div class="mr-20">备注:</div>
+            <div class="mr-20 font-bolder">备注:</div>
             <div><Input type="textarea" v-model="remarks" placeholder="请输入备注信息"></Input></div>
         </div>
-        <div class="mt-20 ml-20">
-            <Button v-if="addoredit" type="primary" @click="handleAdd">确认</Button>
+        <div class="mt-20 ml-20 flex-row">
+            <!-- <Button v-if="addoredit" type="primary" @click="handleAdd">确认</Button>
             <Button v-else type="primary" @click="hanldeEdit">确认</Button>
-            <Button class="ml-20"  type="default" @click="cancelModal">取消</Button>
+            <Button class="ml-20"  type="default" @click="cancelModal">取消</Button> -->
+            <vs-button class="mr-20" dark dashed @click="cancelModal">取消</vs-button>
+            <vs-button v-if="addoredit" dashed success @click="handleAdd">确认</vs-button>
+            <vs-button v-else dashed success @click="hanldeEdit">确认</vs-button>
         </div>
       </div>
     </Modal>

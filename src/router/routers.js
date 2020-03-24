@@ -80,7 +80,13 @@ export default [
         path: "project-progress",
         name: "project-progress",
         component: () => import("@/view/project-page/project-progress.vue")
-      },{
+      },
+      {
+        path: "project-screen",
+        name: "project-screen",
+        component: () => import("@/view/project-page/project-screen.vue")
+      },
+      {
         path: "todo-detail",
         name: "todo-detail",
         component: () => import("@/view/project-page/todo/todo-detail.vue")
@@ -88,6 +94,11 @@ export default [
         path:"list-detail",
         name:"list-detail",
         component: () => import("@/view/project-page/todo/list-detail")
+      },
+      {
+        path:"list-set",
+        name:"list-set",
+        component: ()=>import("@/view/project-page/todo/list-set")
       },
       {
         path: "schedule",
@@ -107,7 +118,7 @@ export default [
     ]
   },
   /**
-   * 保险箱
+   * @保险箱
    * 存放重要文件 
    * 兼容设置中密码锁
    * 密码本
@@ -140,7 +151,7 @@ export default [
     ]
   },
   /**
-   * 知识页面
+   * @知识页面
    * @description 包含日记，知识库，文件等
    * 目前划分为具体的不做为细分
    */
@@ -192,7 +203,7 @@ export default [
     ]
   },
   /**
-   * 时间
+   * @时间
    * 包含日历，计划，进度等与时间息息相关的页面
    */
   {
@@ -213,7 +224,7 @@ export default [
     ]
   },
   /**
-   * 个人页面
+   * @个人页面
    * 包含详情，设置，通知等
    */
   {
@@ -230,16 +241,12 @@ export default [
         path: "person-detail",
         name: "person-detail",
         component: () => import("@/view/person-page/person-detail.vue")
-      },
-      {
-        path: "notice",
-        name: "notice",
-        component: () => import("@/view/person-page/notice.vue")
       }
     ]
   },
   /**
-   * 单页面
+   * @单页面
+   * @通用页面
    * 指与主体功能没有什么关系的页面
    */
   {
@@ -275,6 +282,26 @@ export default [
         path: "add-second",
         name: "add-second",
         component: () => import("@/view/security-page/add-second.vue")
+      },
+      {
+        path: "search",
+        name: "search",
+        component: () => import("@/view/single-page/search.vue")
+      },
+      {
+        path: "notice",
+        name: "notice",
+        component: () => import("@/view/single-page/notice.vue")
+      },
+      {
+        path: "test",
+        name: "test",
+        component: () => import("@/view/single-page/test.vue")
+      },
+      {
+        path: "group-set",
+        name: "group-set",
+        component: () => import("@/view/single-page/group-set.vue")
       }
     ]
   },

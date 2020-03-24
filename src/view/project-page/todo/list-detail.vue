@@ -5,16 +5,19 @@
       <b>
         <span class="option ml-10" @click="toProject">{{projectName}}</span>
       </b>
-    </div> -->
-      <div class="column-center thisTitle flex-space-between flex-row">
+    </div>-->
+    <div class="column-center thisTitle flex-space-between flex-row">
       <!-- 顶部 -->
       <div>
-        <router-link to="project" class="title-back option mr-10">我的记事库</router-link>/
-        <span class="theme_font ml-10">{{projectName}}</span>
+        <router-link :to="{name:'project'}" class="title-back option mr-10">我的任务集</router-link>/
+        <router-link
+          :to="{name:'project-view',query:{id:project_id,projectName:projectName}}"
+          class="title-back option ml-10"
+        >{{projectName}}</router-link>
       </div>
       <div>
         <div class="option">
-          <!-- <span class="option" @click="openAddModal">新建联系人</span> -->
+          <router-link class="option theme_font" :to="{name:'list-set',query:{id:list_id}}">设置</router-link>
         </div>
       </div>
     </div>
@@ -22,7 +25,10 @@
     <div class="flex-row min-main-height">
       <!-- 主体左侧 -->
       <div style="flex:auto;padding:0 24px">
-        <b class="font-24 mt-10 mb-20">{{listName}}</b>
+        <b class="font-24 mt-10 mb-20">
+          任务清单：
+          <span class="ml-20 theme_font">{{listName}}</span>
+        </b>
 
         <div style="width:100%">
           <!-- 效果 -->
@@ -49,7 +55,7 @@
                 <span v-for="val in item.tags" :key="val.value">
                   <span
                     class="ml-5 font-12"
-                    :style="'color:white;padding:3px 5px;border-radius:20px;border:1px solid gray;padding:3px;background:'+val.color"
+                    :style="'color:white;padding:3px 8px;border-radius:20px;background:'+val.color"
                   >{{val.value}}</span>
                 </span>
               </div>
@@ -91,25 +97,31 @@
               class="theme_font font-12 ml-20 option this_button"
               @click="addListTodo(list_id)"
             >添加新任务</button>
-            <div>
-              <TodoAdd
-                :todoAdd.sync="todoListAdd"
-                :projectId="project_id"
-                :tags.sync="tags"
-                :listId="list_id"
-                @getDetail="getListDetail"
-              ></TodoAdd>
-            </div>
           </div>
         </div>
       </div>
-      <Divider class="horizontal" style="margin:0;height:auto" type="vertical" />
+      <!-- <Divider class="horizontal" style="margin:0;height:auto" type="vertical" /> -->
       <!-- 主体右侧 -->
-      <div class="row-center" style="width:264px;background:#f6f6f6;padding:20px">
-        <!-- 操作部分 -->
-        <a class="option-delete" @click="deleteList">删除</a>
-      </div>
+      <!-- <div class="row-center" style="width:264px;background:#f6f6f6;padding:20px"> -->
+      <!-- 操作部分 -->
+      <!-- <a class="option-delete" @click="deleteList">删除</a>
+      </div>-->
     </div>
+    <Modal
+      v-model="todoListAdd"
+      title="新增任务"
+      fullscreen
+      :styles="{top:0}"
+      footer-hide
+    >
+      <TodoAdd
+        :todoAdd.sync="todoListAdd"
+        :projectId="project_id"
+        :tags.sync="tags"
+        :listId="list_id"
+        @getDetail="getListDetail"
+      ></TodoAdd>
+    </Modal>
   </div>
 </template>
 
@@ -271,7 +283,7 @@ export default {
   padding: 5px 20px;
   background: rgba(168, 204, 204, 0.13);
 }
-.title-back{
+.title-back {
   color: black;
 }
 .every-todo {

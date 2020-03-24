@@ -10,7 +10,7 @@
         :show-upload-list="false"
         :data="uploadParams"
       >
-        <div class="option theme_font">{{title}}</div>
+        <div class="option theme_font font-16 font-bolder">{{title}}</div>
       </Upload>
       <!-- <img class="uploadImg"  :src="changeUrl" alt /> -->
   </div>

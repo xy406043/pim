@@ -51,5 +51,6 @@ module.exports = {
     // externals: {
     //   "BMap": "BMap"  // package.json  bmap  用的地方不用引入
     // },
+    
   }
 }

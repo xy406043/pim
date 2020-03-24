@@ -1,61 +1,80 @@
 <template>
   <div class="thisView">
     <!-- 标题 -->
-       <div class="tabn flex-space-between column-center">
+    <div class="tabn flex-space-between column-center">
       <div>
         <router-link to="know" class="title-back option mr-10">我的记事库</router-link>/
-        <router-link to="know" class="title-back option ml-10 mr-10">我的笔记本</router-link>/
+        <router-link to="note" class="title-back option ml-10 mr-10">我的笔记本</router-link>
       </div>
       <div>
-        <!-- <span class="option ml-10 mr-20" @click="addNote">新增笔记</span>
-        <span class="option ml-10">笔记分类</span> -->
+        <!-- <span class="option ml-10 mr-20" @click="addNote">新增笔记</span> -->
+        <a
+          href="https://www.zybuluo.com/mdeditor"
+          target="_blank"
+          class="option theme_font font-24 ml-10 font-bolder font-border"
+        >Markdown语法教程</a>
       </div>
     </div>
     <Divider />
     <div class="add-content">
-    <div class="flex-row">
-      <div class="min-width">
-        <b>标题</b>
+      <div class="flex-row">
+        <div class="min-width">
+          <b>标题</b>
+        </div>
+        <Input v-model="title" placeholder="输入标题"></Input>
       </div>
-      <Input v-model="title" placeholder="输入标题"></Input>
+      <div class="flex-row mt-20 column-center flex-space-between">
+        <div class="mb-20">
+          <span class="min-width">
+            <b class="mr-20">选择分类</b>
+          </span>
+          <span class="ml-10">
+            <Select
+              v-model="group_id"
+              style="width:160px"
+              filterable
+              allow-create
+              @on-create="createGroup"
+            >
+              <Option :value="0">默认分组</Option>
+              <Option v-for="item in groupList" :value="item._id" :key="item._id ">{{item.name}}</Option>
+            </Select>
+          </span>
+        </div>
+        <div class="column-center">
+          <!-- <span class="theme_font">
+            <img src="../../assets/icon/long-arrow.png" style="width:40px" />
+          </span>
+          <span class="option mr-20 ml-20 font-20 theme_font" @click="editNote">保存修改</span> -->
+          <vs-button style="width:150px" success floating  @click="editNote">保存</vs-button>
+        </div>
+      </div>
+      <div></div>
+      <!-- <textarea class="textarea" v-model="content"></textarea> -->
+      <MavonEditor ref="mavon" :originText="content" @getEditor="getContent"></MavonEditor>
     </div>
-    <div class="flex-row mt-20 column-center flex-space-between">
-      <div class="mb-20">
-        <span class="min-width">
-          <b class="mr-20">选择分类</b>
-        </span>
-        <span class="ml-10">
-          <Select
-            v-model="group_id"
-            style="width:160px"
-            filterable
-            allow-create
-            @on-create="createGroup"
-          >
-            <Option :value="0">默认分组</Option>
-            <Option v-for="item in groupList" :value="item._id" :key="item._id ">{{item.name}}</Option>
-          </Select>
-        </span>
-      </div>
-      <div>
-        <span class="option mr-20 font-20 theme_font" @click="editNote">保存修改</span>
-      </div>
+    <div style="margin-top:20px;text-align:right" class="mr-50">
+      此Markdown编辑器为:
+      <span class="theme_font">mavon-editor</span>
     </div>
-    <div></div>
-    <textarea class="textarea" v-model="content"></textarea>
-  </div>
   </div>
 </template>
 
 <script>
 import { knowApi, commonApi } from "@/api";
+import MavonEditor from "_c/editor/mavon-editor";
 export default {
   name: "note-view",
+  components: {
+    MavonEditor
+  },
   data() {
     return {
       note_id: "",
       title: "",
       content: "",
+      m_content: "1212",
+      h_content: "",
       group_id: 0, //选择的分类  默认分类
       groupList: [] //所有分类
     };
@@ -66,6 +85,11 @@ export default {
     this.getGroupList();
   },
   methods: {
+    getContent(markdown, html) {
+      this.m_content = markdown;
+      this.h_content = html;
+      this.content = markdown;
+    },
     getGroupList() {
       let p = {
         groupType: 1
@@ -78,6 +102,8 @@ export default {
       knowApi.getNoteDetail(this.note_id).then(res => {
         this.title = res.result.title;
         this.content = res.result.content;
+        this.m_content = res.result.content;
+        this.$refs.mavon.putContent(this.m_content);
         if (res.result.group_id) {
           this.group_id = res.reuslt.group_id;
         }
@@ -124,7 +150,7 @@ export default {
 <style lang="less" scoped>
 .thisView {
   // padding: 20px;
-     .ivu-divider-horizontal {
+  .ivu-divider-horizontal {
     margin: 0;
   }
 }
@@ -133,7 +159,7 @@ export default {
   padding: 5px 20px;
   background: rgba(168, 204, 204, 0.13);
 }
-.title-back{
+.title-back {
   color: black;
 }
 .textarea {
@@ -149,7 +175,7 @@ export default {
   outline: none;
   resize: none;
 }
-.add-content{
+.add-content {
   padding: 24px;
 }
 </style>

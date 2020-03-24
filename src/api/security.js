@@ -47,7 +47,7 @@ export default{
           return resp.data;
         });
     },
-    addCode: data =>{
+    addCode: (data) =>{
         return axios
         .request({
           url: "security/addCode",
@@ -58,7 +58,7 @@ export default{
           return resp.data;
         });
     },
-    editCode: data =>{
+    editCode: (data) =>{
         return axios
         .request({
           url: "security/editCode",
@@ -69,7 +69,7 @@ export default{
           return resp.data;
         });
     },
-    deleteCode: id =>{
+    deleteCode: (id) =>{
         return axios
         .request({
           url: "security/deleteCode?id="+id,

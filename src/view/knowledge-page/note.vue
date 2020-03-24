@@ -6,8 +6,8 @@
         <span class="theme_font ml-10">我的日记本</span>
       </div>
       <div>
-        <span class="option ml-10 mr-20" @click="addNote">新增笔记</span>
-        <span class="option ml-10">笔记分类</span>
+        <span class="option ml-10" @click="addNote">新增日记</span>
+        <span class="option ml-10" @click="toGroupSet">日记分类</span>
       </div>
     </div>
     <Divider class="myDivider"></Divider>
@@ -18,7 +18,7 @@
         <!-- 搜索 -->
         <div class="mb-10 flex-row">
           <div class="flex-start column-center" >
-            <span class="theme_font min-width mr-20">搜索：</span>
+            <span class="theme_font  mr-20">搜索：</span>
             <span>
               <Input class="myInput" search v-model="selectTitle" @on-search="getNoteList"></Input>
             </span>
@@ -34,7 +34,7 @@
             </span>
           </div>
         </div>
-        <!-- 笔记循环 -->
+        <!-- 日记循环 -->
         <Divider class="myDivider" />
         <div
           v-for="(item,index) in noteList"
@@ -44,9 +44,9 @@
           @mouseleave="leaveIndex(index)"
         >
           <!-- 左边 标题 信息 分类 -->
-          <div>
+          <div class="flex-row">
             <span class="ml-10 mr-20 font-18">{{(currentPage-1)*pageSize+index+1+'.'}}</span>
-            <span class="option font-18 every-ts" @click="toDetail(item._id)">{{item.title}}</span>
+            <div class="option font-18 every-ts font-bolder" @click="toDetail(item._id)">{{item.title}}</div>
             <!-- <span  class="this-content min-width ml-10" >{{item.content}}</span> -->
           </div>
           <!-- 右边  时间操作 -->
@@ -54,7 +54,7 @@
             <span v-show="index===showIndex" class="mr-20">
               <span class="option-delete" @click="deleteNote(item._id)">删除</span>
             </span>
-            <span class="font-16">{{item.updatedAt | showTime}}</span>
+            <span class="font-16" style="color:gray">{{item.createdAt | showTime}}</span>
           </div>
         </div>
         <Page
@@ -67,7 +67,7 @@
       <!-- 
       <Divider class="myDivider2" type="vertical"></Divider>
       <div class="right">
-        <div class="option" @click="get">全部笔记</div>
+        <div class="option" @click="get">全部日记</div>
         <div v-for="item in groupList" class="font-group option" :key="item._id" :value="item._id">{{item.name}}</div>
       </div>-->
     </div>
@@ -101,7 +101,7 @@ export default {
   },
   filters: {
     showTime(val) {
-      return moment(new Date(val)).format("MM-DD HH:mm");
+      return moment(new Date(val)).format("M-D HH:mm");
     }
     /**
      * @此处无法调用VUE的this
@@ -122,7 +122,6 @@ export default {
       }else{
         p.group_id=this.group_id
       }
-    
       if(this.selectTitle!==''){
         p.selectTitle=this.selectTitle
       }
@@ -138,7 +137,7 @@ export default {
       commonApi.getGroupList(p).then(res => {
         this.groupList = res.result;
         // console.log(this.groupList)
-      });
+      })
     },
     getIndex(index) {
       this.showIndex = index;
@@ -171,6 +170,14 @@ export default {
     },
     tell(val) {
       console.log(val);
+    },
+    toGroupSet(){
+      this.$router.push({
+        name:"group-set",
+        query:{
+          groupType:1
+        }
+      })
     }
   }
 };
@@ -229,6 +236,12 @@ export default {
   width: 150px !important;
 }
 .every-ts{
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color:black;
+  white-space: nowrap;
+  overflow: hidden;
+  // 文字超出必须要在块级中才能生效
+  text-overflow:ellipsis;
+  max-width: 700px !important;
+  font-family: 'Times New Roman', Times, serif;
 }
 </style>

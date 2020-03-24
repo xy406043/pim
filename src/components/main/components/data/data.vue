@@ -7,7 +7,7 @@
     <Input
       v-model="value"
       type="text"
-      placeholder="搜索"
+      placeholder="(仅搜索任务集，任务)"
       ref="focus"
       @on-focus="changeL"
       @on-blur="changeS"
@@ -36,6 +36,11 @@
 </template>
 
 <script>
+/**
+ * @难点
+ * @多重功能点搜索如何做
+ * @目前仅搜索任务集和任务以及日程
+ */
 import "../../../../../public/theme.less";
 import TodoAdd from "_c/todo/todo-add";
 import { projectApi } from "@/api";
@@ -76,7 +81,6 @@ export default {
     },
     changeS() {
       let data2 = this.$refs["input"].style;
-      //   console.log(data2)
       data2.width = 140 + "px";
       this.status = 0;
     },
@@ -84,6 +88,7 @@ export default {
       if (this.status === 0) {
         this.changeL();
       } else {
+        this.changeS();
       }
     },
     initModal() {
@@ -95,7 +100,14 @@ export default {
        * 暂时不需要，刷新就完事了
        */
       let value = this.value;
+      this.value=''
       console.log("当前值", value);
+      this.$router.push({
+        name:"search",
+        query:{
+          keyword:value
+        }
+      })
     }
   }
 };

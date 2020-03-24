@@ -7,7 +7,7 @@ const baseUrl =process.env.VUE_APP_BASE_URL ? process.env.VUE_APP_BASE_URL : con
 class newAxios {
   constructor(){
     this.baseURL = baseUrl;
-    this.timeout = 300; //设置超时
+    this.timeout = 10000; //TODO:设置超时，太短了是绝对不行的！！！！
     // this.withCredentials = true; //允许携带凭证
   }
   // 设置拦截器
@@ -22,6 +22,7 @@ class newAxios {
        */
       if(getToken()){
         config.headers['Authorization'] ="Bearer "+getToken()
+        // config.headers['Set-Cookie']='widget_session=abc123; SameSite=None; Secure'
       }
         // console.log("config",config)
         return config

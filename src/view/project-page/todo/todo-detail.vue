@@ -22,12 +22,11 @@
           <b @click="toList">{{listName}}</b>
         </span>
         <span class="mr-10 ml-10 theme_font" v-else>
-          <span >清单外任务</span>
+          <span>清单外任务</span>
         </span>
       </div>
       <div>
-        <div class="option">
-        </div>
+        <div class="option"></div>
       </div>
     </div>
     <Divider />
@@ -36,7 +35,12 @@
       <div style="flex:auto" class="main">
         <!-- 概览层 -->
         <div style="padding:16px 0" class="font-24 todo-title column-center">
-          <Checkbox v-model="finished" @on-change="changeFinishState(todo_id,finished)"></Checkbox>
+          <!-- <Checkbox v-model="finished" @on-change="changeFinishState(todo_id,finished)"></Checkbox> -->
+          <vs-checkbox
+            color="rgb(59,222,200)"
+            v-model="finished"
+            @click="changeFinishState(todo_id,finished)"
+          ></vs-checkbox>
           <b
             v-if="titleInput===false"
             class="font-24 title"
@@ -52,7 +56,7 @@
           <!-- 时间修改 -->
           <div class="mr-20">
             <Dropdown v-if="timeShow===false ">
-              <a href="javascript:void(0)" class="column-center">
+              <a href="javascript:void(0)" class="column-center" style="width:350px">
                 <span class="option" href="javascript:void(0)">
                   <Icon size="30" type="md-calendar" />
                 </span>
@@ -60,7 +64,7 @@
                   href="javascript:void(0)"
                   class="option ml-10 font-16"
                   style="color:gray"
-                  v-if="endAt!==''"
+                  v-if="endAt && endAt!==''"
                 >{{startAt?(startAt):'' | showTime}}{{startAt?'-':''}}{{endAt |showTime}}</span>
                 <span
                   href="javascript:void(0)"
@@ -82,17 +86,21 @@
             <div v-else-if="timeShow===true">
               <DatePicker
                 v-show="isEnd===true"
-                type="date"
-                v-model="endAt"
+                type="datetime"
+                :value="endAt"
+                style="width:250px"
                 placeholder="输入截止时间"
-                @on-change="changeTime"
+                @on-change="showTime1"
+                @on-open-change="changeTime1"
               ></DatePicker>
               <DatePicker
                 v-show="isEnd===false"
-                type="daterange"
+                type="datetimerange"
                 v-model="timeList"
+                style="width:350px"
                 placeholder="输入截止时间段"
-                @on-change="changeTime"
+                @on-change="showTime2"
+                @on-open-change="changeTime2"
               ></DatePicker>
             </div>
           </div>
@@ -101,7 +109,7 @@
               <Dropdown>
                 <a href="javascript:void(0)" class="column-center">
                   <span class="option">
-                    <Icon size="30" :color="getColor(level)" type="md-warning" />
+                    <Icon size="30" :color="getColor(level)" type="md-alert" />
                   </span>
                   <span class="ml-20 option" style="color:gray;">{{ getLevel}}</span>
                 </a>
@@ -149,16 +157,28 @@
               </Select>
             </div>
           </div>
-          <div class="flex-row mt-10">
-            <Icon size="20" type="ios-paper-outline" />
-            <div class="form-width ml-20" style="width:100%">
+          <div class="mt-10">
+            <div class="flex-space-between">
+              <Icon size="20" type="ios-paper-outline" />
+              <div style="text-align:right" class="column-center">
+                <!-- <span class="theme_font">
+                  <img src="../../../assets/icon/long-arrow.png" class="long-arrow" />
+                </span>-->
+                <!-- <span class="ml-20 mr-20 font-24 theme_font option" @click="editDescription">保存</span> -->
+                <vs-button style="width:150px" success floating @click="editDescription">保存</vs-button>
+
+                <!-- <img src="../../../assets/icon/long-left.png" class="long-arrow" /> -->
+              </div>
+            </div>
+            <div class="form-width ml-20 mt-10" style="width:100%">
               <!--DOWN:v-if会刷新视图，这里如果使用v-if 即使content有内容，Editor里也不会进行显示 -->
-              <Editor
+              <!-- <Editor
                 v-show="isEditor===false"
                 ref="editor"
                 @on-change="handleChange"
                 :value="content"
-              ></Editor>
+              ></Editor>-->
+              <MavonEditor ref="mavon" :originText="content" @getEditor="getContent"></MavonEditor>
               <div>
                 <span v-show="isEditor===true" v-html="content"></span>
                 <Button
@@ -169,7 +189,7 @@
                 >编辑</Button>
               </div>
               <div v-show="isEditor===false" class="mt-20">
-                <Button type="primary" @click="editDescription">保存</Button>
+                <!-- <Button type="primary" @click="editDescription">保存</Button> -->
                 <!-- <Button @click="cancelDES" type="default" class="ml-20">取消</Button> -->
               </div>
             </div>
@@ -193,10 +213,11 @@
               style="padding:8px 0 8px 16px"
               :class="['font-16', 'column-center',missHover===index?'':'every-todo']"
             >
-              <Checkbox
+              <vs-checkbox
+                color="rgb(59,222,200)"
                 v-model="item.finished"
-                @on-change="changeFinishState(item._id,item.finished)"
-              ></Checkbox>
+                @click="changeFinishState(item._id,item.finished)"
+              ></vs-checkbox>
 
               <div
                 class="font-16 flex-space-between column-center"
@@ -258,7 +279,8 @@
             </div>
 
             <div v-if="childAddInput" style="padding:0 0 8px 16px" class="font-24 column-center">
-              <Checkbox v-model="childTodoFinished" disabled></Checkbox>
+              <!-- <Checkbox v-model="childTodoFinished" disabled></Checkbox> -->
+              <vs-checkbox color="rgb(59,222,200)" v-model="childTodoFinished" disbled></vs-checkbox>
 
               <span class="font-24" style="width:100%">
                 <Input
@@ -280,7 +302,7 @@
       </div>
       <Divider class="horizontal" style="margin:0;height:auto" type="vertical" />
       <!-- 主体右侧 -->
-      <div style="width:264px;background:#f6f6f6;padding: 16px 20px;" class="flex-column">
+      <div style="width:264px !important;background:#f6f6f6;padding: 16px 20px;" class="flex-column thisRight">
         <div class="option" v-show="status===1 || status===3" @click="changeState(todo_id,2)">开始任务</div>
         <div class="option" v-show="status===2" @click="changeState(todo_id,3)">暂停任务</div>
         <div class="option" v-show="collected===false" @click="addCollected(todo_id)">添加收藏</div>
@@ -305,11 +327,15 @@
 
 <script>
 import { projectApi } from "@/api";
-import Editor from "_c/editor/Editor";
+// import Editor from "_c/editor/Editor";
+import MavonEditor from "_c/editor/mavon-editor";
 const moment = require("moment");
 export default {
   name: "",
-  components: { Editor },
+  components: {
+    // Editor,
+    MavonEditor
+  },
   inject: ["reload"],
   data() {
     return {
@@ -361,7 +387,7 @@ export default {
   filters: {
     showTime(time) {
       if (time === "") return "";
-      return moment(new Date(time)).format("YYYY-MM-DD");
+      return moment(time).format("YYYY-MM-DD HH:mm:ss");
     }
   },
   computed: {
@@ -384,6 +410,11 @@ export default {
     }
   },
   methods: {
+    getContent(markdown, html) {
+      this.m_content = markdown;
+      this.h_content = html;
+      this.content = markdown;
+    },
     handleChange(html) {
       this.content = html;
     },
@@ -399,6 +430,7 @@ export default {
         let result = res.result;
         this.name = result.name ? result.name : "";
         this.content = result.description;
+        this.$refs.mavon.putContent(this.content);
         this.startAt = result.startAt;
         this.endAt = result.endAt;
         this.isEnd = result.isEnd;
@@ -447,7 +479,7 @@ export default {
     changeFinishState(id, val) {
       let p = {
         todo_id: id,
-        finished: val
+        finished: !val
       };
       projectApi.changeFinishState(p).then(res => {
         if (res.code === 0) {
@@ -500,6 +532,15 @@ export default {
        */
       projectApi.addTag(p).then(res => {
         if (res.code === 0) {
+          this.getTodoDetail();
+          setTimeout(() => {
+            if(this.thisTags.length===5){
+              this.$Message.error("选择标签不能超过五个")
+              return
+            }
+            this.thisTags.push(val);
+            this.editTags();
+          }, 100);
         } else {
           this.$Message.error(res.errorMsg);
         }
@@ -508,25 +549,33 @@ export default {
     showTags(val) {
       console.log("tagsL", val);
     },
-    changeTime(val) {
-      let data;
-      if (this.isEnd === true) {
-        this.startAt = "";
-        this.endAt = moment(new Date(val)).format("YYYY-MM-DD");
-        data = {
-          isEnd: true,
-          endAt: this.endAt,
-          startAt: ""
-        };
-      } else {
-        this.startAt = moment(new Date(val[0])).format("YYYY-MM-DD");
-        this.endAt = moment(new Date(val[1])).format("YYYY-MM-DD");
-        data = {
-          isEnd: true,
-          endAt: this.endAt,
-          startAt: this.startAt
-        };
-      }
+    showTime1(val) {
+      this.endAt = moment(val).format("YYYY-MM-DD HH:mm:ss");
+      console.log("sasas",this.endAt)
+    },
+    showTime2(val) {
+      this.startAt = moment(val[0]).format("YYYY-MM-DD HH:mm:ss");
+      this.endAt = moment(val[1]).format("YYYY-MM-DD HH:mm:ss");
+    },
+    changeTime1(status) {
+      if (status === true) return;
+      console.log(this.endAt)
+      let data = {
+        isEnd: true,
+        endAt: this.endAt,
+        startAt: ""
+      };
+      this.editTodo(data);
+      this.timeShow = false;
+    },
+    changeTime2(status) {
+      if (status === true) return;
+      console.log(this.endAt,this.startAt)
+      let data = {
+        isEnd: false,
+        endAt: this.endAt,
+        startAt: this.startAt
+      };
       this.editTodo(data);
       this.timeShow = false;
     },
@@ -647,9 +696,15 @@ export default {
       this.editTodo({ level: id });
     },
     setHTML(html) {
-      this.$refs.editor.setHtml(html);
+      // this.$refs.editor.setHtml(html);
     },
     editTags() {
+
+      if(this.thisTags.length>=6){
+        this.$Message.error("选择标签不能超过五个！")
+        this.thisTags.pop()
+        return
+      }
       let tags = [];
       this.thisTags.map(item => {
         for (let val of this.tags) {
@@ -674,7 +729,9 @@ export default {
       this.editTodo({ collected: false });
     },
     removeList() {
-      projectApi.removeOutList().then(res => {
+      //将清单ID移除
+      let id = this.todo_id;
+      projectApi.removeOutList(id).then(res => {
         if (res.code === 0) {
           this.getTodoDetail();
         }
@@ -696,6 +753,9 @@ export default {
   .ivu-divider-horizontal {
     margin: 0;
   }
+  // .ivu-select-dropdown{
+  //   z-index: 99999999 !important;
+  // }
 }
 .main {
   padding: 0 24px;
@@ -741,6 +801,9 @@ export default {
 .title-back {
   color: black;
 }
+.long-arrow {
+  width: 40px;
+}
 .border {
   height: 20px;
   width: 20px;
@@ -765,5 +828,9 @@ export default {
 .every-todo:hover {
   border-radius: 20px;
   background: #dee9de;
+}
+.thisRight{
+  text-align:center;
+  width:264px !important;
 }
 </style>

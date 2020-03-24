@@ -5,7 +5,7 @@ export default {
   /**
    * @日记
    */
-  getNoteList: data => {
+  getNoteList: (data) => {
     return axios
       .request({
         url: "knowledge/getNoteList",
@@ -16,7 +16,7 @@ export default {
         return resp.data;
       });
   },
-  addNote: data => {
+  addNote: (data)  => {
     return axios
       .request({
         url: "knowledge/addNote",
@@ -27,7 +27,7 @@ export default {
         return resp.data;
       });
   },
-  getNoteDetail: id => {
+  getNoteDetail: (id) => {
     return axios
       .request({
         url: "knowledge/getNoteDetail?id=" + id,
@@ -37,7 +37,7 @@ export default {
         return resp.data;
       });
   },
-  editNote: data => {
+  editNote: (data)  => {
     return axios
       .request({
         url: "knowledge/editNote",
@@ -48,7 +48,7 @@ export default {
         return resp.data;
       });
   },
-  deleteNote: id => {
+  deleteNote: (id) => {
     return axios
       .request({
         url: "knowledge/deleteNote?id=" + id,
@@ -73,7 +73,7 @@ export default {
   /**
    * @通讯录
    */
-  addAddress: data => {
+  addAddress: (data)  => {
     return axios
       .request({
         url: "knowledge/addAddress",
@@ -84,7 +84,7 @@ export default {
         return resp.data;
       });
   },
-  getAddressList: data => {
+  getAddressList: (data)  => {
     return axios
       .request({
         url: "knowledge/getAddressList",
@@ -95,7 +95,7 @@ export default {
         return resp.data;
       });
   },
-  getAddressDetail: id => {
+  getAddressDetail: (id) => {
     return axios
       .request({
         url: "knowledge/getAddressDetail?id=" + id,
@@ -105,7 +105,7 @@ export default {
         return resp.data;
       });
   },
-  editAddress: data => {
+  editAddress: (data)  => {
     return axios
       .request({
         url: "knowledge/editAddress",
@@ -116,7 +116,7 @@ export default {
         return resp.data;
       });
   },
-  deleteAddress: id => {
+  deleteAddress: (id) => {
     return axios
       .request({
         url: "knowledge/deleteAddress?id=" + id,
@@ -142,7 +142,7 @@ export default {
   /**
    * @网址收藏
    */
-  addBookMark: data =>{
+  addBookMark: (data)  =>{
     return axios
     .request({
       url: "knowledge/addBookMark",
@@ -153,7 +153,7 @@ export default {
       return resp.data;
     });
   },
-  getBookMarkList: data =>{
+  getBookMarkList: (data)  =>{
     return axios
     .request({
       url: "knowledge/getBookMarkList",
@@ -164,7 +164,7 @@ export default {
       return resp.data;
     });
   },
-  deleteBookMarking: id =>{
+  deleteBookMarking: (id) =>{
     return axios
     .request({
       url: "knowledge/deleteBookMarking?id="+id,
@@ -175,7 +175,7 @@ export default {
     });
 
   },
-  editBookMarking: data =>{
+  editBookMarking: (data) =>{
     return axios
     .request({
       url: "knowledge/editBookMarking",
@@ -186,7 +186,7 @@ export default {
       return resp.data;
     });
   },
-  getLimitBookMark: data =>{
+  getLimitBookMark: (data) =>{
     return axios
     .request({
       url: "knowledge/getLimitBookMark",

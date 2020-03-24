@@ -18,6 +18,10 @@
 //   cursor: @cursor_ball,auto;
 // }
 //文字层
+.font-bolder{font-weight: bolder !important;}
+.font-shadow{
+  text-shadow: 1px 2px 1px rgb(50, 219, 241)
+}
 .font-12 {
   font-size: 12px;
 }
@@ -58,6 +62,9 @@
 }
 .mr-20 {
   margin-right: 20px;
+}
+.mr-50{
+  margin-right: 50px;
 }
 .ml-2{
   margin-left:2px;
@@ -127,7 +134,7 @@
   text-align: left;
 }
 .form-width{
-  min-width: 200px;
+  min-width: 200px !important;
 
 }
 //相对位置
@@ -188,6 +195,11 @@
   cursor: pointer !important;
   font-weight: 10px;
 }
+.option-disabled{
+  cursor: not-allowed !important;
+  font-weight: 10px;
+  color: gray;
+}
 .option-delete{
   cursor: pointer !important;
   font-weight: 10px;
@@ -207,17 +219,14 @@ body {
 
 
 .long_router {
-  position: absolute;
-  // height: 100%;
-  right: 0;
-  left: 0;
-  z-index: 0;
-  background: #ffffff;
-  padding:20px;
+  width: 100%;
+  background: white;
+  min-height: 600px;
 }
 
 .short_router {
-
+  margin: 0 auto;
+  width: 962px;
   border-radius: 5px;
   min-height: 600px;
   background: #ffffff;
@@ -245,15 +254,15 @@ body {
   color: @tabColor;
   text-shadow: 12px 1px 10px #ff12af;
 }
-.font-m {
-  font-size: 16px;
-  color: @tabColor;
-  text-shadow: 12px 1px 10px #ff12af;
-}
+// .font-m {
+//   font-size: 16px;
+//   color: @tabColor;
+//   text-shadow: 12px 1px 10px #12ffb0;
+// }
 .font-l {
   font-size: 24px;
   color: @tabColor;
-  text-shadow: 12px 1px 10px #ff12af;
+  text-shadow: 12px 1px 10px #b8ff12;
 }
 
 // 组件层

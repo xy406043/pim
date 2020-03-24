@@ -21,6 +21,8 @@
           </div>
         </div>
       </div>
+
+
       <div class="cal-week-wrap ovh">
         <div class="cal-week">日</div>
         <div class="cal-week" v-for="(item,index) in calendar.weeks" :key="index">{{item}}</div>
@@ -36,39 +38,72 @@
             @mouseover="getIndex(itemIndex,keyIndex)"
             @mouseleave="leaveIndex(itemIndex,keyIndex)"
           >
+            <!-- 当前天数 -->
             <div
               :class="{'cal-active':calendar.isDay === key.date}"
               style="color:#000000;display:block"
-            >{{key.day}}</div>
-            <div
-              v-for="date in scheduleList"
-              :key="item._id"
-              class="display-inline-block mr-5"
-              @click="showSchedule(key,date)"
             >
-              <Avatar
+              <span>{{key.day}}</span>
+            </div>
+            <!-- 显示当天的所有日程 -->
+            <div v-for="date in scheduleList" :key="item._id" class="display-inline-block">
+              <Poptip
+                placement="right"
+                v-show="key.formatDate && key.formatDate<date.endAt &&key.formatDate>=date.startAt"
+              >
+                <Avatar
+                  class="option"
+                  :size="30"
+                  v-show="key.formatDate && key.formatDate<date.endAt &&key.formatDate>=date.startAt"
+                  :username="date.title"
+                ></Avatar>
+                <!-- 气泡显示 -->
+                <div slot="content" class="calendar-poptip">
+                  <div class="every-show-div">
+                    <div class="every-show">
+                      标题：
+                      <span class="time-title">{{scheduleItem.title}}</span>
+                    </div>
+                    <div class="every-show">
+                      任务集：
+                      <span class="time-title">{{scheduleItem.projectName}}</span>
+                    </div>
+                    <div class="every-show">
+                      时间：
+                      <span
+                        class="time-content"
+                      >{{scheduleItem.startAt |showTime}} - {{scheduleItem.endAt |showTime}}</span>
+                    </div>
+                  </div>
+                  <Divider style="margin:0" />
+                  <div class="flex-space-between font-16">
+                    <div>
+                      <!-- <span class="option-delete" @click="cancelSchedule">取消</span> -->
+                    </div>
+                    <div>
+                      <span
+                        class="option theme_font every-edit"
+                        @click="toSchedule(scheduleItem._id)"
+                      >编辑</span>
+                    </div>
+                  </div>
+                </div>
+              </Poptip>
+            </div>
+            <!-- 添加日程 -->
+            <!-- :FIXME:放弃在此处添加新建日程了，这里总会使接口报错 -->
+            <!-- <div >
+            <Poptip placement="right">
+              <div
                 class="option"
-                :size="30"
-                v-show="key.formatDate && key.formatDate<=date.endAt &&key.formatDate>=date.startAt"
-                :username="date.title"
-              ></Avatar>
-            </div>
-            <div class="schedule-item" v-show="key.showSchedule===true">
-              <div class="every-show-div">
-                <div>标题：{{scheduleItem.title}}</div>
-                <div>时间：{{scheduleItem.startAt}}{{scheduleItem.endAt}}</div>
-
+              >
+                <Icon size="30" type="ios-add" />
               </div>
-              <Divider style="margin:0"/>
-              <div class="flex-space-between font-16" style="padding:12px" >
-                 <div>
-                   <span class="option-delete" @click="cancelSchedule">取消</span>
-                 </div>
-                 <div>
-                   <span class="option" @click="toSchedule(scheduleItem._id)">编辑</span>
-                 </div>
+              <div slot="content">
+                  <ScheduleAdd :schedule.sync="schedule" :showType="showType"   @getDetail="getConcrete" ></ScheduleAdd>
               </div>
-            </div>
+            </Poptip>
+            </div> -->
           </div>
         </td>
       </tr>
@@ -78,16 +113,20 @@
 
 <script>
 /**
+ * @这是组件
  * @时间相关注意点
  * @传到node客户端的Date时间格式与浏览器的时间格式不一致
  * @需要再两端分别进行统一
  */
 import { projectApi } from "@/api";
 import Avatar from "vue-avatar";
+// import   ScheduleAdd from "_c/todo/schedule-add.vue"
+const moment = require("moment");
 export default {
   name: "myCalendar",
   components: {
-    Avatar
+    Avatar,
+    // ScheduleAdd
   },
   props: {
     showToday: {
@@ -104,6 +143,11 @@ export default {
       snow: -1,
       showIt: false,
       scheduleItem: [],
+      projectList: [],
+      selectedMonth:0,
+      selectedYear:0,
+      showType:1,  //在日历页面使用,
+      schedule:false, //需要但在此处无意义
       calendar: {
         //日历
         dayList: [], //二维数组，循环行，循环列
@@ -123,10 +167,25 @@ export default {
       }
     };
   },
+  filters: {
+    showTime(val) {
+      return moment(val).format("MM-DD HH:mm");
+    }
+  },
+  computed: {},
   mounted() {
-    this.backToday();
+    this.getProjectList();
+    this.$nextTick(() => {
+      this.backToday();
+    });
   },
   methods: {
+    getProjectList() {
+      let p = {};
+      projectApi.getProjectList(p).then(res => {
+        this.projectList = res.result;
+      });
+    },
     getSchedule() {
       let time = new Date(this.calendar.year, this.calendar.month, 0); //当月月末
       let time2 = new Date(this.calendar.year, this.calendar.month - 1); //当月月初
@@ -139,7 +198,11 @@ export default {
         this.scheduleList.map(item => {
           item.startAt = new Date(item.startAt);
           item.endAt = new Date(item.endAt);
-          // console.log(item.startAt, item.endAt);
+          for (let el of this.projectList) {
+            if (el._id === item.project_id) {
+              item.projectName = el.projectName;
+            }
+          }
         });
       });
     },
@@ -149,10 +212,10 @@ export default {
       this.calendar.tempArr.map(item => {
         item.showSchedule = false;
       });
-      console.log(know);
       this.scheduleItem = know;
       item.showSchedule = true;
     },
+    showAdd() {},
     cancelSchedule() {
       this.calendar.tempArr.map(item => {
         item.showSchedule = false;
@@ -182,7 +245,6 @@ export default {
       that.calendar.current = [];
       that.calendar.prev = [];
       that.calendar.next = [];
-
       // 当前月天数
       for (let i = 1; i <= that.getLastDate(y, m).getDate(); i++) {
         //date用于日期判断，day用于显示，flag用于状态判断
@@ -242,13 +304,12 @@ export default {
         that.calendar.dayList.push(tempArr.slice(i, i + 7));
       }
       this.getSchedule();
-      // console.log(this.calendar.dayList);
     },
     getPrevMonth() {
       //上一月
       if (this.calendar.month != 1) {
-        this.calendar.month = this.formatDate(--this.calendar.month);
-        this.calendar.shortMonth = this.calendar.month;
+        this.calendar.shortMonth = --this.calendar.month;
+        this.calendar.month = this.formatDate(this.calendar.month);
       } else {
         this.calendar.month = 12;
         this.calendar.shortMonth = 12;
@@ -261,8 +322,8 @@ export default {
     getNextMonth() {
       //下一月
       if (this.calendar.month < 12) {
-        this.calendar.month = this.formatDate(++this.calendar.month);
-        this.calendar.shortMonth = this.calendar.month;
+        this.calendar.shortMonth = ++this.calendar.month;
+        this.calendar.month = this.formatDate(this.calendar.month);
       } else {
         this.calendar.month = "01";
         this.calendar.shortMonth = 1;
@@ -297,15 +358,26 @@ export default {
       that.currentDay();
       that.getmonthDays();
     },
+    // 指定年月
+    getConcrete(){
+      if(this.selectedMonth===0){
+      }else{
+        this.calendar.month=this.formatDate(this.selectedMonth)
+        this.calendar.year=this.selectedYear
+        this.calendar.shortMonth=this.selectedMonth
+      }
+      this.currentDay()
+      this.getmonthDays()
+    },
     getIndex(itemIndex, leaveIndex) {
-      // this.rowIndex = itemIndex;
-      // this.colIndex = leaveIndex;
+      this.rowIndex = itemIndex;
+      this.colIndex = leaveIndex;
     },
     leaveIndex(itemIndex, leaveIndex) {
-      // this.rowIndex = -1;
-      // this.colIndex = -1;
+      this.rowIndex = -1;
+      this.colIndex = -1;
     },
-    toSchedule(id){
+    toSchedule(id) {
       this.$router.push({
         name: "schedule",
         query: {
@@ -394,7 +466,7 @@ export default {
   font-size: 20px;
 }
 .cal-table td:hover {
-  // background: #d4d4d4;
+  background: #d4d4d4;
 }
 
 .cal-item {
@@ -451,8 +523,18 @@ export default {
 .bg-grey span {
   color: rgb(182, 181, 181) !important;
 }
-.every-show-div{
-  text-align:start !important;
-  font-size:16px;
+.every-show-div {
+  text-align: start !important;
+  font-size: 16px;
+}
+.calendar-poptip {
+  // padding: 10px;
+}
+.every-show {
+  font-size: 14px;
+}
+.every-edit {
+  margin-top: 4px;
+  font-size: 12px;
 }
 </style>

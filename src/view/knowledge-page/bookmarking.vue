@@ -8,7 +8,7 @@
       <div>
         <span class="option" @click="openAddModal">新增网址</span>
         <span class="option ml-20" @click="exportBook">导入网址</span>
-        <span class="option ml-20" @click="exportBook">网址分类</span>
+        <span class="option ml-20" @click="toGroupSet">网址分类</span>
       </div>
     </div>
     <Divider />
@@ -16,7 +16,7 @@
       <!-- 搜索 -->
       <div class="mb-20 mt-10 ml-20 flex-row">
         <div class="flex-start column-center">
-          <span class="theme_font min-width mr-20">搜索：</span>
+          <span class="theme_font mr-20">搜索：</span>
           <span>
             <Input class="myInput" search v-model="selectTitle" @on-search="getBookMarkingList"></Input>
           </span>
@@ -25,10 +25,15 @@
           <span class="theme_font min-width mr-20">分类:</span>
           <span>
             <Select v-model="group_id" class="myNo" @on-change="getBookMarkingList">
-              <Option :value="0">全部收藏</Option>
-              <Option :value="1">默认分类</Option>
+              <Option :value="0" label="全部收藏">全部收藏</Option>
+              <Option :value="1" label="默认分类">默认分类</Option>
               <!-- 不能用默认分类喽这里，和新增那里冲突了 -->
-              <Option v-for="item in groupList" :key="item._id" :value="item._id">{{item.name}}</Option>
+              <Option
+                v-for="item in groupList"
+                :key="item._id"
+                :value="item._id"
+                :label="item.nmae"
+              >{{item.name}}</Option>
             </Select>
           </span>
         </div>
@@ -51,8 +56,8 @@
                 <Avatar v-if="item.imgUrl===''" :size="40" :username="item.title"></Avatar>
                 <img v-else :src="item.imgUrl" class="img-avatar" alt="图标" />
               </div>
-              <div class="every-title">{{item.title}}</div>
-              <div class="every-title-2 ">
+              <div class="every-title font-bolder">{{item.title}}</div>
+              <div class="every-title-2">
                 <span class="option theme_font font-12" @click.stop.prevent="copy(item)">链接</span>
                 <span
                   class="option theme_font ml-10 mr-10 font-12"
@@ -79,15 +84,15 @@
             <span v-if="addoredit">新建链接</span>
             <span v-else>修改链接</span>
           </b>
-          <div class="flex-space-between">
+          <div class="flex-space-between mt-20">
             <!-- 左边基本信息 -->
             <div>
               <div class="column-center flex-row mb-10">
-                <span class="min-width">链接标题</span>
-                <Input v-model="title" placement="输入标题"></Input>
+                <span class="min-width font-bolder">链接标题:</span>
+                <vs-input v-model="title" placeholder="输入标题"></vs-input>
               </div>
               <div class="column-center flex-row mb-10">
-                <span class="min-width">所属分类</span>
+                <span class="min-width font-bolder">所属分类:</span>
                 <Select
                   v-model="group"
                   filterable
@@ -100,21 +105,25 @@
                 </Select>
               </div>
               <div class="column-center flex-row mb-10">
-                <span class="min-width">链接地址</span>
-                <Input v-model="url" placement="输入链接"></Input>
+                <span class="min-width font-bolder">链接地址:</span>
+                <vs-input v-model="url" placeholder="输入链接"></vs-input>
               </div>
             </div>
             <!-- 右侧上传图片 -->
             <div v-if="groupModal">
               <UploadImg :changeUrl.sync="imgUrl"></UploadImg>
+              <div v-show="imgUrl===''" class="uploadImg" style="border: 1px solid gray"></div>
               <img v-show="imgUrl!==''" class="uploadImg" :src="imgUrl" alt="控制" />
             </div>
           </div>
-          <div class="mt-20">
-            <Button v-if="addoredit" type="primary" @click="handleAdd">确认</Button>
+          <div class="mt-5 flex-row flex-space-between">
+            <!-- <Button v-if="addoredit" type="primary" @click="handleAdd">确认</Button>
             <Button v-else type="primary" @click="handleEdit">确认</Button>
 
-            <Button type="default" @click="initModal">取消</Button>
+            <Button type="default" @click="initModal">取消</Button>-->
+            <vs-button dark dashed style="width:120px" @click="initModal">取消</vs-button>
+            <vs-button v-if="addoredit" success style="width:120px" dashed @click="handleAdd">确认</vs-button>
+            <vs-button v-else success dashed style="width:120px" @click="handleEdit">确认</vs-button>
           </div>
         </div>
       </Modal>
@@ -158,7 +167,6 @@ export default {
   },
   mounted() {
     this.getBookMarkingList();
-    this.getGroupList();
   },
   methods: {
     getGroupList() {
@@ -167,7 +175,7 @@ export default {
       };
       commonApi.getGroupList(p).then(res => {
         this.groupList = res.result;
-      });
+      })
     },
     getBookMarkingList(val) {
       let p = {};
@@ -181,6 +189,7 @@ export default {
       }
       knowApi.getBookMarkList(p).then(res => {
         this.bookMarkingList = res.result;
+        this.getGroupList();
       });
     },
     handleCreate(val) {
@@ -214,10 +223,10 @@ export default {
     openEditModal(item) {
       this.groupModal = true;
       this.addoredit = false;
-      if(item.group_id){
-        this.group=item.group_id
-      }else{
-        this.group=0
+      if (item.group_id) {
+        this.group = item.group_id;
+      } else {
+        this.group = 0;
       }
       this.title = item.title;
       this.url = item.url;
@@ -231,6 +240,10 @@ export default {
         url: this.url,
         imgUrl: this.imgUrl
       };
+      if (p.title === "") {
+        this.$Message.error("请输入网址名");
+        return;
+      }
       if (this.group === null) {
         this.$Message.error("请选择分类");
         return;
@@ -267,22 +280,29 @@ export default {
     getIndex(index) {
       this.showIndex = index;
     },
+    toGroupSet() {
+      this.$router.push({
+        name: "group-set",
+        query: {
+          groupType: 2
+        }
+      });
+    },
     leaveIndex() {
       this.showIndex = -1;
     },
-      /**
+    /**
      * @点击复制链接
      */
-    copy(item){
-        var oInput = document.createElement("input");
-        oInput.value = item.url;
-        document.body.appendChild(oInput);
-        oInput.select(); // 选择对象
-        document.execCommand("Copy"); // 执行浏览器复制命令
-        oInput.className = "oInput";
-        oInput.style.display = "none"
-        this.$Message.success("复制成功")
-       
+    copy(item) {
+      var oInput = document.createElement("input");
+      oInput.value = item.url;
+      document.body.appendChild(oInput);
+      oInput.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      oInput.className = "oInput";
+      oInput.style.display = "none";
+      this.$Message.success("复制链接成功");
     },
     handleEdit() {
       let p = {
@@ -291,6 +311,10 @@ export default {
         imgUrl: this.imgUrl,
         bookMarking_id: this.bookMarking_id
       };
+      if (p.title === "") {
+        this.$Message.error("请输入网址名");
+        return;
+      }
       if (this.group === null) {
         this.$Message.error("请选择分类");
         return;
@@ -397,6 +421,8 @@ export default {
 .every-title {
   text-align: center;
   margin-top: 10px;
+  color:black;
+  font-family: 'Times New Roman', Times, serif;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

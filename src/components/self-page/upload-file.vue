@@ -1,16 +1,14 @@
 <template>
   <div>
-      <Upload
-        :action="uploadUrl"
-        :before-upload="beforeUpload"
-        :on-success="handleSuccess"
-        :on-error="handleError"
-        :data="uploadParams"
-      >
-      <Button icon="ios-cloud-upload-outline">{{title}}</Button>
-        <!-- <div class="option theme_font">{{title}}</div> -->
-      </Upload>
-      <!-- <img class="uploadImg"  :src="changeUrl" alt /> -->
+    <Upload
+      :action="uploadUrl"
+      :before-upload="beforeUpload"
+      :on-success="handleSuccess"
+      :on-error="handleError"
+      :data="uploadParams"
+    >
+      <vs-button border color="rgb(59,222,200)" class="font-bolder" block>{{title}}</vs-button>
+    </Upload>
   </div>
 </template>
 
@@ -23,7 +21,7 @@ export default {
   name: "upload",
   props: {
     changeUrl: String,
-    originUrl:String,
+    originUrl: String,
     title: { type: String, default: "选择上传图片" }
   },
   data() {
@@ -31,9 +29,9 @@ export default {
       uploadUrl: "http://upload.qiniu.com",
       acceptType: ".png, .jpeg, .jpg, .gif, .bmp",
       format: ["png", "jpg", "jpeg", "gif", "bmp"],
-      type:"",
-      size:"",
-      name:"",
+      type: "",
+      size: "",
+      name: "",
       uploadParams: {
         key: "",
         token: ""
@@ -49,29 +47,30 @@ export default {
       });
     },
     async beforeUpload(file) {
-        console.log(file)
-        this.type=file.type
-        this.size=file.size
-        this.name=file.name
-        let p ={
-            name:file.name
-        }
-        await commonApi.getQiniuToken(p).then(res => {
-          this.uploadParams.key = res.result.name;
-          this.uploadParams.token = res.result.token;
-        });
+      console.log(file);
+      this.type = file.type;
+      this.size = file.size;
+      this.name = file.name;
+      let p = {
+        name: file.name
+      };
+      await commonApi.getQiniuToken(p).then(res => {
+        this.uploadParams.key = res.result.name;
+        this.uploadParams.token = res.result.token;
+      });
     },
     handleSuccess(res, file, fileList) {
       const changeUrl = "http://xynagisa.xyz/" + res.key;
-      console.log(changeUrl)
+      console.log(changeUrl);
       this.$emit("update:changeUrl", changeUrl);
-      let  p={
-          fileUrl:changeUrl,
-          name:this.name,
-          type:this.type,
-          size:this.size
-      }
-      this.$emit("urlChange",p)
+      let p = {
+        fileUrl: changeUrl,
+        name: this.name,
+        type: this.type,
+        size: this.size
+      };
+      this.$Message.success("上传成功");
+      this.$emit("urlChange", p);
       this.uploadParams = {
         key: "",
         token: ""

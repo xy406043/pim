@@ -1,16 +1,16 @@
 <template>
-  <div class="login">
+  <div class="login flex-all-center">
     <!-- <div class="star">
       <StarFlow />
     </div> -->
     <div class="login-con">
-      <h1>PIM个人信息管理系统</h1>
-      <LoginForm v-show="showState===1" :showState.sync="showState" :invalid.sync="invalid" @on-success-valid="handleSubmit"></LoginForm>
-      <RegisterForm v-show="showState===2" :showState.sync="showState" :invalid.sync="invalid"  @signup="handleSignUp" ></RegisterForm>
-      <ResetForm v-show="showState===3" ></ResetForm>
+      <h1>Your's</h1>
+      <LoginForm ref="login" v-show="showState===1" :showState.sync="showState" :invalid.sync="invalid" @on-success-valid="handleSubmit"></LoginForm>
+      <RegisterForm ref="register" v-show="showState===2" :showState.sync="showState" :invalid.sync="invalid"  @signup="handleSignUp" ></RegisterForm>
+      <ResetForm ref="reset" :showState.sync="showState" v-show="showState===3" ></ResetForm>
       <div v-show="showState===1" class="tonew">新用户?<a @click="showState=2">去注册</a></div>
-      <div v-show="showState===2" class="tonew">已有账户?<a @click="showState=1">去登录</a></div>
-      <div v-show="showState===3" class="tonew"><a @click="showState=1">返回登录</a></div>
+      <div v-show="showState===2" class="tonew">已有账户?<a @click="backLogin" >去登录</a></div>
+      <div v-show="showState===3" class="tonew"><a @click="backLogin">返回登录</a></div>
     </div>
   </div>
 </template>
@@ -66,11 +66,17 @@ export default {
       userApi.register(val).then(res => {
         if(res.code===0){
           this.$Message.success("注册成功")
+          this.showState=1
         }else{
           this.$Message.error(res.errorMsg)
         }
       })
 
+    },
+    backLogin(){
+      this.$refs.reset.initReset()
+      this.$refs.register.initRegister()
+       this.showState=1 
     },
     toRegister(){
       this.invalid=false
@@ -91,13 +97,20 @@ export default {
   background-image: url("../../assets/bg/02.png");
 
   display: flex;
-  justify-content: center;
+  justify-content:flex-end  ;
   align-items: center;
   position: relative;
 
   &-con {
-    width: 350px;
-    background: rgba(207, 202, 202, 0.2);
+    width: 360px;
+    height:500px;
+    border-radius:18px;
+    margin-right: 200px;
+    background: rgba(255, 255, 255, 0.856);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 30px;
 
     &-header {
@@ -114,7 +127,6 @@ export default {
     .login-tip {
       font-size: 10px;
       text-align: center;
-      color: #c3c3c3;
     }
 
     .ivu-input {
@@ -123,10 +135,48 @@ export default {
   }
 
   h1 {
-    color: #eef3fd;
+    font-size:50px;
     width: 100%;
     text-align: center;
     margin-bottom: 25px;
+    animation: changeTitle 3s ease-in infinite;
+  }
+  @keyframes  changeTitle {
+    0%{
+      background-image:linear-gradient(black);
+      color:transparent;
+      background-clip:text;
+    }
+    20%{
+      background-image:linear-gradient(to right,rgb(116, 234, 255),rgb(81, 255, 0));
+      color:transparent;
+      background-clip:text;
+    }
+    40%{
+      background-image:linear-gradient(350deg,rgb(255, 176, 176),rgb(228, 182, 255),rgb(158, 255, 158));
+      color:transparent;
+      background-clip:text;
+    }
+    55%{
+       background-image:linear-gradient(to bottom,green,yellow,gray);
+      color:transparent;
+      background-clip:text;
+    }
+    70%{
+       background-image:linear-gradient(to top,purple,white, black);
+      color:transparent;
+      background-clip:text;
+    }
+    90%{
+      background-image:linear-gradient(to left,rgb(255, 255, 151),rgb(225, 247, 255));
+      color:transparent;
+      background-clip:text;
+    }
+    100%{
+      background-image:linear-gradient(black);
+      color:transparent;
+      background-clip:text;
+    }
   }
 }
 .star {
@@ -134,8 +184,7 @@ export default {
 }
 .tonew{
   text-align: center;
-  font-weight: 1000;
-  color:#ffffff;
-  text-shadow: 0 0 10px #2d8cf0,0 2px 1px #641818;
+  font-weight: bolder;
+
 }
 </style>

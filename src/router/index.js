@@ -36,6 +36,7 @@ const turnTo = (to, access, next) => {
 router.beforeEach((to, from, next) => {
   // console.log("from", from);
   // console.log("to", to);
+  // Vue.prototype.$vs.loading({type:'square'})
   ViewUI.LoadingBar.start();
   const token = getToken();
   const homeName = config.homeName;
@@ -99,6 +100,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(to => {
   ViewUI.LoadingBar.finish();
+  // Vue.prototype.$vs.loading({type:'square'}).close()
   window.scrollTo(0, 0);
 });
 // beforeEach 路由权限配置

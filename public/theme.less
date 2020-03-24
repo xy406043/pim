@@ -3,50 +3,57 @@
 * 所有与主题相关的样式都写在这里
 */
 
-.theme(@cTheme: #5eff00){
-    .theme_font{
-        color:@cTheme
+.theme(@cTheme: #5eff00) {
+  .theme_font {
+    color: @cTheme !important;
+  }
+  .theme_background {
+    background: @cTheme;
+  }
+  .theme_hover {
+    background: @cTheme;
+  }
+  .theme_show_white {
+    color: #ffffff !important;
+  }
+  .option:hover {
+    color: @cTheme !important;
+  }
+  .theme_border_0 {
+    border: 1px solid gray;
+  }
+  .theme_border_1 {
+    border: 1px solid @cTheme !important;
+  }
+  .font-m {
+    font-size: 16px;
+    font-weight: bolder;
+    background-image: linear-gradient(120deg, white, @cTheme,white) !important;
+    color: transparent;
+    background-clip: text;
+  }
+  //自定义 button
+  .xy-button {
+    .ivu-btn {
+      padding: 2px 10px;
     }
-    .theme_hover{
-        background: @cTheme;
+    .ivu-btn-primary {
+      color: #ffffff;
+      background-color: @cTheme;
+      border: #000000;
     }
-    .theme_show_white{
-        color: #ffffff !important;
+    .ivu-btn-primary:hover {
+      border: 1px solid #eff0f1;
     }
-    .option:hover{
-        color: @cTheme !important;
+    .ivu-btn-default {
     }
-    .theme_border_0{
-        border: 1px solid gray;
+    .ivu-btn-default:hover {
+      color: #000000;
+      border: 1px solid @cTheme;
     }
-    .theme_border_1{
-        border:1px solid @cTheme !important;
-    }
-    //自定义 button
-    .xy-button{
-        .ivu-btn{
-            padding: 2px 10px;
-        }
-        .ivu-btn-primary{
-            color: #ffffff;
-            background-color: @cTheme;
-            border:#000000;
-        }
-        .ivu-btn-primary:hover{
-            border: 1px solid #eff0f1;
-        }
-        .ivu-btn-default{
 
-        }
-        .ivu-btn-default:hover{
-            color: #000000;
-            border: 1px solid @cTheme;
-        }
-
-        .dropdown:hover{
-            border: 1px solid @cTheme !important;
-        }
-
+    .dropdown:hover {
+      border: 1px solid @cTheme !important;
     }
-   
+  }
 }

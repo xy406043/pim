@@ -17,7 +17,7 @@
     <!-- 筛选搜索层面 -->
     <div class="mb-10 flex-row mt-10 ml-20">
       <div class="flex-start column-center">
-        <span class="theme_font min-width mr-20">搜索：</span>
+        <span class="theme_font mr-20">搜索：</span>
         <span>
           <Input
             class="myInput"
@@ -119,9 +119,9 @@
           </div>
 
           <div class="flex-space-between mt-20" style="width:285px">
-            <Button type="default" @click="handleCacel">取消</Button>
-            <Button v-if="addoredit" type="primary" @click="handleAdd">确认</Button>
-            <Button v-else type="primary" @click="handleEdit">确认</Button>
+            <vs-button dark border @click="handleCancel">取消</vs-button>
+            <vs-button v-if="addoredit" success border @click="handleAdd">确认</vs-button>
+            <vs-button v-else success border @click="handleEdit">确认</vs-button>
           </div>
         </div>
         <div v-show="showItemDiv" class="address-modal">
@@ -152,7 +152,7 @@
               <span  >{{mailAddress}}</span>
           </div>
           <div calss="mt-20">
-            <Button type="primary" @click="openEdit">编辑</Button>
+            <vs-button success border @click="openEdit">编辑</vs-button>
           </div>
         </div>
       </div>
@@ -421,8 +421,9 @@ export default {
       this.interest = "";
       this.mailAddress = "";
     },
-
-    handleCacel() {},
+    handleCancel() {
+      this.showAll=true
+    },
     getChange() {},
     showEdit(item) {
       this.address_id = item._id;

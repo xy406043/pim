@@ -2,6 +2,68 @@
 import axios from "@/libs/axios"
 
 export default { 
+    /**
+     * @common
+     */
+    getProjectOverView: (id) =>{
+        return axios.request({
+            url:"/project/getProjectOverView?id="+id,
+            method:"get",
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    //网页右上方搜索，其它功能块内置了搜索，因此此处仅搜索任务集相关内容
+    searchProject: (data) =>{
+        return axios.request({
+            url:"/project/searchProject",
+            method:"POST",
+            data
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    /**
+     * @设置
+     */
+    getProjectInfo: (id) =>{
+        return axios.request({
+            url:"/project/getProjectInfo?id="+id,
+            method:"get",
+        }).then(resp => {
+            return resp.data
+        })
+    } ,
+    editProjectInfo:(data) =>{
+        return axios.request({
+            url:"/project/editProjectInfo",
+            method:"POST",
+            data
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    editLabel:(data)=>{
+        return axios.request({
+            url:"/project/editLabel",
+            method:"POST",
+            data
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    deleteLabel:(data)=>{
+        return axios.request({
+            url:"/project/deleteLabel",
+            method:"POST",
+            data
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    /**
+     * @任务集
+     */
     addProject: (data) => {
         return axios.request({
             url:"/project/addProject",
@@ -11,10 +73,11 @@ export default {
             return resp.data
         })
     },
-    getProjectList: ()  => {
+    getProjectList: (data)  => {
         return axios.request({
             url:"/project/getProjectList",
-            method:"GET"
+            method:"POST",
+            data
         }).then(resp => {
             return resp.data
         })
@@ -96,6 +159,15 @@ export default {
         return axios.request({
             url:"project/getTodoDetail?id="+id,
             method:"GET"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    getTodoList: (data)=>{
+        return axios.request({
+            url:"/project/getTodoList",
+            method:"POSt",
+            data
         }).then(resp => {
             return resp.data
         })
@@ -212,7 +284,7 @@ export default {
             return resp.data
         })
     },
-    getScheduleDetail: id =>{
+    getScheduleDetail: (id) =>{
         return axios.request({
             url:"project/getScheduleDetail?id="+id,
             method:"GET"
@@ -242,6 +314,36 @@ export default {
         return axios.request({
             url:"project/deleteSchdeule?id="+id,
             method:"GET"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    /**
+     * @文件
+     * @与保险下的文件接口虽然属于同一数据库但是接口路由不同因此可以使用相同的方法
+     */
+    addFile:(data) =>{
+        return axios.request({
+            url:"project/addFile",
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    getFileList: (data) =>{
+        return axios.request({
+            url:"project/getFileList",
+            data,
+            method:"POST"
+        }).then(resp => {
+            return resp.data
+        })
+    },
+    deleteFile:(id) =>{
+        return axios.request({
+            url:"project/deleteFile?id="+id,
+            method:"get"
         }).then(resp => {
             return resp.data
         })

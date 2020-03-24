@@ -1,16 +1,28 @@
 <template>
   <div>
     <div class="thisScheduleAdd">
+      <div class="column-center mb-5" v-show="showType===1">
+        <span class="min-width">任务集：</span>
+        <span class="addWidth">
+          <Select v-model="project_id" placeholder="请选择日程所属任务集" filterable>
+            <Option
+              v-for="item in projectList"
+              :key="item._id"
+              :value="item._id"
+            >{{item.projectName}}</Option>
+          </Select>
+        </span>
+      </div>
       <div class="column-center mb-5">
         <span class="min-width">标题：</span>
         <span class="addWidth">
-          <Input v-model="title" placeholder></Input>
+          <Input v-model="title" placeholder="请输入日程标题"></Input>
         </span>
       </div>
       <div class="column-center mb-5">
         <span class="min-width">描述：</span>
         <span class="addWidth">
-          <Input type="textarea" v-model="description" placeholder></Input>
+          <Input type="textarea" v-model="description" placeholder="日程描述"></Input>
         </span>
       </div>
       <div class="column-center mb-5">
@@ -20,6 +32,7 @@
             v-model="timeList"
             class="addBW"
             format="yyyy-MM-dd HH:mm"
+            placeholder="请选择日程时间"
             :clearable="false"
             type="datetimerange"
             @on-change="changeTime"
@@ -34,15 +47,17 @@
           </Select>
         </span>
       </div>
-      <div class="column-center mb-5">
+      <div class="column-center mb-10">
         <span class="min-width">工作位置：</span>
         <span class="addWidth">
-          <Input v-model="address" placeholder></Input>
+          <Input v-model="address" placeholder="请输入工作位置"></Input>
         </span>
       </div>
-      <div>
-        <Button type="primary" @click="addSchedule">确定</Button>
-        <Button type="default" @click="cancelAdd">取消</Button>
+      <div class="mt-5 flex-row">
+        <!-- <Button class="mr-20" type="primary" @click="addSchedule">确定</Button>
+        <Button class="ml-20"  type="default" @click="cancelAdd">取消</Button>-->
+        <vs-button dark  dashed style="width:150px" @click="cancelAdd">取消</vs-button>
+        <vs-button success dashed style="width:150px" class="ml-20" @click="addSchedule">确认</vs-button>
       </div>
     </div>
   </div>
@@ -50,13 +65,17 @@
 
 <script>
 const moment = require("moment");
-import {projectApi} from "@/api"
+import { projectApi } from "@/api";
 export default {
   name: "schedule-add",
   props: {
     schedule: {
       type: Boolean,
       defualt: false
+    },
+    showType: {
+      type: Number,
+      default: 0
     },
     projectId: String
   },
@@ -66,7 +85,9 @@ export default {
       startAt: "",
       endAt: "",
       timeList: [],
+      projectList: [],
       description: "",
+      project_id: "",
       notice: 0, //提醒方式
       noticeList: [
         { id: 0, value: "不提醒" },
@@ -81,17 +102,29 @@ export default {
     };
   },
   watch: {
-    timeList(newV, oldV) {
-      console.log(newV);
-    }
+    // timeList(newV, oldV) {
+    //   console.log(newV);
+    // }
+  },
+  mounted() {
+    this.getProjectList();
   },
   methods: {
+    getProjectList() {
+      let p = {};
+      projectApi.getProjectList(p).then(res => {
+        this.projectList = res.result;
+      });
+    },
     changeTime(val) {
-      this.startAt = val[0]
-      this.endAt =val[1] 
-      console.log(this.startAt, this.endAt);
+      this.startAt = val[0];
+      this.endAt = val[1];
     },
     addSchedule() {
+      if (this.showType === 1 && this.project_id === "") {
+        this.$Message.warning("请选择该任务所属任务集");
+        return;
+      }
       if (this.title === "") {
         this.$Message.warning("请输入标题");
         return;
@@ -106,22 +139,24 @@ export default {
         endAt: this.endAt,
         notice: this.notice,
         address: this.address,
-        project_id: this.projectId,
-        description:this.description
+        project_id: this.project_id || this.projectId,
+        description: this.description
       };
-      projectApi.addSchedule(p).then( res => {
-          if(res.code===0){
-              this.$emit("update:schedule",false)
-              this.$Message.success("新建日程成功")
-              this.$emit("getDetail")
-          }
-      })
+      projectApi.addSchedule(p).then(res => {
+        if (res.code === 0) {
+          this.initSchedule();
+          this.$emit("update:schedule", false);
+          this.$Message.success("新建日程成功");
+          this.initSchedule();
+          this.$emit("getDetail");
+        }
+      });
     },
     initSchedule() {
       this.title = "";
       this.description = "";
       this.timeList = [];
-      this.notice = 1;
+      this.notice = 0;
       this.address = "";
     },
     cancelAdd() {

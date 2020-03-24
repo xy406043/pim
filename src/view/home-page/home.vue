@@ -17,8 +17,8 @@
       <div class="time">{{time}}</div>
       <div class="font">归于自己，自在生活</div>
     </div>
-    <div style="display:inline-block;float:right">
-      <img class="header-img" src="../../../public/img/cursor_default.png" alt="tel" />
+    <div class="el-looo" style="display:inline-block;float:right">
+      <img class="header-img" src="../../../public/img/favicon.png" alt="tel" />
     </div>
     <!-- 任务层 -->
     <div>
@@ -43,26 +43,26 @@
       <div class="list-content">
         <div class="flex-space-between column-center">
           <span class="min-width">我的任务:</span>
-          <span class="fs option">{{allTodoNum}}</span>
+          <router-link style="color:black" :to="{name:'project'}" class="fs option">{{allTodoNum}}</router-link>
         </div>
         <!-- 未安排时间且为开始 -->
         <div class="flex-space-between column-center">
           <span class="min-width">未安排任务:</span>
-          <span class="fs" style="color:orange">{{toBeginProject}}</span>
+          <span class="fs" style="color:orange" @click="toScreen(1)">{{toBeginProject}}</span>
         </div>
         <!-- 过期未完成 -->
         <div class="flex-space-between column-center">
           <span class="min-width">已延误任务:</span>
-          <span class="fs" style="color:red">{{unFinishedProject}}</span>
+          <span class="fs" style="color:red" @click="toScreen(2)">{{unFinishedProject}}</span>
         </div>
         <div class="flex-space-between column-center">
           <span class="min-width">本周任务:</span>
-          <span class="fs option">{{thisWeekProject}}</span>
+          <span class="fs option" @click="toScreen(3)">{{thisWeekProject}}</span>
         </div>
       </div>
-      <div>
+      <!-- <div>
         <ve-line :data="chartData"></ve-line>
-      </div>
+      </div>-->
     </div>
     <div class="thisContent">
       <!-- 日记 -->
@@ -70,19 +70,19 @@
         <b class="content-title">最近日记</b>
         <div class="content-c flex-column">
           <div v-for="item in limitNoteList" :key="item._id">
-            <span class="content-li option" @click="toEveryNote(item)">{{item.title}}</span>
+            <div class="content-li option" @click="toEveryNote(item)">{{item.title}}</div>
           </div>
           <div>
-            <span v-show="limitNoteList.length===10" class="option">查看更多</span>
+            <span v-show="limitNoteList.length===10" class="option" @click="toNote">查看更多</span>
           </div>
         </div>
       </div>
       <!-- 通讯录 -->
       <div class="content">
-        <b class="content-title">新建联系人</b>
+        <b class="content-title">New联系人</b>
         <div class="content-c flex-column">
           <div class="content-li option" v-for="item in limitAddressList" :key="item._id">
-            <span class="content-li option" @click="toEveryAddress(item)">{{item.name}}</span>
+            <div class="content-li option" @click="toEveryAddress(item)">{{item.name}}</div>
           </div>
           <div>
             <span v-show="limitAddressList.length===10" class="option" @click="toEveryAddress">查看更多</span>
@@ -95,11 +95,11 @@
         <div class="content-c flex-column">
           <div class="column-center mb-10" v-for="item in limitBookMarkList" :key="item._id">
             <Avatar v-if="item.imgUrl===''" :size="40" :username="item.title"></Avatar>
-            <img v-else :src="item.imgUrl"  class="img-avatar" alt="图标" />
-            <a class="content-li option"  :href="item.url" target="blank">{{item.title}}</a>
+            <img v-else :src="item.imgUrl" class="img-avatar" alt="图标" />
+            <a class="content-li option ml-10" :href="item.url" target="blank">{{item.title}}</a>
           </div>
           <div>
-            <span v-show="limitBookMarkList.length===5" class="option">查看更多</span>
+            <span v-show="limitBookMarkList.length===5" class="option" @click="toBookMarking">查看更多</span>
           </div>
         </div>
       </div>
@@ -114,11 +114,11 @@
  */
 import axios from "axios";
 import { commonApi, knowApi } from "@/api";
-import Avatar from "vue-avatar"
+import Avatar from "vue-avatar";
 var week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 export default {
   name: "home",
-  components:{
+  components: {
     Avatar
   },
   data() {
@@ -136,29 +136,37 @@ export default {
       thisWeekProject: 0,
       toBeginProject: 0,
       unFinishedProject: 0,
+      words: [
+        ["romance", 19],
+        ["horror", 3],
+        ["fantasy", 7],
+        ["adventure", 3]
+      ],
       limitBookMarkList: [],
       limitNoteList: [],
       limitAddressList: [],
       chartData: {
-          columns: ['日期', '访问用户', '下单用户', '下单率'],
-          rows: [
-            { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
-            { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
-            { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
-            { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
-            { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
-            { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
-          ]
-        }
+        columns: ["日期", "访问用户", "下单用户", "下单率"],
+        rows: [
+          { 日期: "1/1", 访问用户: 1393, 下单用户: 1093, 下单率: 0.32 },
+          { 日期: "1/2", 访问用户: 3530, 下单用户: 3230, 下单率: 0.26 },
+          { 日期: "1/3", 访问用户: 2923, 下单用户: 2623, 下单率: 0.76 },
+          { 日期: "1/4", 访问用户: 1723, 下单用户: 1423, 下单率: 0.49 },
+          { 日期: "1/5", 访问用户: 3792, 下单用户: 3492, 下单率: 0.323 },
+          { 日期: "1/6", 访问用户: 4593, 下单用户: 4293, 下单率: 0.78 }
+        ]
+      }
     };
   },
-  mounted() {
+  async mounted() {
+    const loading = this.$vs.loading({ type: "square" });
     setInterval(this.updateTime, 1000);
-    this.getWeather();
-    this.getOverView();
-    this.getLimitNote();
-    this.getLimitAddress();
-    this.getLimitBookMark();
+    await this.getWeather();
+    await this.getOverView();
+    await this.getLimitNote();
+    await this.getLimitAddress();
+    await this.getLimitBookMark();
+    await loading.close();
   },
   filters: {},
   methods: {
@@ -190,6 +198,15 @@ export default {
       //   _this.city="昆山"
       // },{provider:'baidu'})
     },
+    toScreen(val) {
+      // 根据三种不同的条件进入不同的页面
+      this.$router.push({
+        name: "project-screen",
+        query: {
+          type: val
+        }
+      });
+    },
     getLimitNote() {
       let options = {
         limit: 10
@@ -203,7 +220,7 @@ export default {
         limit: 10
       };
       knowApi.getLimitAddress(options).then(res => {
-        console.log("res???",res)
+        console.log("res???", res);
         this.limitAddressList = res.result;
       });
     },
@@ -249,18 +266,28 @@ export default {
       }
       return (zero + num).slice(-digit);
     },
-    toEveryNote(item){
+    toEveryNote(item) {
       this.$router.push({
-        name:"note-view",
-        query:{
-            id:item._id
-        } 
-      })
+        name: "note-view",
+        query: {
+          id: item._id
+        }
+      });
     },
-    toEveryAddress(item){
+    toNote() {
       this.$router.push({
-        name:"address-book"
-      })
+        name: "note"
+      });
+    },
+    toEveryAddress(item) {
+      this.$router.push({
+        name: "address-book"
+      });
+    },
+    toBookMarking() {
+      this.$router.push({
+        name: "bookmarking"
+      });
     }
   }
 };
@@ -314,16 +341,17 @@ export default {
   font-size: 20px;
 }
 .content-li {
-  display: inline;
   font-family: "Times New Roman", Times, serif;
   font-size: 15px;
-  margin-left:10px;
-  color:black;
+  color: black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 .content-li:hover {
   text-decoration: underline;
   margin: auto 0;
-  margin-left:10px;
 }
 .icon {
   display: inline-block;
@@ -343,9 +371,13 @@ export default {
     "Lucida Sans", Arial, sans-serif;
   margin-left: 20px;
 }
-.img-avatar{
-  height:40px;
-  width:40px;
-  border-radius:50%;
+.img-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.el-looo {
+  // height: 300px;
+  // width: 300px;
 }
 </style>

@@ -107,8 +107,8 @@ export default {
                 localSave("backgroundUrl",result.backgroundUrl)
                 localSave("email",result.email)
                 localSave("avatar",result.avatar)
+                localStorage.removeItem("sCode")
                 let theme = localStorage.getItem("colorTheme")
-                console.log("sas",result.colorTheme)
                 changeTheme(result.colorTheme || theme)
               resolve(res);
             })
