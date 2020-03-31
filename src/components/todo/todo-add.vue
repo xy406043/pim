@@ -91,7 +91,6 @@
       <MavonEditor ref="mavon" :originText="description" @getEditor="getContent"></MavonEditor>
       <!-- <QuillEditor ref="quill" @showContent="getContent2" ></QuillEditor> -->
     </div>
-
     <div class="flex-between mt-20">
       <!-- <Button type="default" @click="cancel">取消</Button>
       <Button type="primary" @click="handleAdd">确认</Button>-->
@@ -131,7 +130,14 @@ export default {
       default: false
     },
     projectId: String, //项目Id
-    listId: String // 项目内添加处理
+    onlyProject:{
+      type:Boolean,
+      default:false
+    },
+    listId: {
+      type:String ,
+      default:''
+      } // 项目内添加处理
   },
   data() {
     return {
@@ -162,6 +168,9 @@ export default {
   },
   mounted() {},
   watch: {
+    listId(newV){
+       console.log(newV)
+    },
     selectedProject(newV) {
       this.getListList();
     }
@@ -209,7 +218,7 @@ export default {
           }
         }
       });
-      console.log("p", p);
+      // console.log("", p);
       if (p.name === "") {
         this.$Message.error("请输入任务名");
         return;
@@ -221,22 +230,10 @@ export default {
         if (this.startAt !== "") {
           p.startAt = this.startAt;
         }
-        // if(p.startAt===''){
-        //   this.$Message.error("请选择开始时间")
-        //   return
-        // }
-        //  if(p.endAt===''){
-        //   this.$Message.error("请选择截止时间")
-        //   return
-        // }
       } else {
         if (this.endAt !== "") {
           p.endAt = this.endAt;
         }
-        // if(p.endAt===''){
-        //    this.$Message.error("请选择截止时间")
-        //   return
-        // }
       }
 
       if (this.isOuter) {
@@ -245,8 +242,11 @@ export default {
       } else {
         p.project_id = this.projectId;
       }
-      if (this.listId !== "" && this.listId !== undefined) {
-        console.log("list_id", this.listId);
+      /**
+       * @不是清单外任务才传递清单ID
+       */
+      console.log("传递清单ID",this.listId)
+      if (!this.onlyProject && this.listId !== "" && this.listId !== undefined) {
         p.list_id = this.listId;
       }
 
@@ -299,7 +299,7 @@ export default {
       this.startAt = "";
       this.endAt = "";
       this.project_id = "";
-      this.$emit("update:listId", "");
+      // this.$emit("update:listId", "");  //把原对象内list_id置为空，这里由于时直接调用的对象内元素，会把源对象置为空！！！！
       this.description = "";
       this.uploadTags = [];
       this.level = 2;
@@ -307,10 +307,10 @@ export default {
       // this.$refs.editor.clearEditor()
     },
     getChange(val) {
-      console.log(val);
+      // console.log(val);
     },
     changeTime(val) {
-      console.log("time", val, this.endAt);
+      // console.log("time", val, this.endAt);
     }
   }
 };

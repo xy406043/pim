@@ -6,20 +6,20 @@
     </div>
     <Divider style="margin:0;background:#000000;height:3px" />
     <div class="allContent">
-      <div class="password mr-20 mb-20 option" @click="toCodeBook">
+      <router-link class="password mr-20 mb-20 option" :to="{name:'code-book'}">
         <div>
           <!-- <Icon size="80" class="code-border" type="md-key" /> -->
           <img class="every-image" src="../../assets/images/casebook.png" />
         </div>
         <div class="code-font mt-10">密码本</div>
-      </div>
-      <div class="password mr-20 mb-20 option" @click="toFolder">
+      </router-link>
+      <router-link class="password mr-20 mb-20 option" :to="{name:'folder'}">
         <div>
           <!-- <Icon size="80" class="code-border" type="ios-folder" /> -->
           <img class="every-image" src="../../assets/images/folder.png" />
         </div>
         <div class="code-font mt-10">文件夹</div>
-      </div>
+      </router-link>
       <!-- <div class="password mr-20 mb-20 option-disabled" > 
                 <div>
                 <Icon size="80" class="code-border" type="md-images" />
@@ -98,8 +98,8 @@
           <Input type="password" v-model="secondCode" placeholder="请输入二次密码"></Input>
         </div>
       </div>
-      <div class="mt-10 ml-20 flex-row ">
-          <vs-button dark style="width:120px" flat @click="cancelThis">取消</vs-button>
+      <div class="mt-10 ml-20 flex-row">
+        <vs-button dark style="width:120px" flat @click="cancelThis">取消</vs-button>
         <vs-button class="ml-20" success style="width:120px" flat @click="verifyCode">确认</vs-button>
       </div>
     </Modal>
@@ -159,13 +159,14 @@ export default {
       this.$router.push({ name: "code-book" });
     },
     toFolder() {
-      this.$router.push({ name: "folder" });
+      console.log("？？？？？");
+      this.$router.push({ name: "folder", query: { id: Math.random(21212) } });
     },
     toPhoto() {
       this.$router.push({ name: "photo" });
     },
-    cancelThis(){
-        this.$router.go(-1)
+    cancelThis() {
+      this.$router.go(-1);
     }
   }
 };
@@ -192,6 +193,7 @@ export default {
 }
 .code-font {
   text-align: center;
+  color: black;
 }
 .every-image {
   height: 80px;

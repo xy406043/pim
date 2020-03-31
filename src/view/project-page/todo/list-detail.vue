@@ -43,18 +43,20 @@
               style="padding:5px 10px"
               @click="toTodo(item._id)"
             >
-              <div class="every-right option font-16">
-                <Checkbox
+              <div class="every-right option column-center font-16">
+                <vs-checkbox
+                  color="rgb(59,222,200)"
                   v-model="item.finished"
-                  @on-change.stop="changeFinishState(item._id,item.finished)"
-                ></Checkbox>
-                {{item.name}}
-                <span v-show="item.level!==2" class="option">
-                  <Icon size="20" :color="getColor(item.level)" type="md-warning" />
+                  @click.native.stop="changeFinishState(item._id,item.finished)"
+                ></vs-checkbox>
+                  <span  @click.stop="stopMao">
+                  <Icon size="24" :color="getColor(item.level)" type="md-alert" />
                 </span>
-                <span v-for="val in item.tags" :key="val.value">
+               <span class="option mr-10 every-main-title"> {{item.name}}</span>
+                <span v-for="val in item.tags" :key="val.value" class="column-center">
                   <span
-                    class="ml-5 font-12"
+                    class="ml-5 font-12 font-bolder every-padding"
+                    @click.stop="stopMao"
                     :style="'color:white;padding:3px 8px;border-radius:20px;background:'+val.color"
                   >{{val.value}}</span>
                 </span>
@@ -64,7 +66,8 @@
                   <!-- 截止时间设置 -->
                   <span class="mr-5">
                     <span
-                      class="font-12"
+                      class="font-12 every-padding"
+                      @click.stop="stopMao"
                       style="border:1px solid gray;border-radius:20px;padding:2px;cursor:pointer"
                       v-show="item.endAt!==''"
                     >{{item.startAt?(item.startAt):'' | showTime}}{{item.startAt?'-':''}}{{item.endAt |showTime}}</span>
@@ -107,13 +110,7 @@
       <!-- <a class="option-delete" @click="deleteList">删除</a>
       </div>-->
     </div>
-    <Modal
-      v-model="todoListAdd"
-      title="新增任务"
-      fullscreen
-      :styles="{top:0}"
-      footer-hide
-    >
+    <Modal v-model="todoListAdd" title="新增任务" fullscreen :styles="{top:0}" footer-hide>
       <TodoAdd
         :todoAdd.sync="todoListAdd"
         :projectId="project_id"
@@ -179,6 +176,8 @@ export default {
       switch (level) {
         case 1:
           return "gray";
+        case 2:
+          return "green"
         case 3:
           return "orange";
         case 4:
@@ -188,7 +187,7 @@ export default {
     changeFinishState(id, status) {
       let p = {
         todo_id: id,
-        finished: status
+        finished: !status
       };
       projectApi.changeFinishState(p).then(res => {
         if (res.code === 0) {
@@ -207,6 +206,7 @@ export default {
         }
       });
     },
+    stopMao(){},
     toProject() {
       this.$router.push({
         name: "project-view",
@@ -306,5 +306,15 @@ export default {
 }
 .this_button {
   border: 0;
+}
+.every-main-title {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bolder;
+  margin-left:5px;
+}
+.every-padding {
+  padding: 0 6px !important;
+  font-weight: bolder;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="outer" :style="{backgroundImage: 'url('+url+')'}">
+  <div class="outer" id="outer" :style="{backgroundImage: 'url('+url+')'}" @scroll="scrollWindow">
     <!-- header -->
     <header class="header flex-between">
       <div>
@@ -37,6 +37,10 @@
     <!-- <div class="back" v-show="localPath!=='home'">
       <Button type="primary" @click="backToLastRouter">返回</Button>
     </div>-->
+    <!-- ScrollTop -->
+    <div class="my-scrolltop" v-show="scrollTopShow" @click="scrollTop">
+      <img class="scrollimg" src="http://xynagisa.xyz/上.png" />
+    </div>
     <audio controls="controls" hidden src="../../assets/2.mp3" ref="audio"></audio>
     <footer style="height:100px" class="footerT">苏ICP备20011251号-1</footer>
   </div>
@@ -80,6 +84,8 @@ export default {
       url: "",
       parentPath: "",
       localPath: "",
+      scrollTopShow: false,
+      screenHeight: 0,
       whiteList: ["test", "note-view", "note-add", "todo-detail"],
       checkIs: false
     };
@@ -125,16 +131,26 @@ export default {
     next();
   },
   created() {
+    // const that = this;
+    // window.onresize = val => {
+    //   console.log("基本",val);
+    //   return (() => {
+    //     console.log("屏幕高度", window.screenHeight);
+    //     window.screenHeight = document.body.clientHeight;
+    //     that.screenHeight = window.screenHeight;
+    //   })();
+    // };
+    window.addEventListener("scroll", this.scrollWindow);
     setTimeout(() => {
       window.L2Dwidget.init({
         pluginRootPath: "../../../static/live2dw/",
         pluginJsPath: "lib/",
-        pluginModelPath: "live2d-widget-model-wanko/assets/",
+        pluginModelPath: "live2d-widget-model-koharu/assets/",
         tagMode: false,
         debug: false,
         model: {
           jsonPath:
-            "../../../static/live2dw/live2d-widget-model-wanko/assets/wanko.model.json"
+            "../../../static/live2dw/live2d-widget-model-koharu/assets/koharu.model.json"
         },
         display: { position: "left", width: 150, height: 300 },
         mobile: { show: true },
@@ -143,6 +159,7 @@ export default {
     }, 1000);
   },
   mounted() {
+    // 滚动事件
     // this.$vs.loading({type:'square'})
     let color = localRead("colorTheme") || "#0066ff";
     this.nickName = this.$store.state.user.nickName;
@@ -206,17 +223,28 @@ export default {
     }
   },
   methods: {
-    // checkIs() {
-    //   console.log("121",this.localPath);
-    //   //  判断是否在中
-    //   this.whiteList.map(item => {
-    //     console.log(item===this.localPath);
-    //     if (item === this.localPath) {
-    //       return true;
-    //     }
-    //   });
-    //   return false;
-    // },
+    scrollTop(e) {
+      //无过渡
+      // document.getElementById("outer").scrollTop=0
+      //有过渡效果
+      let timer = setInterval(() => {
+        let osTop = document.getElementById("outer").scrollTop;
+        let ispeed = Math.floor(-osTop / 5);
+        document.getElementById("outer").scrollTop = osTop + ispeed;
+        if (osTop <= 0) {
+          clearInterval(timer);
+        }
+      }, 30);
+    },
+    scrollWindow(e) {
+      let top = e.srcElement.scrollTop;
+      // console.log("当前", top, top / 11);
+      if (top / 11 > 22) {
+        this.scrollTopShow = true;
+      } else {
+        this.scrollTopShow = false;
+      }
+    },
     sendMessage(val) {
       this.$socket.emit("scheduleNotice", { value: val });
     },
@@ -371,7 +399,19 @@ export default {
     color: white;
   }
 }
+// 向上
 
+.my-scrolltop {
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+  z-index: 999999;
+}
+.scrollimg {
+  height: 60px;
+  width: 60px;
+  cursor: pointer;
+}
 .back {
   position: fixed;
   top: 120px;

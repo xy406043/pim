@@ -38,12 +38,12 @@ export default {
       let html = this.$refs.editor.d_render;
     },
     changeDoc(markdown, html) {
-      console.log("改变");
+      // console.log("改变");
       this.$emit("getEditor",markdown,html)
     },
     saveDoc(markdown, html) {
-      console.log("markdown", markdown);
-      console.log("html", html);
+      // console.log("markdown", markdown);
+      // console.log("html", html);
       this.$emit("getEditor",markdown,html)
     },
     putContent(markdown,html){
@@ -78,7 +78,7 @@ export default {
          * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
          * 2. 通过$refs获取: html声明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`为 `this.$refs.md`
          */
-        console.log("返回结果", res);
+        // console.log("返回结果", res);
         const url = "http://xynagisa.xyz/" + res.data.key;
         console.log(url);
         this.$refs.editor.$img2Url(pos, url);

@@ -130,7 +130,7 @@ export default {
   break-inside: avoid;
 }
 .every-todo-this:hover{
-    background: radial-gradient(#bef7ff,#c9ffc9,#ffedfe,#f3ebdd,#bbfff4);
-    border-radius: 4px;
+    background: linear-gradient(45deg,rgba(0, 0, 0, 0.397),white,rgba(0, 0, 0, 0.301));
+    border-radius: 16px;
 }
 </style>

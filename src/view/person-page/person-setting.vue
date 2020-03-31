@@ -272,21 +272,7 @@ export default {
       newSecondPass2: ""
     };
   },
-  watch: {
-    stopVerify(newV, oldV) {
-      if (newV === true) {
-        setInterval(() => {
-          this.codeTime = this.codeTime - 1;
-          if (this.codeTime === 0) {
-            this.codeTime = 60;
-            this.codeState = 0;
-            this.stopVerify = false;
-            return;
-          }
-        }, 1000);
-      }
-    }
-  },
+  watch: {},
   mounted() {
     this.avatar = this.$store.state.user.avatar;
     this.nickName = this.$store.state.user.nickName;
@@ -412,10 +398,28 @@ export default {
         this.$Message.warning("请输入邮箱");
         return;
       }
+      let mail = new RegExp(
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      );
+      if (!mail.test(p.email)) {
+        this.$Message.error("请输入正确的邮箱格式");
+        return;
+      }
       userApi.sendCode(p).then(res => {
-        //发送验证码开始倒计时
-        this.codeState = 1;
-        this.stopVerify = true;
+        if (res.code === 0) {
+          //发送验证码开始倒计时
+          this.codeState = 1;
+          this.stopVerify = true;
+          setInterval(() => {
+            this.codeTime = this.codeTime - 1;
+            if (this.codeTime === 0) {
+              this.codeTime = 60;
+              this.codeState = 0;
+              this.stopVerify = false;
+              return;
+            }
+          }, 1000);
+        }
       });
     },
     editEmailFunc() {

@@ -106,7 +106,7 @@ export default {
     height:500px;
     border-radius:18px;
     margin-right: 200px;
-    background: rgba(255, 255, 255, 0.856);
+    background: rgba(255, 255, 255, 0.63);
     display: flex;
     flex-direction: column;
     align-items: center;

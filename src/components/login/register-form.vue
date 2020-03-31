@@ -6,6 +6,30 @@
         <vs-input dark label-placeholder="请输入注册邮箱" v-model="email"></vs-input>
       </span>
     </div>
+    <div class="flex-row column-center mb-20 flex-space-between mt-20 this-my">
+      <span class="mr-10">
+        <vs-input label-placeholder="请输入验证码" style="width:auto" v-model="code"></vs-input>
+      </span>
+      <div>
+        <vs-button
+          v-if="codeState===0"
+          dashed
+          dark
+          upload
+          square
+          @click="sendCode"
+          style="width:120px"
+        >发送验证码</vs-button>
+        <vs-button
+          v-if="codeState===1"
+          dashed
+          dark
+          upload
+          square
+          style="width:120px"
+        >{{codeTime + ' S'}}后再次发送</vs-button>
+      </div>
+    </div>
     <div class="flex-row column-center mt-20 mb-5">
       <span class="min-width font-bolder font-16">用户名：</span>
       <span>
@@ -32,31 +56,7 @@
         </vs-input>
       </span>
     </div>
-    <div class="flex-row column-center mb-20 flex-space-between mt-20 this-my">
-      <span class="mr-10">
-        <vs-input label-placeholder="请输入验证码" style="width:auto" v-model="code"></vs-input>
-      </span>
-      <div>
-        <vs-button
-          v-if="codeState===0"
-          dashed
-          dark
-          upload
-          square
-          @click="sendCode"
-          style="width:120px"
-        >发送验证码</vs-button>
-        <vs-button
-          v-if="codeState===1"
-          dashed
-          dark
-          upload
-          square
-          style="width:120px"
-        >{{codeTime + ' S'}}后再次发送</vs-button>
-      </div>
-    </div>
-    <div class="mb-20">
+    <div class="mb-20 mt-20">
       <vs-button dark dashed block upload @click="handleSubmit">注册</vs-button>
     </div>
   </div>
@@ -125,6 +125,10 @@ export default {
   },
   methods: {
     handleSubmit() {
+      if(this.userName==='' || this.password=='' || this.email==='' || this.code===''){
+        this.$Message.error("请补全信息")
+        return
+      }
       this.$emit("update:invalid", true);
       this.$emit("signup", {
         userName: this.userName,
@@ -132,26 +136,6 @@ export default {
         email: this.email,
         password: Crypto.encode(this.password)
       });
-
-      // this.$refs.registerForm
-      //   .validate(valid => {
-      //     console.log("结果", valid);
-      //     if (valid) {
-      //       this.$emit("update:invalid", true);
-      //       this.$emit("signup", {
-      //         userName: this.userName,
-      //         code: this.code,
-      //         email: this.email,
-      //         password: Crypto.encode(this.password)
-      //       });
-      //       this.loading = true;
-      //     } else {
-      //       this.$Message.error("请先完善信息");
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
     },
     initRegister() {
       this.email = "";
@@ -174,6 +158,13 @@ export default {
         this.$Message.warning("请输入邮箱");
         return;
       }
+      let mail = new RegExp(
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      );
+      if (!mail.test(p.email)) {
+        this.$Message.error("请输入正确的邮箱格式");
+        return;
+      }
       userApi.sendCode(p).then(res => {
         if (res.code === 0) {
           //发送验证码开始倒计时
@@ -185,6 +176,7 @@ export default {
               this.codeTime = 60;
               this.codeState = 0;
               this.stopVerify = false;
+              clearInterval();
               return;
             }
           }, 1000);

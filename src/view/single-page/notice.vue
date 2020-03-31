@@ -11,8 +11,8 @@
       </div>
     </div>
     <Divider />
-    <div>
-      <vs-button dark dashed style="width:120px" class="font-bolder mt-5 mb-5 ml-5" @click="setRead">全部设为已读</vs-button>
+    <div class="ml-20">
+      <vs-button success border square style="width:120px" class="font-bolder mt-5 mb-5 ml-5" @click="setRead">全部设为已读</vs-button>
     </div>
     <Divider />
     <!-- 展示通知内容 -->
@@ -68,7 +68,10 @@ export default {
   },
   methods: {
     getAllNotice() {
-      let p = {};
+      let p = {
+        pageSize:this.pageSize,
+        currentPage:this.currentPage
+      };
       commonApi.getNoticeList(p).then(res => {
         this.noticeList = res.result;
         this.totalCount = res.totalCount;

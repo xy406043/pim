@@ -84,6 +84,8 @@ export default {
     },
     handleLogOut({ state, commit }) {
       return new Promise((resolve, reject) => {
+        localStorage.removeItem("sCode")
+        localStorage.removeItem("email")
         commit("setToken", "");
         commit("setAccess", "");
         resolve();

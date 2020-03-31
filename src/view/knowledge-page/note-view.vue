@@ -24,18 +24,12 @@
         <Input v-model="title" placeholder="输入标题"></Input>
       </div>
       <div class="flex-row mt-20 column-center flex-space-between">
-        <div class="mb-20">
+        <div class="mb-20 flex-row column-center">
           <span class="min-width">
             <b class="mr-20">选择分类</b>
           </span>
-          <span class="ml-10">
-            <Select
-              v-model="group_id"
-              style="width:160px"
-              filterable
-              allow-create
-              @on-create="createGroup"
-            >
+          <span class="ml-10 flex-row form-width">
+            <Select v-model="group_id" filterable allow-create @on-create="createGroup">
               <Option :value="0">默认分组</Option>
               <Option v-for="item in groupList" :value="item._id" :key="item._id ">{{item.name}}</Option>
             </Select>
@@ -45,8 +39,8 @@
           <!-- <span class="theme_font">
             <img src="../../assets/icon/long-arrow.png" style="width:40px" />
           </span>
-          <span class="option mr-20 ml-20 font-20 theme_font" @click="editNote">保存修改</span> -->
-          <vs-button style="width:150px" success floating  @click="editNote">保存</vs-button>
+          <span class="option mr-20 ml-20 font-20 theme_font" @click="editNote">保存修改</span>-->
+          <vs-button style="width:150px" success floating @click="editNote">保存</vs-button>
         </div>
       </div>
       <div></div>
@@ -81,8 +75,14 @@ export default {
   },
   mounted() {
     this.note_id = this.$route.query.id;
-    this.getNoteDetail();
+    /***
+     * @获取分类的接口要比获取详情的接口先
+     * @不然详情的ID无法渲染到Select组件上
+     */
     this.getGroupList();
+    this.$nextTick(() => {
+      this.getNoteDetail();
+    });
   },
   methods: {
     getContent(markdown, html) {
@@ -101,15 +101,22 @@ export default {
     getNoteDetail() {
       knowApi.getNoteDetail(this.note_id).then(res => {
         this.title = res.result.title;
-        this.content = res.result.content;
-        this.m_content = res.result.content;
-        this.$refs.mavon.putContent(this.m_content);
+        // this.group_id = res.result.group_id || '0';
         if (res.result.group_id) {
-          this.group_id = res.reuslt.group_id;
+          this.group_id = res.result.group_id;
+          console.log("id", this.group_id);
+        } else {
+          this.group_id = 0;
         }
+        this.content = res.result.content;
+        this.$refs.mavon.putContent(this.content);
       });
     },
     createGroup(val) {
+      this.groupList.push({
+        _id: "asa",
+        name: val
+      });
       let p = {
         groupType: 1,
         name: val
@@ -117,6 +124,9 @@ export default {
       commonApi.addGroup(p).then(res => {
         this.getGroupList();
       });
+    },
+    getGroupID(id) {
+      this.group_id = id;
     },
     editNote() {
       let p = {
@@ -132,8 +142,13 @@ export default {
       //       this.$Message.error("请输入文本")
       //       return
       //   }
-      if (this.group_id !== 0) {
+      if (
+        this.group_id !== "0" &&
+        this.group_id !== 0 &&
+        !this.group_id !== undefined
+      ) {
         p.group_id = this.group_id;
+        console.log("group_id", p.group_id);
       }
       knowApi.editNote(p).then(res => {
         if (res.code === 0) {

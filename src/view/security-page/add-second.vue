@@ -40,17 +40,17 @@ import {securityApi} from "@/api"
                     password:Crypto.encode(this.pass1)
                 }
                 if(this.pass1==='' || this.pass2===''){
-                    this.$Message.waiting("请输入密码")
+                    this.$Message.warning("请输入密码")
                     return
                 }
                 if(this.pass1!==this.pass2){
-                    this.$Message.waiting("两次输入不一致")
+                    this.$Message.warning("两次输入不一致")
                     return
                 }
                 securityApi.addSecondCode(p).then(res =>{
                     if(res.code===0){
                         this.$Message.success("输入成功")
-                        this.$router.push({name:"security-page"})
+                        this.$router.push({name:"code-case"})
                     }else{
                         this.$Message.error(res.errMsg)
                     }

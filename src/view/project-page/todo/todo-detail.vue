@@ -302,7 +302,10 @@
       </div>
       <Divider class="horizontal" style="margin:0;height:auto" type="vertical" />
       <!-- 主体右侧 -->
-      <div style="width:264px !important;background:#f6f6f6;padding: 16px 20px;" class="flex-column thisRight">
+      <div
+        style="width:264px !important;background:#f6f6f6;padding: 16px 20px;"
+        class="flex-column thisRight"
+      >
         <div class="option" v-show="status===1 || status===3" @click="changeState(todo_id,2)">开始任务</div>
         <div class="option" v-show="status===2" @click="changeState(todo_id,3)">暂停任务</div>
         <div class="option" v-show="collected===false" @click="addCollected(todo_id)">添加收藏</div>
@@ -363,6 +366,7 @@ export default {
       titleInput: false,
       childTodoFinished: false,
       childShowIndex: -1,
+      loading: "",
       childInputIndex: "",
       timeShow: false,
       childIdIndex: -1,
@@ -380,9 +384,13 @@ export default {
       content: ""
     };
   },
-  created() {
+  mounted() {
+    this.loading = this.$vs.loading({ type: "square" });
     this.todo_id = this.$route.query.todo_id;
     this.getTodoDetail();
+    setTimeout(()=>{
+       this.loading.close();
+    },600)
   },
   filters: {
     showTime(time) {
@@ -406,7 +414,7 @@ export default {
   },
   watch: {
     content(newV, oldV) {
-      console.log(newV);
+      // console.log(newV);
     }
   },
   methods: {
@@ -449,9 +457,6 @@ export default {
         this.childTodos.map(item => {
           item.showInput = false;
         });
-        this.setHTML(this.content);
-
-        // console.log("mou",this.thisTags)
 
         this.$nextTick(() => {
           this.thisTags = [];
@@ -534,9 +539,9 @@ export default {
         if (res.code === 0) {
           this.getTodoDetail();
           setTimeout(() => {
-            if(this.thisTags.length===5){
-              this.$Message.error("选择标签不能超过五个")
-              return
+            if (this.thisTags.length === 5) {
+              this.$Message.error("选择标签不能超过五个");
+              return;
             }
             this.thisTags.push(val);
             this.editTags();
@@ -551,7 +556,7 @@ export default {
     },
     showTime1(val) {
       this.endAt = moment(val).format("YYYY-MM-DD HH:mm:ss");
-      console.log("sasas",this.endAt)
+      console.log("sasas", this.endAt);
     },
     showTime2(val) {
       this.startAt = moment(val[0]).format("YYYY-MM-DD HH:mm:ss");
@@ -559,7 +564,7 @@ export default {
     },
     changeTime1(status) {
       if (status === true) return;
-      console.log(this.endAt)
+      console.log(this.endAt);
       let data = {
         isEnd: true,
         endAt: this.endAt,
@@ -570,7 +575,7 @@ export default {
     },
     changeTime2(status) {
       if (status === true) return;
-      console.log(this.endAt,this.startAt)
+      console.log(this.endAt, this.startAt);
       let data = {
         isEnd: false,
         endAt: this.endAt,
@@ -699,11 +704,10 @@ export default {
       // this.$refs.editor.setHtml(html);
     },
     editTags() {
-
-      if(this.thisTags.length>=6){
-        this.$Message.error("选择标签不能超过五个！")
-        this.thisTags.pop()
-        return
+      if (this.thisTags.length >= 6) {
+        this.$Message.error("选择标签不能超过五个！");
+        this.thisTags.pop();
+        return;
       }
       let tags = [];
       this.thisTags.map(item => {
@@ -829,8 +833,8 @@ export default {
   border-radius: 20px;
   background: #dee9de;
 }
-.thisRight{
-  text-align:center;
-  width:264px !important;
+.thisRight {
+  text-align: center;
+  width: 264px !important;
 }
 </style>

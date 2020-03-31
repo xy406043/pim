@@ -71,8 +71,8 @@
         <div class="classic-setting">标签设置</div>
         <div>
           <div class="h2-title flex-row column-center">
-            自定义标签
-            <vs-button class="ml-10 "style="width:120px" dark square dashed @click="showAddModal">新建标签</vs-button>
+            <span>自定义标签</span>
+            <vs-button class="ml-20 "style="width:120px" dark square dashed @click="showAddModal">新建标签</vs-button>
           </div>
           <div>
             <div v-for="(item,index) in otherList" :key="index" class="every-tag">
@@ -124,14 +124,14 @@
       </div>
     </Modal>
     <!-- 新增编辑标签 -->
-    <Modal v-model="labelModal" footer-hide>
-      <div class="mt-20 mb-10 ml-10">
-        <vs-input label-placeholder="请输入标签名" v-model="editTagValue"></vs-input>
+    <Modal v-model="labelModal" footer-hide :closable="false" title="新建标签">
+      <div class="mb-10 ml-10 thisModal">
+        <vs-input label-placeholder="请输入标签名"  v-model="editTagValue"></vs-input>
       </div>
-      <div class="flex-row">
-        <vs-button class="mr-20" dark dashed @click="cancelOperate">取消</vs-button>
-        <vs-button v-if="addoredit" success dashed @click="handleAdd">确认</vs-button>
-        <vs-button v-else success dashed @click="handleEdit">保存</vs-button>
+      <div class="flex-row flex-space-between">
+        <vs-button style="width:120px" class="mr-20" dark dashed @click="cancelOperate">取消</vs-button>
+        <vs-button style="width:120px" v-if="addoredit" success dashed @click="handleAdd">确认</vs-button>
+        <vs-button style="width:120px" v-else success dashed @click="handleEdit">保存</vs-button>
       </div>
     </Modal>
   </div>
@@ -285,7 +285,13 @@ export default {
   }
 };
 </script>
-
+<style lang="less">
+.thisModal{
+  .vs-input{
+    width:100%;
+  }
+}
+</style>
 <style lang="less" scoped>
 .thisSetting {
   .ivu-divider {

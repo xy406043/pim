@@ -174,6 +174,7 @@
               :todoAdd.sync="todoAdd"
               :projectId="projectId"
               :isOuter="isOuter"
+              :onlyProject="true"
               :tags.sync="tags"
               @getDetail="getProjectDetail"
             ></TodoAdd>
@@ -181,11 +182,11 @@
         </Modal>
         <!-- 清单项目 -->
         <div v-for="(value,key,i) in every_list" :key="key" :value="value.list_id">
-          <b class="font-18 option theme_font" @click="toList(value.list_id)">
+          <b class="font-18" @click="toList(value.list_id)">
             清单:
-            <span class="ml-20">{{key}}</span>
+            <span class="ml-10 option theme_font" @click="toList(value.list_id)">{{key}}</span>
           </b>
-          <div class="mb-10">{{value.description}}</div>
+          <div class="mb-10" v-show="value.description">描述: {{value.description}}</div>
 
           <div style="width:100%">
             <!-- 效果 -->
@@ -270,15 +271,34 @@
               class="font-12 ml-20 option-delete this_button font-bolder"
               @click="deleteList(value.list_id)"
             >删除此清单</button>
-            <Modal v-model="todoListAdd" :styles="{top:0}" footer-hide :width="900" title="新建任务">
+            <Modal
+              v-model="todoListAdd && list_id===value.list_id"
+              fullscreen
+              :styles="{top:0}"
+              footer-hide
+              :width="900"
+              title="新建任务"
+            >
               <TodoAdd
+                v-if="todoListAdd"
+                ref="listAdd"
+                :isOuter="isOuter"
                 :todoAdd.sync="todoListAdd"
                 :projectId="projectId"
                 :tags.sync="tags"
-                :listId="value.list_id"
+                :listId.sync="value.list_id"
                 @getDetail="getProjectDetail"
               ></TodoAdd>
             </Modal>
+            <!-- <TodoAdd
+               v-if="todoListAdd && list_id===value.list_id" 
+                :isOuter="isOuter"
+                :todoAdd.sync="todoListAdd"
+                :projectId="projectId"
+                :tags.sync="tags"
+                :listId.sync="value.list_id"
+                @getDetail="getProjectDetail"
+            ></TodoAdd>-->
           </div>
         </div>
         <!-- 展示更多信息 -->
@@ -319,11 +339,7 @@
                   工作地点:
                   <span style="color:gray">{{item.address}}</span>
                 </span>
-                <span
-                  class="schdeule-description"
-                  style="description"
-                  v-show="item.description"
-                >
+                <span class="schdeule-description" style="description" v-show="item.description">
                   描述：
                   <span style="color:gray">{{item.description}}</span>
                 </span>
@@ -415,7 +431,6 @@
         </div>
       </div>
     </div>
-
     <Modal v-model="fileModal" footer-hide :closable="false" title="新建文件">
       <div class="file-outer">
         <div class="flex-row column-center">
@@ -447,7 +462,6 @@
     </Modal>
   </div>
 </template>
-
 <script>
 /**
  * 进入项目，显示项目内容，点击修改。
@@ -481,9 +495,12 @@ export default {
       level: -1,
       todoIndex: -1,
       isOuter: false,
-      todoAdd: false,
+      todoAdd: false, //清单外任务新增
+      list_id: "", //以便区分
       listAdd: false,
+      listAddModal: false,
       todoListAdd: false,
+      onlyProject: false, //以防意外并且只有清单外任务才会有这个
       listIndex: -1,
       todoIdIndex: "",
       listName: "",
@@ -498,14 +515,19 @@ export default {
       fileUrl: "",
       imageShow: false,
       modalImg: "",
+      loading: "",
       fileData: {},
       fileList: []
     };
   },
   watch: {
-    todoAdd(newV, oldV) {}
+    todoAdd(newV, oldV) {},
+    todoListAdd(newV) {
+      this.listAddModal = newV;
+    }
   },
   mounted() {
+    this.loading = this.$vs.loading({ type: "square" });
     let id = this.$route.query.id;
     this.projectId = id;
     this.getProjectDetail();
@@ -558,7 +580,7 @@ export default {
        * @这里的文件与保险箱中的文件为同一类
        * @但是多了一些标识
        */
-      console.log("sasa", this.fileData);
+      // console.log("sasa", this.fileData);
       if (Object.keys(this.fileData).length === 0) {
         this.$Message.error("尚未上传图片");
         return;
@@ -591,34 +613,39 @@ export default {
     },
     getProjectDetail() {
       projectApi.getProjectDetail(this.projectId).then(res => {
-        console.log("res", res);
+        // console.log("res", res);
         this.name = res.result.name;
         this.description = res.result.description;
         this.todoList = res.result.todoList.offList.todoList;
         for (let key in res.result.todoList) {
           if (key !== "offList") {
-            console.log("as");
             this.$set(this.every_list, key, res.result.todoList[key]);
           }
         }
+        console.log(this.every_list);
         this.scheduleList = res.result.scheduleList;
         this.fileList = res.result.fileList;
         this.tags = res.result.tags;
         this.remarks = res.result.remarks;
+        this.loading.close();
       });
     },
     showAddFolder() {
       this.fileModal = true;
     },
+    //清单外任务添加
     addDiv() {
       this.todoListAdd = false;
       setTimeout(() => {
         this.todoAdd = true;
       });
     },
+    //清单任务添加
     addListTodo(id) {
-      this.todoAdd = false;
+      console.log("清单ID", id);
+      // this.listAddModal=true
       this.list_id = id;
+      this.todoAdd = false;
       setTimeout(() => {
         this.todoListAdd = true;
       }, 10);
@@ -682,7 +709,6 @@ export default {
         this.$Message.error("请输入清单名");
         return;
       }
-
       projectApi.addList(p).then(res => {
         if (res.code === 0) {
           this.$Message.success("新建清单成功");
@@ -968,6 +994,7 @@ export default {
 .every-main-title {
   font-family: "Times New Roman", Times, serif;
   font-weight: bolder;
+  margin-left: 10px;
 }
 .every-padding {
   padding: 0 6px !important;

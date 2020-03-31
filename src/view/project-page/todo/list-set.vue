@@ -50,9 +50,9 @@
         <span class="ml-10 theme_font">(请谨慎切换)</span>
       </div>
       <!-- 其他操作 -->
-      <div class="mt-20 font-16">
-        <span class="option theme_font mr-20" @click="handleEdit">保存修改</span>
-        <span class="option-delete ml-20" @click="handleDelete">删除此清单</span>
+      <div class="mt-20 font-16 flex-row">
+        <vs-button style="width:120px" dashed success  class="font-bolder" @click="handleEdit">保存修改</vs-button>
+        <vs-button style="width:120px" dashed danger class=" font-bolder ml-20" @click="handleDelete">删除此清单</vs-button>
       </div>
     </div>
   </div>

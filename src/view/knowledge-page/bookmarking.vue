@@ -50,26 +50,31 @@
           @mouseover="getIndex(index)"
           @mouseleave="leaveIndex"
         >
-          <a class="every-router" :href="item.url" target="blank">
-            <div>
-              <div class="flex-all-center">
-                <Avatar v-if="item.imgUrl===''" :size="40" :username="item.title"></Avatar>
-                <img v-else :src="item.imgUrl" class="img-avatar" alt="图标" />
+          <div class="every-inner">
+            <a class="every-router" :href="item.url" target="blank">
+              <div>
+                <div class="flex-all-center">
+                  <Avatar v-if="item.imgUrl===''" :size="40" :username="item.title"></Avatar>
+                  <img v-else :src="item.imgUrl" class="img-avatar" alt="图标" />
+                </div>
+                <div class="every-title font-bolder">{{item.title}}</div>
+                <div class="every-title-2">
+                  <span
+                    class="option theme_font font-12 font-bolder"
+                    @click.stop.prevent="copy(item)"
+                  >链接</span>
+                  <span
+                    class="option theme_font ml-10 mr-10 font-12 font-bolder"
+                    @click.stop.prevent="openEditModal(item)"
+                  >编辑</span>
+                  <span
+                    class="option-delete font-12 font-bolder"
+                    @click.stop.prevent="deleteBookMarking(item._id)"
+                  >删除</span>
+                </div>
               </div>
-              <div class="every-title font-bolder">{{item.title}}</div>
-              <div class="every-title-2">
-                <span class="option theme_font font-12" @click.stop.prevent="copy(item)">链接</span>
-                <span
-                  class="option theme_font ml-10 mr-10 font-12"
-                  @click.stop.prevent="openEditModal(item)"
-                >编辑</span>
-                <span
-                  class="option-delete font-12"
-                  @click.stop.prevent="deleteBookMarking(item._id)"
-                >删除</span>
-              </div>
-            </div>
-          </a>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -150,6 +155,11 @@ export default {
       url: "",
       imgUrl: "",
       rell: [{ id: 1 }, { id: 2 }],
+      /**
+       * @再次声明
+       * @正页筛选用的是group
+       * @新增修改用的是group_id
+       */
       group_id: 0, // 为  正页面选择内容的 group_id
       group: 0, // 为新增修改是选择的group_id
       groupList: [], //分类列表，
@@ -157,7 +167,8 @@ export default {
       pageSize: 10,
       selectTitle: "",
       showIndex: -1,
-      bookMarking_id: 0
+      bookMarking_id: 0,
+      loading: ""
     };
   },
   watch: {
@@ -166,7 +177,11 @@ export default {
     // }
   },
   mounted() {
+    this.loading = this.$vs.loading({ type: "square" });
     this.getBookMarkingList();
+    setTimeout(() => {
+      this.loading.close();
+    }, 600);
   },
   methods: {
     getGroupList() {
@@ -175,7 +190,7 @@ export default {
       };
       commonApi.getGroupList(p).then(res => {
         this.groupList = res.result;
-      })
+      });
     },
     getBookMarkingList(val) {
       let p = {};
@@ -242,6 +257,13 @@ export default {
       };
       if (p.title === "") {
         this.$Message.error("请输入网址名");
+        return;
+      }
+      let url = new RegExp(
+        /^(((ht|f)tps?):\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/
+      );
+      if (!url.test(p.url)) {
+        this.$Message.error("请输入正确格式的URL");
         return;
       }
       if (this.group === null) {
@@ -315,12 +337,24 @@ export default {
         this.$Message.error("请输入网址名");
         return;
       }
-      if (this.group === null) {
+      let url = new RegExp(
+        /^(((ht|f)tps?):\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/
+      );
+      if (!url.test(p.url)) {
+        this.$Message.error("请输入正确格式的URL");
+        return;
+      }
+      if (this.group_id === null) {
         this.$Message.error("请选择分类");
         return;
       }
+      /**
+       * @再次声明
+       * @正页筛选用的是group
+       * @新增修改用的是group_id
+       */
       if (this.group !== 0) {
-        p.group_id = this.group_id;
+        p.group_id = this.group;
       }
       knowApi.editBookMarking(p).then(res => {
         if (res.code === 0) {
@@ -398,8 +432,11 @@ export default {
 }
 .every-book {
   display: inline-block;
-  margin: 10px 5px;
+  margin: 5px;
   width: 160px;
+}
+.every-inner {
+  padding: 10px;
 }
 .every-book :hover {
   background: #edf7f8;
@@ -421,8 +458,8 @@ export default {
 .every-title {
   text-align: center;
   margin-top: 10px;
-  color:black;
-  font-family: 'Times New Roman', Times, serif;
+  color: black;
+  font-family: "Times New Roman", Times, serif;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

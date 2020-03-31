@@ -47,20 +47,20 @@
             <router-link
               :to="{name:'project-view',query:{id:item._id}}"
               class="option default-ts theme_font"
-            >{{item.name}}</router-link>
+            >{{item.name | showSearch(keyword)}}</router-link>
             <div class="show-time">{{item.createdAt | showTime}}</div>
           </div>
           <div v-else-if="item.type==='任务清单'" class="flex-column">
             <router-link
               :to="{name:'list-detail',query:{list_id:item._id}}"
               class="option default-ts theme_font"
-            >{{item.name}}</router-link>
+            >{{item.name | showSearch(keyword)}}</router-link>
             <div>
               <span class="mr-10">任务集:</span>
               <router-link
                 :to="{name:'project-view',query:{id:item.project_id}}"
                 class="option default-ts"
-              >{{item.projectName}}</router-link>
+              >{{item.projectName }}</router-link>
             </div>
             <div class="show-time">{{item.createdAt | showTime}}</div>
           </div>
@@ -68,7 +68,7 @@
             <router-link
               :to="{name:'todo-detail',query:{todo_id:item._id}}"
               class="option default-ts theme_font"
-            >{{item.name}}</router-link>
+            >{{item.name | showSearch(keyword)}}</router-link>
             <div>
               <span class="mr-10">任务集:</span>
               <router-link
@@ -82,7 +82,7 @@
             <router-link
               :to="{name:'todo-detail',query:{todo_id:item._id}}"
               class="option default-ts theme_font"
-            >{{item.name}}</router-link>
+            >{{item.name | showSearch(keyword)}}</router-link>
             <div>
               <span class="mr-10">任务清单:</span>
               <router-link
@@ -100,7 +100,7 @@
             <div class="show-time">{{item.createdAt | showTime}}</div>
           </div>
           <div v-else-if="item.type==='子任务'" class="flex-column">
-            <span class="option default-ts theme_font">{{item.name}}</span>
+            <span class="option default-ts theme_font">{{item.name | showSearch(keyword)}}</span>
             <div>
               <span class="mr-10">父任务:</span>
               <router-link
@@ -143,8 +143,15 @@ export default {
   filters: {
     showTime(val) {
       return moment(val).format("MM月DD日");
+    },
+    showSearch(val, keyword) {
+      return val;
+      //   return val
+      //     .split(keyword)
+      //     .join('<span class="hightLight">' + keyword + "</span>");
     }
   },
+  computed: {},
   methods: {
     getContent() {
       let p = {
@@ -211,9 +218,9 @@ export default {
   padding: 0 24px;
 }
 .search-type {
-    color: #242424;
+  color: #242424;
   font-weight: bolder;
-//   font-size: 16px;
+  //   font-size: 16px;
 }
 .default-ts {
   color: #242424;
@@ -222,5 +229,8 @@ export default {
 .show-time {
   color: gray;
   font-size: 13px;
+}
+.hightLight {
+  border: 1px solid blue;
 }
 </style>

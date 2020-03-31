@@ -188,6 +188,11 @@ export default {
         this.$Message.warning("请输入邮箱");
         return;
       }
+         let mail =new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/)
+      if(!mail.test(p.email)){
+        this.$Message.error("请输入正确的邮箱格式")
+        return
+      }
       userApi.sendReCode(p).then(res => {
         if (res.code === 0) {
           //发送验证码开始倒计时
@@ -199,6 +204,7 @@ export default {
               this.codeTime = 60;
               this.codeState = 0;
               this.stopVerify = false;
+              clearInterval()
               return;
             }
           }, 1000);

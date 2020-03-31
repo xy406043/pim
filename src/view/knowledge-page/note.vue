@@ -169,7 +169,7 @@ export default {
       this.$router.push({ name: "note-view", query: { id: id } });
     },
     tell(val) {
-      console.log(val);
+      // console.log(val);
     },
     toGroupSet(){
       this.$router.push({

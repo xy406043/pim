@@ -199,7 +199,7 @@ export default {
       projectApi.editProject(p).then(res => {
         if (res.code === 0) {
           this.$Message.success(
-            res.result.collected ? "收藏成功" : "解除收藏成功"
+            (!item.collected) ? "收藏成功" : "解除收藏成功"
           );
           this.getProjectList();
         }

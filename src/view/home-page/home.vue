@@ -94,9 +94,9 @@
         <b class="content-title">最近网址收藏</b>
         <div class="content-c flex-column">
           <div class="column-center mb-10" v-for="item in limitBookMarkList" :key="item._id">
-            <Avatar v-if="item.imgUrl===''" :size="40" :username="item.title"></Avatar>
-            <img v-else :src="item.imgUrl" class="img-avatar" alt="图标" />
-            <a class="content-li option ml-10" :href="item.url" target="blank">{{item.title}}</a>
+            <Avatar v-if="item.imgUrl===''" class="mr-10" :size="40" :username="item.title"></Avatar>
+            <img v-else :src="item.imgUrl" class="img-avatar mr-10" alt="图标" />
+            <a class="content-li option" :href="item.url" target="blank">{{item.title}}</a>
           </div>
           <div>
             <span v-show="limitBookMarkList.length===5" class="option" @click="toBookMarking">查看更多</span>
