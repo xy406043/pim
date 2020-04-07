@@ -1,0 +1,278 @@
+/**
+* 本文件为全局通用样式
+*/
+
+//全局cursor
+// * {
+//   cursor: url(https://files.cnblogs.com/files/yjlblog/cursor.ico),auto;
+// }
+
+/**
+*自定义鼠标图标
+*
+*/
+
+// @cursor_ball:url("./cursor/cursor_default_gaitubao_32x32.png");
+// @cursor_pointer:url("./cursor/click_gaitubao_32x32.png");
+// * {
+//   cursor: @cursor_ball,auto;
+// }
+//文字层
+.font-bolder{font-weight: bolder !important;}
+.font-shadow{
+  text-shadow: 1px 2px 1px rgb(50, 219, 241)
+}
+.font-12 {
+  font-size: 12px;
+}
+.font-16{
+    font-size: 16px;
+}
+.font-14{
+    font-size: 14px;
+}
+.font-18{
+  font-size: 18px;
+}
+.font-20{
+    font-size: 20px;
+}
+.font-24{
+    font-size: 24px;
+}
+.font-32{
+  font-size: 32px;
+}
+.font-48{
+  font-size: 48px;
+}
+//颜色{
+.black{
+    color:#000000
+}
+//距离层
+.mr-5{
+  margin-right: 5px;
+}
+.mr-10 {
+  margin-right: 10px;
+}
+.mr-16 {
+  margin-right: 16px;
+}
+.mr-20 {
+  margin-right: 20px;
+}
+.mr-50{
+  margin-right: 50px;
+}
+.ml-2{
+  margin-left:2px;
+}
+.ml-5{
+  margin-left: 5px;
+}
+.ml-10 {
+  margin-left: 10px;
+}
+.ml-16 {
+  margin-left: 16px;
+}
+.ml-20 {
+  margin-left: 20px;
+}
+.ml-40{
+  margin-left:40px;
+}
+.ml-100{
+  margin-left:100px;
+}
+.ml-120{
+  margin-left:120px;
+}
+.mb-5{
+  margin-bottom: 5px;
+}
+.mb-10{
+  margin-bottom: 10px;
+}
+.mb-20{
+  margin-bottom:20px
+}
+.mt-5{
+  margin-top:5px;
+}
+.mt-10{
+  margin-top:10px;
+}
+.mt-20{
+  margin-top:20px;
+}
+.mt-30{
+  margin-top:30px;
+}
+.display-inline-block{
+  display: inline-block;
+}
+.text-left{
+  text-align:left;
+}
+// 宽度
+.min-width{
+  min-width:85px;
+  text-align:left;
+}
+.min-height{
+  min-height:80px;
+}
+.min-main-height{
+  min-height:400px;
+}
+
+.middle-width{
+  min-width:120px;
+  text-align: left;
+}
+.form-width{
+  min-width: 200px !important;
+
+}
+//相对位置
+.relative_zs{
+  display:relative;
+  top: 10px;
+  left:20px
+}
+//flex层
+.flex-row {
+  display: flex;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-space-round{
+  display: flex;
+  justify-content: space-around;
+}
+.column-center {
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+}
+.flex-start{
+  display: flex;
+  justify-content: flex-start;
+}
+.row-center{
+  display: flex;
+  justify-content: center;
+}
+.flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.flex-all-center{
+  // height:100%;
+  // width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+//hover样式
+.option {
+  cursor: pointer !important;
+  font-weight: 10px;
+}
+.option-disabled{
+  cursor: not-allowed !important;
+  font-weight: 10px;
+  color: gray;
+}
+.option-delete{
+  cursor: pointer !important;
+  font-weight: 10px;
+  color:red;
+}
+.option-disabled{
+  cursor: not-allowed;
+  color:rgb(211, 211, 211);
+}
+
+// 页面设置
+body {
+  // height: 100%;
+  // width: 100%;
+  position: relative;
+}
+
+
+.long_router {
+  width: 100%;
+  background: white;
+  min-height: 600px;
+}
+
+.short_router {
+  margin: 0 auto;
+  width: 962px;
+  border-radius: 5px;
+  min-height: 600px;
+  background: #ffffff;
+}
+
+// 黑白色主题
+@tabColor: #ffffff;
+.tab-icon {
+  .ivu-icon-md-add-circle {
+    font-size: 32px !important;
+  }
+  .ivu-icon {
+    color: @tabColor;
+    font-size: 18px;
+  }
+}
+.content-icon{
+  .ivu-icon {
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
+.font-s {
+  font-size: 12px;
+  color: @tabColor;
+  text-shadow: 12px 1px 10px #ff12af;
+}
+// .font-m {
+//   font-size: 16px;
+//   color: @tabColor;
+//   text-shadow: 12px 1px 10px #12ffb0;
+// }
+.font-l {
+  font-size: 24px;
+  color: @tabColor;
+  text-shadow: 12px 1px 10px #b8ff12;
+}
+
+// 组件层
+.button-common{
+  padding:5px 10px;
+  border-radius: 16px;
+
+
+}
+
+.horizontal{
+  padding:0
+}
