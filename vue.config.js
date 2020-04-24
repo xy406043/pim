@@ -48,9 +48,9 @@ module.exports = {
    * 但是某些不可以修改，比如publicPath
    */
   configureWebpack:{
-    // externals: {
-    //   "BMap": "BMap"  // package.json  bmap  用的地方不用引入
-    // },
+    externals: {
+      "BMap": "BMap"  // package.json  bmap  用的地方不用引入
+    },
     
   }
 }

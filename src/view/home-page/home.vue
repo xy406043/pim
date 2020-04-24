@@ -115,6 +115,7 @@
 import axios from "axios";
 import { commonApi, knowApi } from "@/api";
 import Avatar from "vue-avatar";
+import config from "@/config"
 var week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 export default {
   name: "home",
@@ -159,6 +160,7 @@ export default {
     };
   },
   async mounted() {
+   await this.getCity()
     const loading = this.$vs.loading({ type: "square" });
     setInterval(this.updateTime, 1000);
     await this.getWeather();
@@ -185,18 +187,18 @@ export default {
       });
     },
     getCity() {
-      // let _this=this
-      // const geolocation= new BMap.Geolocation()
-      // geolocation.getCurrentPosition(function getinfo(position ){
-      //   console.log("position",position.address)
-      //   _this.city =position.address.city
-      //   _this.province =position.address.province
-      //   _this.getWeather()
-      //   console.log("位置",_this.city)
-      // },function(e){
-      //   console.log(e)
-      //   _this.city="昆山"
-      // },{provider:'baidu'})
+      let _this=this
+      const geolocation= new BMap.Geolocation()
+      geolocation.getCurrentPosition(function getinfo(position ){
+        console.log("position",position.address)
+        _this.city =position.address.city
+        _this.province =position.address.province
+        _this.getWeather()
+        // console.log("位置",_this.city)
+      },function(e){
+        // console.log(e)
+        _this.city="昆山"
+      },{provider:'baidu'})
     },
     toScreen(val) {
       // 根据三种不同的条件进入不同的页面

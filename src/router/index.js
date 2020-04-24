@@ -28,6 +28,7 @@ const sCode = localStorage.getItem("sCode"); //是否输入过二级密码 true 
  * @param {问题：token存在，但是刷新页面会存在token被清除以致回到登录页面的问题}
  */
 const turnTo = (to, access, next) => {
+  // debugger
   // console.log("canturnTo",canTurnTo(to.name, access, routes))
   if (canTurnTo(to.name, access, routes)) next();
   // 有权限，可访问

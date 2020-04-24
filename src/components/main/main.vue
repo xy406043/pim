@@ -86,7 +86,7 @@ export default {
       localPath: "",
       scrollTopShow: false,
       screenHeight: 0,
-      whiteList: ["test", "note-view", "note-add", "todo-detail"],
+      whiteList: ["test", "note-view", "note-add", "todo-detail","blog","blog-add","blog-edit"],
       checkIs: false
     };
   },

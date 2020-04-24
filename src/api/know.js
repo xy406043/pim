@@ -196,11 +196,77 @@ export default {
     .then(resp => {
       return resp.data;
     });
-  }
+  },
   /**
    * @账单
    */
   /**
    * @便签
    */
+  /**
+   * @博客
+   */
+  getBlogList:(data) =>{
+    return axios.request({
+      url:"knowledge/getBlogList",
+      method:"post",
+      data
+    }).then(resp =>{
+      return resp.data
+    })
+  },
+  addBlog:(data) => {
+    return axios.request({
+      url:"knowledge/addBlog",
+      method:"post",
+      data
+    }).then(resp =>{
+      return resp.data
+    })
+  },
+  editBlog:(data) => {
+    return axios.request({
+      url:"knowledge/editBlog",
+      method:"post",
+      data
+    }).then(resp =>{
+      return resp.data
+    })
+  },
+  deleteBlog:(id) => {
+    return axios.request({
+      url:"knowledge/deleteBlog?id="+id,
+      method:"get",
+    }).then(resp =>{
+      return resp.data
+    })
+  },
+  getBlogDetail:(data) =>{
+    return axios.request({
+      url:"knowledge/getBlogList",
+      data,
+      method:"post"
+    }).then(resp =>{
+      return resp.data
+    })
+  },
+  addBlogTag:(data)=>{
+    return axios.request({
+      url:"knowledge/addBlogTag",
+      data,
+      method:"post"
+    }).then(resp =>{
+      return resp.data
+    })
+  },
+  editBlogTag:(data)=>{
+    return axios.request({
+      url:"knowledge/editBlogTag",
+      data,
+      method:"post"
+    }).then(resp =>{
+      return resp.data
+    })
+  }
+
 };

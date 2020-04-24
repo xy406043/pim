@@ -19,7 +19,8 @@ import axios from "@/libs/axios"
 import axios2 from "axios"
 import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css' //Vuesax styles
-
+import VueJsonp from "vue-jsonp"
+Vue.use(VueJsonp)
 
 Vue.use(Vuesax,{})
 Vue.prototype.$https=axios2  //此为使用第三方接口时使用
@@ -29,8 +30,9 @@ Vue.use(VCharts)
 Vue.use(VueClipboard)
 Vue.component('vue-simplemde', VueSimplemde)
 Vue.use(new VueSocketIO({
-  debug:true,
+  // debug:true,
   connection:'http://127.0.0.1:4000'
+  // connnection:'http:118.190.162.231:4000'
 }))
 Vue.config.productionTip = false
 
