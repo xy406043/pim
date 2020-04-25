@@ -31,7 +31,7 @@ Vue.use(VueClipboard)
 // Vue.component('vue-simplemde', VueSimplemde)
 Vue.use(new VueSocketIO({
   // debug:true,
-  connection:'http://127.0.0.1:4000'
+  connection:(process.env.VUE_APP_CURRENTMODE==="production")?'http:118.190.162.231:4000':'http://127.0.0.1:4000'
   // connnection:'http:118.190.162.231:4000'
 }))
 Vue.config.productionTip = false
