@@ -2,8 +2,8 @@
   <div v-show="todoAdd" class="thisAdd">
     <div class="flex-row mb-20">
       <div class="mr-10 column-center min-width font-bolder">任务标题:</div>
-      <div class="form-width">
-        <Input v-model="todoName" placeholder="输入任务标题"></Input>
+      <div class="long-width" style="width:100%">
+        <Input style="width:100%" v-model="todoName" placeholder="输入任务标题"></Input>
       </div>
     </div>
     <div v-if="isOuter" class="flex-row mb-20 mt-20">
@@ -329,5 +329,8 @@ export default {
 .thisTel {
   max-height: 340px;
   overflow: scroll;
+}
+.long-width{
+  width:100%;
 }
 </style>
