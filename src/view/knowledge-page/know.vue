@@ -22,6 +22,13 @@
         </div>
         <div class="code-font mt-10 font-bolder">日记本</div>
       </div>
+        <div class="password mr-20 mb-20 option" @click="toBlog">
+        <div>
+          <img class="every-image" src="../../assets/images/blog.png" />
+          <!-- <Icon size="80" class="code-border" type="md-book" /> -->
+        </div>
+        <div class="code-font mt-10 font-bolder">博客管理</div>
+      </div>
       <div class="password mr-20 mb-20 option" @click="toAddress">
         <div>
           <!-- <Icon size="80" class="code-border" type="md-people" /> -->
@@ -57,6 +64,9 @@ export default {
   methods: {
     toNote() {
       this.$router.push({ name: "note" });
+    },
+    toBlog(){
+          this.$router.push({name:"blog"})
     },
     toAddress() {
       this.$router.push({ name: "address-book" });

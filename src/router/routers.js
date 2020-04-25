@@ -181,6 +181,21 @@ export default [
         component: () => import("@/view/knowledge-page/note-view.vue")
       },
       {
+        path:"blog",
+        name:"blog",
+        component: () => import("@/view/knowledge-page/blog.vue")
+     },
+     {
+      path: "blog-add",
+      name: "blog-add",
+      component: () => import("@/view/knowledge-page/blog-add.vue")
+    },
+    {
+      path: "blog-view",
+      name: "blog-view",
+      component: () => import("@/view/knowledge-page/blog-view.vue")
+    },
+      {
         path:"label",
         name:"label",
         component:() => import ("@/view/knowledge-page/label")
