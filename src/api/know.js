@@ -241,11 +241,10 @@ export default {
       return resp.data
     })
   },
-  getBlogDetail:(data) =>{
+  getBlogDetail:(id) =>{
     return axios.request({
-      url:"knowledge/getBlogList",
-      data,
-      method:"post"
+      url:"knowledge/getBlogInfo?id="+id,
+      method:"get"
     }).then(resp =>{
       return resp.data
     })

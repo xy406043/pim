@@ -10,7 +10,7 @@ import config from "@/config"
 import "../public/common.less"
 import "../public/callTheme.less"
 import "../public/xy.less"
-import VueSimplemde from 'vue-simplemde'
+// import VueSimplemde from 'vue-simplemde'
 import 'simplemde/dist/simplemde.min.css'
 import VueClipboard from 'vue-clipboard2'  //复制
 import VCharts from "v-charts"
@@ -28,7 +28,7 @@ Vue.prototype.$axios=axios
 Vue.use(ViewUI);
 Vue.use(VCharts)
 Vue.use(VueClipboard)
-Vue.component('vue-simplemde', VueSimplemde)
+// Vue.component('vue-simplemde', VueSimplemde)
 Vue.use(new VueSocketIO({
   // debug:true,
   connection:'http://127.0.0.1:4000'

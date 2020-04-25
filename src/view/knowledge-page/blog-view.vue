@@ -1,5 +1,5 @@
 <template>
-  <div class="thisView">
+  <div class="thisAdd">
     <!-- 标题 -->
     <div class="tabn flex-space-between column-center">
       <div>
@@ -7,7 +7,6 @@
         <router-link to="blog" class="title-back option ml-10 mr-10">我的博客管理</router-link>
       </div>
       <div>
-        <!-- <span class="option ml-10 mr-20" @click="addBlog">新增笔记</span> -->
         <a
           href="https://www.zybuluo.com/mdeditor"
           target="_blank"
@@ -17,41 +16,93 @@
     </div>
     <Divider />
     <div class="add-content">
-      <div class="flex-row">
-        <div class="min-width">
-          <b>标题</b>
-        </div>
+      <div class="flex-row column-center font-bolder">
+        <div class="min-width">标题:</div>
         <Input v-model="title" placeholder="输入标题"></Input>
       </div>
-      <div class="flex-row mt-20 column-center flex-space-between">
-        <div class="mb-20 flex-row column-center">
-          <span class="min-width">
-            <b class="mr-20">选择分类</b>
-          </span>
-          <span class="ml-10 flex-row form-width">
+      <div class="flex-row column-center font-bolder show-add">
+            <div class="min-width">是否展示:</div>
+        <div class="column-center">
+            <RadioGroup v-model="isShow">
+                <Radio :label="1">是</Radio>
+                <Radio :label="0">否</Radio>
+            </RadioGroup>
+        </div>
+        <div class="min-width ml-20">是否转载:</div>
+        <div class="column-center">
+            <RadioGroup v-model="isReproduced">
+                <Radio :label="1">是</Radio>
+                <Radio :label="0">否</Radio>
+            </RadioGroup>
+        </div>
+        <div v-show="isReproduced" class="min-width ml-20">作者:</div>
+        <div v-show="isReproduced" class="form-width">
+          <Input placeholder="作者" v-model="author"></Input>
+        </div>
+        <div v-show="isReproduced" class="min-width ml-20">转载链接:</div>
+        <div v-show="isReproduced">
+          <Input placeholder="输入转载链接" v-model="reproduceUrl"></Input>
+        </div>
+      </div>
+      <!-- 展示目前所有标签 -->
+      <div class="flex-row column-center font-bolder "></div>
+      <div class="flex-row font-bolder column-center mt-20">
+        <div class="min-width">新建标签:</div>
+        <div class="form-width">
+          <Input class="form-width" placeholder="新建标签" v-model="newTag"></Input>
+        </div>
+        <div class="min-width ml-20">新标签颜色:</div>
+        <div class="form-width">
+          <ColorPicker v-model="newTagColor" />
+        </div>
+        <div>
+          <Button type="default" @click="addNewTag">确定</Button>
+        </div>
+      </div>
+      <div class="flex-space-between column-center">
+        <div class="flex-row mt-20 font-bolder column-center">
+          <div class="min-width column-center">
+            <b>选择分类:</b>
+          </div>
+          <div class="form-width">
             <Select v-model="group_id" filterable allow-create @on-create="createGroup">
-              <Option :value="0">默认分组</Option>
               <Option v-for="item in groupList" :value="item._id" :key="item._id ">{{item.name}}</Option>
             </Select>
-          </span>
+          </div>
+          <div class="min-width ml-20">标签展示:</div>
+          <div>
+            <Tag
+              v-for="(item,index) in newTags"
+              type="border"
+              closable
+              :color="item.color"
+              :key="index"
+              @on-close="handleClose(index)"
+            >{{item.name}}</Tag>
+          </div>
         </div>
-        <div class="column-center">
+        <div style="text-align:right" class="column-center">
           <vs-button style="width:150px" success floating @click="editBlog">保存</vs-button>
         </div>
       </div>
-      <div></div>
-      <MavonEditor ref="mavon" :originText="content" @getEditor="getContent"></MavonEditor>
-    </div>
-    <div style="margin-top:20px;text-align:right" class="mr-50">
-      此Markdown编辑器为:
-      <span class="theme_font">mavon-editor</span>
+      <div class="textborder mt-20">
+        <MavonEditor ref="mavon" :originText="content" @getEditor="getContent"></MavonEditor>
+      </div>
+      <div style="margin-top:20px;text-align:right" class="mr-50">
+        此Markdown编辑器为:
+        <span class="theme_font">mavon-editor</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+/**
+ * @description 新增日记
+ */
 import { knowApi, commonApi } from "@/api";
 import MavonEditor from "_c/editor/mavon-editor";
+
 export default {
   name: "blog-view",
   components: {
@@ -59,17 +110,29 @@ export default {
   },
   data() {
     return {
-      blog_id: "",
       title: "",
       content: "",
+      group_id: 0, //选择的分类  默认分类
+      groupList: [], //所有分类
       m_content: "1212",
       h_content: "",
-      group_id: 0, //选择的分类  默认分类
-      groupList: [] //所有分类
+      author: "",
+      isReproduced: 0, //是否转载
+      isShow:1, //是否展示
+      reproduceUrl: "", //转载链接
+      tags: [], //博客管理中所有标签
+      thisTags: [], //当前选中的所有标签
+      newTag: "", //当前新建
+      newTagColor: "#20F5E5",
+      newTags: [], //新建的标签
+      group_id:0,
+      groupList:[]
+
     };
   },
   mounted() {
-    this.blog_id = this.$route.query.id;
+     this.blog_id = this.$route.query.id;
+     console.log(this.blog_id)
     /***
      * @获取分类的接口要比获取详情的接口先
      * @不然详情的ID无法渲染到Select组件上
@@ -85,6 +148,19 @@ export default {
       this.h_content = html;
       this.content = markdown;
     },
+     getBlogDetail() {
+      knowApi.getBlogDetail(this.blog_id).then(res => {
+        this.title = res.result.title;
+        this.group_id = res.result.group_id._id;
+        this.newTags =res.result.tag
+        this.isShow =res.result.isShow
+        this.isReproduced =res.result.isReproduced
+        this.reproduceUrl =res.result.reproduceUrl || ''
+        this.author  =res.result.author || ''
+        this.content = res.result.content;
+        this.$refs.mavon.putContent(this.content);
+      });
+    },
     getGroupList() {
       let p = {
         groupType: 3
@@ -93,25 +169,7 @@ export default {
         this.groupList = res.result;
       });
     },
-    getBlogDetail() {
-      knowApi.getBlogDetail(this.blog_id).then(res => {
-        this.title = res.result.title;
-        // this.group_id = res.result.group_id || '0';
-        if (res.result.group_id) {
-          this.group_id = res.result.group_id;
-          console.log("id", this.group_id);
-        } else {
-          this.group_id = 0;
-        }
-        this.content = res.result.content;
-        this.$refs.mavon.putContent(this.content);
-      });
-    },
     createGroup(val) {
-      this.groupList.push({
-        _id: "asa",
-        name: val
-      });
       let p = {
         groupType: 3,
         name: val
@@ -120,21 +178,52 @@ export default {
         this.getGroupList();
       });
     },
-    getGroupID(id) {
-      this.group_id = id;
+    addNewTag() {
+      for (let item of this.tags) {
+        if (item.name === this.newTag) {
+          return;
+        }
+      }
+      for (let item of this.newTags) {
+        if (item.name === this.newTag) {
+          return;
+        }
+      }
+      if (this.newTag === "") return;
+      let newV = {
+        name: this.newTag,
+        color: this.newTagColor
+      };
+      knowApi.addBlogTag(newV).then(res => {
+        if (res.code === 0) {
+          newV["_id"] = res.result.id;
+          this.newTags.push(newV);
+          this.newTag = "";
+          console.log(this.newTags);
+        }
+      });
     },
+    handleClose(index) {
+      this.newTags.splice(index, 1);
+    },
+    editTags() {},
     editBlog() {
       let p = {
+        blog_id:this.blog_id,
         title: this.title,
         content: this.content,
-        blog_id: this.blog_id
+        isShow:this.isShow,
+        isReproduced:this.isReproduced,
       };
+      if(p.isReproduced){
+          p.reproduceUrl=this.reproduceUrl
+          p.author = this.author
+      }
       if (p.title == "") {
         this.$Message.error("请输入标题");
         return;
       }
-
-        if (
+      if (
         this.group_id === "0" ||
         this.group_id === 0 ||
         this.group_id === undefined
@@ -143,10 +232,15 @@ export default {
         return;
       }
       p.group_id = this.group_id;
+      let tag =[]
+      for(let item of this.newTags){
+          tag.push(item._id)
+      }
+      p['tag']=tag
       knowApi.editBlog(p).then(res => {
         if (res.code === 0) {
-          this.$Message.success("编辑成功");
-          this.getBlogDetail();
+          this.$Message.success("新增成功");
+          this.$router.push({ name: "blog" });
           return;
         }
       });
@@ -156,7 +250,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.thisView {
+.thisAdd {
   // padding: 20px;
   .ivu-divider-horizontal {
     margin: 0;
@@ -170,8 +264,11 @@ export default {
 .title-back {
   color: black;
 }
-.textarea {
-  height: 400px;
+.textborder {
+  // border:1px solid #000000;
+}
+.thisText {
+  height: 402px;
   border: none;
   width: 100%;
   /* 首行退两格 */
@@ -185,5 +282,11 @@ export default {
 }
 .add-content {
   padding: 24px;
+}
+.long-arrow {
+  width: 40px;
+}
+.show-add{
+    height:60px;
 }
 </style>

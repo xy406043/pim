@@ -37,7 +37,7 @@
         </div>
         <div v-show="isReproduced" class="min-width ml-20">作者:</div>
         <div v-show="isReproduced" class="form-width">
-          <Input placeholder="作者" v-model="reproduceUrl"></Input>
+          <Input placeholder="作者" v-model="author"></Input>
         </div>
         <div v-show="isReproduced" class="min-width ml-20">转载链接:</div>
         <div v-show="isReproduced">
@@ -78,7 +78,7 @@
               :color="item.color"
               :key="index"
               @on-close="handleClose(index)"
-            >{{item.value}}</Tag>
+            >{{item.name}}</Tag>
           </div>
         </div>
         <div style="text-align:right" class="column-center">
@@ -124,7 +124,7 @@ export default {
       thisTags: [], //当前选中的所有标签
       newTag: "", //当前新建
       newTagColor: "#20F5E5",
-      newTags: [] //新建的标签
+      newTags: [] ,//新建的标签
     };
   },
   mounted() {
@@ -155,23 +155,23 @@ export default {
     },
     addNewTag() {
       for (let item of this.tags) {
-        if (item.value === this.newTag) {
+        if (item.name === this.newTag) {
           return;
         }
       }
       for (let item of this.newTags) {
-        if (item.value === this.newTag) {
+        if (item.name === this.newTag) {
           return;
         }
       }
       if (this.newTag === "") return;
       let newV = {
-        value: this.newTag,
+        name: this.newTag,
         color: this.newTagColor
       };
       knowApi.addBlogTag(newV).then(res => {
         if (res.code === 0) {
-          newV["id"] = res.result.id;
+          newV["_id"] = res.result.id;
           this.newTags.push(newV);
           this.newTag = "";
           console.log(this.newTags);
@@ -208,7 +208,7 @@ export default {
       p.group_id = this.group_id;
       let tag =[]
       for(let item of this.newTags){
-          tag.push(item.id)
+          tag.push(item._id)
       }
       p['tag']=tag
       knowApi.addBlog(p).then(res => {

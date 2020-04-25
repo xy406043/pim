@@ -36,26 +36,37 @@
         </div>
         <!-- 日记循环 -->
         <Divider class="myDivider" />
-        <div
+        <!-- <div
           v-for="(item,index) in blogList"
           :key="item._id"
           class="column-center every-blog flex-space-between"
           @mouseover="getIndex(index)"
           @mouseleave="leaveIndex(index)"
         >
-          <!-- 左边 标题 信息 分类 -->
           <div class="flex-row">
             <span class="ml-10 mr-20 font-18">{{(currentPage-1)*pageSize+index+1+'.'}}</span>
             <div class="option font-18 every-ts font-bolder" @click="toDetail(item._id)">{{item.title}}</div>
           </div>
-          <!-- 右边  时间操作 -->
           <div>
             <span v-show="index===showIndex" class="mr-20">
               <span class="option-delete" @click="deleteBlog(item._id)">删除</span>
             </span>
             <span class="font-16" style="color:gray">{{item.createdAt | showTime}}</span>
           </div>
-        </div>
+        </div> -->
+        <Table :data="blogList" :columns="columns" :height="tableHeight">
+              <template slot-scope="{row,index}" slot="index">{{(currentPage-1)*pageSize+index+1+'.'}}</template>
+              <template slot-scope="{row,index}" slot="group">{{row.group_id.name}}</template>
+              <template slot-scope="{row,index}" slot="isShow">{{row.isShow?"是":""}}</template>
+              <template slot-scope="{row,index}" slot="isReproduced">{{row.isReproduced?"是":""}}</template>
+              <template slot-scope="{row,index}" slot="tag">
+                <Tag v-for="item in row.tag" :key="item._id" :color="item.color">{{item.name}}</Tag>
+              </template>
+              <template slot-scope="{row,index}" slot="createdAt" >{{row.createdAt | showTime}}</template>
+              <template slot-scope="{row,index}" slot="operate">
+                <span class="option theme_font font-bolder"  @click="toDetail(row._id)">编辑</span>  <span class="ml-20 font-bolder option-delete"  @click="deleteBlog(row._id)">删除</span>
+              </template>
+        </Table>
         <Page
           :currentPage.sync="currentPage"
           :totalCount="totalCount"
@@ -89,7 +100,19 @@ export default {
       groupList: [],
       totalCount: 0,
       currentPage: 1,
-      pageSize: 10
+      pageSize: 10,
+      tableHeight:0,
+      columns:[
+        {title:"序号",slot:"index",align:"center"},
+        {title:"标题",key:"title",align:"center"}, 
+        {title:"分类",slot:"group",align:"center"},
+        {title:"展示",slot:"isShow",align:"center"},
+        {title:"转载",slot:"isReproduced",align:"center"},
+        {title:"作者",key:"author",align:"center"},
+        {title:"标签",slot:"tag",align:"center"},
+        {title:"时间",slot:"createdAt",align:"center"},
+        {title:"操作",slot:"operate",align:"center"}
+      ]
     };
   },
   filters: {
@@ -101,6 +124,12 @@ export default {
      */
   },
   mounted() {
+    console.log(window.innerHeight)
+    
+        this.tableHeight = window.innerHeight - 280;
+    window.onresize = () => {
+      this.tableHeight = window.innerHeight - 280;
+    };
     this.getBlogList();
     this.getGroupList();
   },
@@ -171,7 +200,7 @@ export default {
       this.$router.push({
         name:"group-set",
         query:{
-          groupType:1
+          groupType:3
         }
       })
     }
