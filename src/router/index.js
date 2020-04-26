@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 Vue.use(ViewUI);
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes
 });
