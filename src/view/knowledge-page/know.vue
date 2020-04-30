@@ -6,15 +6,14 @@
     </div>
     <Divider style="margin:0;background:#000000" />
     <div class="allContent">
-        <Poptip trigger="hover" content="暂不支持" placement="left">
+        <!-- <Poptip trigger="hover" content="暂不支持" placement="left">
       <div class="password mr-20 mb-20 option-disabled">
         <div>
           <img class="every-image" src="../../assets/images/customize.png" />
-          <!-- <Icon size="80" class="code-border" type="md-book" /> -->
         </div>
         <div class="code-font mt-10">自定义</div>
       </div>
-      </Poptip>
+      </Poptip> -->
       <div class="password mr-20 mb-20 option" @click="toNote">
         <div>
           <img class="every-image" src="../../assets/images/diary.png" />

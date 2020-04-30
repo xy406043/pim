@@ -20,6 +20,14 @@
         <div class="min-width">标题:</div>
         <Input v-model="title" placeholder="输入标题"></Input>
       </div>
+      <div class="flex-row column-center font-bolder mt-20">
+        <UploadImage :title="mainUrl?'重新上传':'上传主图'" :changeUrl.sync="mainUrl" @urlChange="getMainImage" ></UploadImage>
+        <div class="image-outer">
+        <img class="main-image" :src="mainUrl"></img>
+        <!-- <img v-else class="main-image" src="http://xynagisa.xyz/1584454551136_WX20200317-221528.png"></img> -->
+        </div>
+        <div class="clear-image option" v-if="mainUrl"  @click="clearImage">清除主图</div>
+      </div>
       <div class="flex-row column-center font-bolder show-add">
             <div class="min-width">是否展示:</div>
         <div class="column-center">
@@ -102,11 +110,12 @@
  */
 import { knowApi, commonApi } from "@/api";
 import MavonEditor from "_c/editor/mavon-editor";
-
+import UploadImage from "../../components/self-page/upload"
 export default {
   name: "blog-add",
   components: {
-    MavonEditor
+    MavonEditor,
+    UploadImage
   },
   data() {
     return {
@@ -125,6 +134,7 @@ export default {
       newTag: "", //当前新建
       newTagColor: "#20F5E5",
       newTags: [] ,//新建的标签
+      mainUrl:"", //blog主图
     };
   },
   mounted() {
@@ -135,6 +145,12 @@ export default {
       this.m_content = markdown;
       this.h_content = html;
       this.content = markdown;
+    },
+    getMainImage(url){
+      this.mainUrl = url
+    },
+    clearImage(){
+     this.mainUrl=''
     },
     getGroupList() {
       let p = {
@@ -188,6 +204,7 @@ export default {
         content: this.content,
         isShow:this.isShow,
         isReproduced:this.isReproduced,
+        mainUrl:this.mainUrl
       };
       if(p.isReproduced){
           p.reproduceUrl=this.reproduceUrl
@@ -203,6 +220,10 @@ export default {
         this.group_id === undefined
       ) {
         this.$Message.error("请选择分类");
+        return;
+      }
+      if(this.mainUrl===''){
+        this.$Message.error("请上传主图");
         return;
       }
       p.group_id = this.group_id;
@@ -262,5 +283,17 @@ export default {
 }
 .show-add{
     height:60px;
+}
+.image-outer{
+    margin-left:200px;
+}
+.main-image{
+  max-height:200px;
+  max-width: 300px;
+}
+.clear-image{
+  margin-left:200px;
+  font-size: 16px;
+  font-weight: bolder;
 }
 </style>
