@@ -57,6 +57,7 @@
         <Table :data="blogList" :columns="columns" :height="tableHeight">
               <template slot-scope="{row,index}" slot="index">{{(currentPage-1)*pageSize+index+1+'.'}}</template>
               <template slot-scope="{row,index}" slot="group">{{row.group_id.name}}</template>
+              <template slot-scope="{row,index}" slot="mainUrl"><img v-if="row.mainUrl" class="blog-image" :src="row.mainUrl"  ></img> </template>
               <template slot-scope="{row,index}" slot="isShow">{{row.isShow?"是":""}}</template>
               <template slot-scope="{row,index}" slot="isReproduced">{{row.isReproduced?"是":""}}</template>
               <template slot-scope="{row,index}" slot="tag">
@@ -105,6 +106,7 @@ export default {
       columns:[
         {title:"序号",slot:"index",align:"center"},
         {title:"标题",key:"title",align:"center"}, 
+        {title:"主图",slot:"mainUrl",align:"center"},
         {title:"分类",slot:"group",align:"center"},
         {title:"展示",slot:"isShow",align:"center"},
         {title:"转载",slot:"isReproduced",align:"center"},
@@ -268,5 +270,9 @@ export default {
   text-overflow:ellipsis;
   max-width: 700px !important;
   font-family: 'Times New Roman', Times, serif;
+}
+.blog-image{
+  height:100px;
+  width: 100px;
 }
 </style>
