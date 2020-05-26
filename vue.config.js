@@ -39,6 +39,8 @@ module.exports = {
   },
   // 设为false打包时不生成.map文件
   productionSourceMap: false,
+  // productionGzip:true,
+  // productionGzipExtensions: ['js', 'css','svg'],
   // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
   // devServer: {
   //   proxy: 'localhost:3000'
@@ -49,8 +51,11 @@ module.exports = {
    */
   configureWebpack:{
     externals: {
-      "BMap": "BMap"  // package.json  bmap  用的地方不用引入
-    },
-    
+      "BMap": "BMap",  // package.json  bmap  用的地方不用引入
+      // "vue","vue",
+      // "vue-router","vueRouter",
+      // "vuex":"vuex",
+      // "axios":"axios"
+    }
   }
 }

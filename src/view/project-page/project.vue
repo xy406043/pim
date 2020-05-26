@@ -44,8 +44,8 @@
       <!-- 全部任务集---网格类型 -->
       <div v-show="tabValue===1"></div>
       <!-- 全部任务集---列表类型 -->
-      <div v-show="tabValue===2">
-        <Divider style="background:black" />
+      <div v-show="tabValue===2" >
+      <div class="grid-con" >
         <div v-for="(item,index) in projectList" :key="index">
           <div
             class="project-item column-center flex-space-between"
@@ -53,11 +53,11 @@
             @mouseleave="moveDown(index)"
             @click="toProjectDetail(item._id)"
           >
-            <div>
-              <strong
-                class="font-18 black option ml-10 mr-10"
+            <div class="column-center">
+              <span
+                class="font-18 black option ml-10 mr-10 every-title"
                 @click="toProjectDetail(item._id)"
-              >{{item.projectName}}</strong>
+              >{{item.projectName}}</span>
               <span @click.stop="editCollected(item)">
                 <Icon
                   class="option"
@@ -86,6 +86,7 @@
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
 
@@ -264,6 +265,24 @@ export default {
 .project-item {
   height: 52px;
   border-bottom: 1px solid gray;
+  .every-title{
+    display: inline-block;
+    width:126px !important;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    word-break:break-all;
+    font-family:'Times New Roman', Times, serif;
+    font-weight:bolder;
+
+  }
+  .every-title::before{
+    content:"\1F40B"
+  }
+  .every-title:hover{
+     text-decoration: underline;
+     text-decoration-style: wavy;
+  }
 }
 .project-item:hover {
   background: #eff7fa;
@@ -286,5 +305,10 @@ export default {
 }
 .modal-button{
   margin-top: 20px;
+}
+.grid-con{
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+grid-template: auto;
 }
 </style>

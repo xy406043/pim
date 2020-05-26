@@ -437,6 +437,7 @@ export default {
       projectApi.getTodoDetail(this.todo_id).then(res => {
         let result = res.result;
         this.name = result.name ? result.name : "";
+        document.title= "任务："+this.name
         this.content = result.description;
         this.$refs.mavon.putContent(this.content);
         this.startAt = result.startAt;

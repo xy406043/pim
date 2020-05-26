@@ -15,10 +15,10 @@
     <div class="clock">
       <div class="date">{{date}}</div>
       <div class="time">{{time}}</div>
-      <div class="font">归于自己，自在生活</div>
+      <div class="font">人生一世，自在生活</div>
     </div>
     <div class="el-looo" style="display:inline-block;float:right">
-      <img class="header-img" src="../../../public/img/favicon.png" alt="tel" />
+      <img class="header-img" src="http://xynagisa.xyz/3E1FC9B575243BE1BBE464F1D7DBF8FD_1590475736477.jpg" alt="tel" />
     </div>
     <!-- 任务层 -->
     <div>
@@ -67,7 +67,7 @@
     <div class="thisContent">
       <!-- 日记 -->
       <div class="content">
-        <b class="content-title">最近日记</b>
+        <b class="content-title" v-if="limitNoteList.length>0">最近日记</b>
         <div class="content-c flex-column">
           <div v-for="item in limitNoteList" :key="item._id">
             <div class="content-li option" @click="toEveryNote(item)">{{item.title}}</div>
@@ -79,7 +79,7 @@
       </div>
       <!-- 通讯录 -->
       <div class="content">
-        <b class="content-title">New联系人</b>
+        <b class="content-title" v-if="limitAddressList.length>0">联系人</b>
         <div class="content-c flex-column">
           <div class="content-li option" v-for="item in limitAddressList" :key="item._id">
             <div class="content-li option" @click="toEveryAddress(item)">{{item.name}}</div>
@@ -91,7 +91,7 @@
       </div>
       <!-- 网址收藏 -->
       <div class="content">
-        <b class="content-title">最近网址收藏</b>
+        <b class="content-title" v-if="limitBookMarkList.length>0">最近网址收藏</b>
         <div class="content-c flex-column">
           <div class="column-center mb-10" v-for="item in limitBookMarkList" :key="item._id">
             <Avatar v-if="item.imgUrl===''" class="mr-10" :size="40" :username="item.title"></Avatar>

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// const Vue = require("vue")
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
@@ -21,7 +22,7 @@ import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import VueJsonp from "vue-jsonp"
 Vue.use(VueJsonp)
-
+// const  axios2 = require("axios")
 Vue.use(Vuesax,{})
 Vue.prototype.$https=axios2  //此为使用第三方接口时使用
 Vue.prototype.$axios=axios

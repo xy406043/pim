@@ -41,7 +41,9 @@
     <div class="my-scrolltop" v-show="scrollTopShow" @click="scrollTop">
       <img class="scrollimg" src="http://xynagisa.xyz/上.png" />
     </div>
+    <!--
     <audio controls="controls" hidden src="../../assets/2.mp3" ref="audio"></audio>
+    -->
     <footer style="height:100px" class="footerT">苏ICP备20011251号-1</footer>
   </div>
 </template>
@@ -61,7 +63,7 @@ import Cookies from "js-cookie";
  * @小人所在的static需要与html同级
  * @不知为什么我这里必须引入
  */
-import "../../../public/static/live2dw/lib/L2Dwidget.0.min.js";
+// import "../../../public/static/live2dw/lib/L2Dwidget.0.min.js";
 export default {
   /**
    * mixin混入
@@ -141,22 +143,22 @@ export default {
     //   })();
     // };
     window.addEventListener("scroll", this.scrollWindow);
-    setTimeout(() => {
-      window.L2Dwidget.init({
-        pluginRootPath: "../../../static/live2dw/",
-        pluginJsPath: "lib/",
-        pluginModelPath: "live2d-widget-model-koharu/assets/",
-        tagMode: false,
-        debug: false,
-        model: {
-          jsonPath:
-            "../../../static/live2dw/live2d-widget-model-koharu/assets/koharu.model.json"
-        },
-        display: { position: "left", width: 150, height: 300 },
-        mobile: { show: true },
-        log: false
-      });
-    }, 1000);
+    // setTimeout(() => {
+    //   window.L2Dwidget.init({
+    //     pluginRootPath: "../../../static/live2dw/",
+    //     pluginJsPath: "lib/",
+    //     pluginModelPath: "live2d-widget-model-koharu/assets/",
+    //     tagMode: false,
+    //     debug: false,
+    //     model: {
+    //       jsonPath:
+    //         "../../../static/live2dw/live2d-widget-model-koharu/assets/koharu.model.json"
+    //     },
+    //     display: { position: "left", width: 150, height: 300 },
+    //     mobile: { show: true },
+    //     log: false
+    //   });
+    // }, 1000);
   },
   mounted() {
     // 滚动事件
@@ -167,7 +169,7 @@ export default {
     this.parentPath = this.$route.matched[0].path;
     // console.log("当前路由",this.$route.path)
     // console.log("父路由", this.$route.matched[0].path);
-    this.judgeNotification();
+    // this.judgeNotification();
     this.getRealNotice();
     // this.monitor();
     /**
@@ -198,7 +200,7 @@ export default {
         }, 3000);
       } else {
         let msg = data.content;
-        this.monitor(msg);
+        // this.monitor(msg);
         setTimeout(() => {
           let token = Cookies.get("PimToken");
           this.sendMessage(token);
@@ -214,7 +216,7 @@ export default {
         }, 3000);
       } else {
         let msg = data.content;
-        this.monitor(msg);
+        // this.monitor(msg);
         setTimeout(() => {
           let token = Cookies.get("PimToken");
           this.sendTodoNotice(token);
