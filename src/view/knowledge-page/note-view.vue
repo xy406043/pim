@@ -101,6 +101,7 @@ export default {
     getNoteDetail() {
       knowApi.getNoteDetail(this.note_id).then(res => {
         this.title = res.result.title;
+        document.title= "日记："+ res.result.title
         // this.group_id = res.result.group_id || '0';
         if (res.result.group_id) {
           this.group_id = res.result.group_id;
