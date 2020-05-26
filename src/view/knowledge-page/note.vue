@@ -54,7 +54,7 @@
             <span v-show="index===showIndex" class="mr-20">
               <span class="option-delete" @click="deleteNote(item._id)">删除</span>
             </span>
-            <span class="font-16" style="color:gray">{{item.createdAt | showTime}}</span>
+            <span class="font-16 time-show" style="color:gray">{{item.createdAt | showTime}}</span>
           </div>
         </div>
         <Page
@@ -101,7 +101,7 @@ export default {
   },
   filters: {
     showTime(val) {
-      return moment(new Date(val)).format("M-D HH:mm");
+      return moment(new Date(val)).format("YYYY-M-D HH:mm");
     }
     /**
      * @此处无法调用VUE的this
@@ -243,5 +243,9 @@ export default {
   text-overflow:ellipsis;
   max-width: 700px !important;
   font-family: 'Times New Roman', Times, serif;
+}
+.time-show{
+  font-family:'Times New Roman', Times, serif;
+  font-weight: bolder;
 }
 </style>

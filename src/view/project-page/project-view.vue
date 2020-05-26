@@ -100,10 +100,17 @@
               <span class="ml-20">建立任务，明确成员工作目标</span>
             </div>
             <div v-else style="width:100%">
-              <b class="mt-20 font-18 theme_font">清单外任务</b>
+              <b class="mt-20 font-18 theme_font mr-20">清单外任务</b>
+              <b
+                class="mt-20 font-18 show-list"
+                v-if="showOutListTodos===false"
+                @click="showOutListTodos=true"
+              >展示</b>
+              <b class="mt-20 font-18 show-list" v-else @click="showOutListTodos=false">隐藏</b>
               <!-- 效果 -->
               <div
                 v-for="(item,index) in todoList"
+                v-if="showOutListTodos"
                 :key="item._id"
                 @mouseover="onTodo(index)"
                 @mouseleave="leaveTodo(index)"
@@ -195,6 +202,7 @@
               :key="item._id"
               @mouseover="onListTodo(item._id)"
               @mouseleave="leaveListTodo()"
+              v-if="value.showOutListTodos"
             >
               <div
                 class="column-center flex-space-between every-todo font-16"
@@ -261,6 +269,16 @@
 
           <!-- /添加新任务 -->
           <div class="mt-5 mb-10">
+            <button
+              v-if="todoListAdd===false && value.showOutListTodos===false"
+              class="font-12 ml-20 option this_button font-bolder"
+              @click="showListInfo(value)"
+            >展示清单任务</button>
+            <button
+              v-if="todoListAdd===false  && value.showOutListTodos===true"
+              class="font-12 ml-20 option this_button font-bolder"
+              @click="hideListInfo(value)"
+            >隐藏清单任务</button>
             <button
               v-if="todoListAdd===false"
               class="font-12 ml-20 option this_button font-bolder this_left"
@@ -517,7 +535,8 @@ export default {
       modalImg: "",
       loading: "",
       fileData: {},
-      fileList: []
+      fileList: [],
+      showOutListTodos: true
     };
   },
   watch: {
@@ -622,6 +641,9 @@ export default {
             this.$set(this.every_list, key, res.result.todoList[key]);
           }
         }
+        for (let key in this.every_list) {
+          this.every_list[key].showOutListTodos = false;
+        }
         console.log(this.every_list);
         this.scheduleList = res.result.scheduleList;
         this.fileList = res.result.fileList;
@@ -639,6 +661,16 @@ export default {
       setTimeout(() => {
         this.todoAdd = true;
       });
+    },
+    showListInfo(item) {
+      let el = JSON.parse(JSON.stringify(item));
+      el.showOutListTodos = true;
+      this.$set(this.every_list, item.name, el);
+    },
+    hideListInfo(item) {
+      let el = JSON.parse(JSON.stringify(item));
+      el.showOutListTodos = false;
+      this.$set(this.every_list, item.name, el);
     },
     //清单任务添加
     addListTodo(id) {
@@ -1093,5 +1125,15 @@ export default {
 }
 .this_left {
   text-decoration: underline;
+}
+.show-list {
+  font-family: "Times New Roman", Times, serif;
+}
+.show-list:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: wavy;
+}
+.this_button_1 {
 }
 </style>

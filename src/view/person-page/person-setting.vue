@@ -191,10 +191,10 @@
     <Modal v-model="passModal" footer-hide :closable="false" @on-visible-change="initPass">
       <div class="thisModal">
         <div class="mb-20 mt-10" v-show="operating===2">
-          <vs-input v-model="newpass" label-placeholder="请输入新的登录密码"></vs-input>
+          <vs-input v-model="newpass" type="password" label-placeholder="请输入新的登录密码"></vs-input>
         </div>
         <div class="mb-20" v-show="operating===2">
-          <vs-input v-model="newpass2" label-placeholder="请再次输入登录密码"></vs-input>
+          <vs-input v-model="newpass2" type="password" label-placeholder="请再次输入登录密码"></vs-input>
         </div>
         <div class="mb-10" v-if="operating===3">
           <vs-input

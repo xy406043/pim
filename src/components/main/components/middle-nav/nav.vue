@@ -18,15 +18,17 @@
       <font class="ml-10 option font-m" @click="toCase">保险箱</font>
       <!-- <font class="ml-10 option font-m" @click="toMySelf">我自己</font> -->
     </div>
+    <!--
     <div class="ml-10">
       <Divider type="vertical" />
     </div>
+    -->
     <!-- 计划 -->
     <div class="mr-10">
       <!-- <font class="ml-10 option font-m" @click="toDynamic">动态</font> -->
-      <font class="ml-10 option font-m" @click="toCalendar">日历</font>
+     <!-- <font class="ml-10 option font-m" @click="toCalendar">日历</font> -->
       <!-- <font class="ml-10 option font-m" @click="toProgress">神觉</font> -->
-      <span class="ml-10 option font-m" @click="toTest">文本编辑器示例</span>
+     <!-- <span class="ml-10 option font-m" @click="toTest">文本编辑器示例</span> -->
     </div>
     <!-- 个人 -->
   </div>

@@ -19,7 +19,7 @@
       </span>
     </div>
     <div class="flex-space-between mt-20">
-      <div></div>
+      <div class="try-info">以上为试用账号</div>
       <a @click="toReset">忘记密码?</a>
     </div>
     <div class="mt-20 mb-20">
@@ -65,12 +65,12 @@ export default {
   },
   data() {
     return {
-      userName: "",
-      password: "",
-      form: {
-        userName: "",
-        password: ""
-      },
+      userName: "tomoyo",
+      password: "406043",
+      // form: {
+      //   userName: "",
+      //   password: ""
+      // },
       isPass: false,
       loading: this.invalid
     };
@@ -140,6 +140,11 @@ export default {
   font-weight: 1000;
   color: #ffffff;
   text-shadow: 0 0 10px #2d8cf0, 0 2px 1px #641818;
+}
+.try-info{
+  font-weight: bolder;
+  color:cornflowerblue;
+  text-shadow: 1px 1px 3px yellow;
 }
 </style>
 
