@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+// const Vue =require("vue")
+// const VueRouter = require("vue-router")
 import routes from "./routers";
 import store from "@/store";
 import config from "@/config";

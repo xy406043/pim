@@ -18,7 +18,7 @@
       <div class="font">归于自己，自在生活</div>
     </div>
     <div class="el-looo" style="display:inline-block;float:right">
-      <img class="header-img" src="../../../public/img/favicon.png" alt="tel" />
+      <img class="header-img" src="http://xynagisa.xyz/favicon_1590461511853.png" alt="tel" />
     </div>
     <!-- 任务层 -->
     <div>

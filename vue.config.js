@@ -49,8 +49,11 @@ module.exports = {
    */
   configureWebpack:{
     externals: {
-      "BMap": "BMap"  // package.json  bmap  用的地方不用引入
-    },
-    
+      "BMap": "BMap",  // package.json  bmap  用的地方不用引入
+      // "vue","vue",
+      // "vue-router","vueRouter",
+      // "vuex":"vuex",
+      // "axios":"axios"
+    }
   }
 }
