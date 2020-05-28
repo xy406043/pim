@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
@@ -7,11 +7,13 @@ const { title, cookieExpires, useI18n } = config
 export const TOKEN_KEY = 'PimToken'
 
 export const setToken = (token) => {
-  Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
+  // Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
+  localSave(TOKEN_KEY,token)
 }
 
 export const getToken = () => {
-  const token = Cookies.get(TOKEN_KEY)
+  // const token = Cookies.get(TOKEN_KEY)
+  const token =localRead(TOKEN_KEY)
   if (token) return token
   else return false
 }

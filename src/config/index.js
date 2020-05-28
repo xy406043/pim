@@ -1,7 +1,7 @@
 
 export default{
     title:"PIM个人信息管理系统",
-    cookieExpires:100,
+    // cookieExpires:100,
     /**
      * 书写正确的URL格式
      */

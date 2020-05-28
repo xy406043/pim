@@ -32,17 +32,12 @@ class newAxios {
     instance.interceptors.response.use(response =>{
      return response
     },err => {
+      let that = this 
       if(err.response){
-        switch(err.response.status){
-          case '403':
-            this.$Message.error("登录过期，请重新登录")
-            setTimeout(()=>{
+        console.log("错误捕获返回",err.response)
+        if(err.response.status===401){
               setToken("")
               window.location.href = '/'
-            },2000)
-            break;
-          default:
-            break;
         }
         return Promise.reject(err.response)
       }

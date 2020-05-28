@@ -58,7 +58,7 @@ import { localRead } from "@/libs/utils";
 import "./main.less";
 import "../../../public/common.less";
 import { commonApi } from "@/api";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 /**
  * @小人所在的static需要与html同级
  * @不知为什么我这里必须引入
@@ -178,7 +178,7 @@ export default {
     @但是setTimeout自带清除定时器
     @或者通过socket连接
      */
-    let token = Cookies.get("PimToken");
+    let token = localRead("PimToken");
     this.sendMessage(token);
     // window.setInterval(() => {
     //   setTimeout(() => {}, 0);
@@ -195,14 +195,14 @@ export default {
       // this.message.splice(this.message,0,data)
       if (data === 0) {
         setTimeout(() => {
-          let token = Cookies.get("PimToken");
+          let token = localRead("PimToken");
           this.sendMessage(token);
         }, 3000);
       } else {
         let msg = data.content;
         // this.monitor(msg);
         setTimeout(() => {
-          let token = Cookies.get("PimToken");
+          let token = localRead("PimToken");
           this.sendMessage(token);
         }, 3000);
       }
@@ -211,14 +211,14 @@ export default {
       // console.log("任务接受",data)
       if (data === 0) {
         setTimeout(() => {
-          let token = Cookies.get("PimToken");
+          let token = localRead("PimToken");
           this.sendTodoNotice(token);
         }, 3000);
       } else {
         let msg = data.content;
         // this.monitor(msg);
         setTimeout(() => {
-          let token = Cookies.get("PimToken");
+          let token = localRead("PimToken");
           this.sendTodoNotice(token);
         }, 3000);
       }
