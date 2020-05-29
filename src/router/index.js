@@ -91,6 +91,7 @@ router.beforeEach((to, from, next) => {
           turnTo(to, res.result.access, next);
         })
         .catch(err => {
+          setToken("")
           next({
             name: LOGIN_PAGE_NAME
           });
